@@ -33,11 +33,18 @@ public class EyeController : MonoBehaviour
     private CSVFileReader CSVFileReader;
     private int frameCounter = 0;
     private int framer = 0;
+
+    private Quaternion headInitialRotation;
+    private Quaternion leftEyeInitialRot;
+    private Quaternion rightEyeInitialRot;
     private void Awake()
     {
         CSVFileReader = new CSVFileReader();
         eyeControllerData = CSVFileReader.GetCSVFileListofDic("EyeTrackData");
         isRotationStart = true;
+        headInitialRotation = head.localRotation;
+        leftEyeInitialRot = eyes.leftEye.localRotation;
+        rightEyeInitialRot = eyes.rightEye.localRotation;
 
     }
 
@@ -72,14 +79,15 @@ public class EyeController : MonoBehaviour
 
         Vector3 headPos = new Vector3(xPos, yPos, zPos);
 
-        Vector3 centeredHeadDir = FindDirVector(headPos,headDirection);
+        Vector3 centeredHeadDir = FindDirVector(headPos,headDirection).normalized;
 
+        Vector3 headTarget = headPos + centeredHeadDir;
         Debug.Log("Head Direction: " + headDirection);
         float angle = Vector3.Angle(Vector3.forward, headDirection);
         //head.up = head.position + centeredHeadDir;
 
         //head.position = headPos;
-        head.localRotation = Quaternion.LookRotation(-headDirection);
+        head.localRotation = Quaternion.LookRotation(centeredHeadDir);
 
 
 
@@ -96,10 +104,10 @@ public class EyeController : MonoBehaviour
         Vector3 leftEyeDirection = new Vector3(xLeftEye, yLeftEye, zLeftEye);
 
 
-        Vector3 leftEyeTarget = eyes.leftEye.position + FindDirVector(leftEyePos,leftEyeDirection);
+        Vector3 leftEyeTarget = eyes.leftEye.position + FindDirVector(leftEyePos,leftEyeDirection).normalized;
         //eyes.leftEye.up = (leftEyeTarget);
 
-        eyes.leftEye.localRotation = Quaternion.LookRotation(-leftEyeDirection);
+        eyes.leftEye.localRotation = Quaternion.LookRotation(FindDirVector(leftEyePos, leftEyeDirection).normalized);
 
 
         float xRightEyePos = float.Parse(frameData[EyeTrackDataColums.RightEyePositionX]);
@@ -115,9 +123,9 @@ public class EyeController : MonoBehaviour
         Vector3 rightEyeDirection = new Vector3(xRightEye, yRightEye, zRightEye);
 
 
-        Vector3 rightEyeTarget = eyes.rightEye.position + FindDirVector(rightEyePos, rightEyeDirection);
+        Vector3 rightEyeTarget = eyes.rightEye.position + FindDirVector(rightEyePos, rightEyeDirection).normalized;
         //eyes.rightEye.up = (rightEyeTarget);
-        eyes.rightEye.localRotation = Quaternion.LookRotation(-rightEyeDirection);
+        eyes.rightEye.localRotation = Quaternion.LookRotation(FindDirVector(rightEyePos, rightEyeDirection).normalized);
 
 
 
