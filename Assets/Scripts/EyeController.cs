@@ -67,17 +67,18 @@ public class EyeController : MonoBehaviour
         {
             return;
         }
-        float x = float.Parse(frameData[EyeTrackDataColums.HeadDirectionX]);
-        float y = float.Parse(frameData[EyeTrackDataColums.HeadDirectionY]);
-        float z = float.Parse(frameData[EyeTrackDataColums.HeadDirectionZ]);
-        Vector3 headDirection = new Vector3(x, y, z);
-
 
         float xPos = float.Parse(frameData[EyeTrackDataColums.HeadPositionX]);
         float yPos = float.Parse(frameData[EyeTrackDataColums.HeadPositionY]);
         float zPos = float.Parse(frameData[EyeTrackDataColums.HeadPositionZ]);
 
         Vector3 headPos = new Vector3(xPos, yPos, zPos);
+
+
+        float x = float.Parse(frameData[EyeTrackDataColums.HeadDirectionX]);
+        float y = float.Parse(frameData[EyeTrackDataColums.HeadDirectionY]);
+        float z = float.Parse(frameData[EyeTrackDataColums.HeadDirectionZ]);
+        Vector3 headDirection = new Vector3(x, y, z);
 
         Vector3 centeredHeadDir = FindDirVector(headPos,headDirection).normalized;
 
