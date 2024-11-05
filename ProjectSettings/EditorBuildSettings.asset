@@ -9,3 +9,5 @@ EditorBuildSettings:
     Varjo.XR.Settings: {fileID: 11400000, guid: 31f37e3713b5e4794a8574f2e081e84b, type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 27f0fe9608d0541919139351180d49dc, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 1c518c4d040c24f21b5ced02e703b02c, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 8716f49596c8aaf4fb36391b7059428e, type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: be3eb02c4d2e7ab458f43713c5154053, type: 2}
