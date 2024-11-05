@@ -401,7 +401,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7095553325343163923}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81bdd92980c552049b913514c46a8cc0, type: 3}
+  m_Script: {fileID: 11500000, guid: dd6cec03c2639f540860717edbbabd61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   condition: 0
@@ -412,8 +412,8 @@ MonoBehaviour:
   quizAnswer: 
   chatBot: 0
   performance: 
-  gazeDataSource: 1
-  gazeCalibrationMode: 1
+  gazeDataSource: 0
+  gazeCalibrationMode: 0
   calibrationRequestKey: 32
   gazeOutputFilterType: 1
   setOutputFilterTypeKey: 303
@@ -431,7 +431,7 @@ MonoBehaviour:
   floatingGazeTargetDistance: 5
   targetOffset: 0.2
   hitForce: 5
-  loggingToggleKey: 32
+  loggingToggleKey: 305
   useCustomLogPath: 0
   customLogPath: 
-  printFramerate: 1
+  printFramerate: 0

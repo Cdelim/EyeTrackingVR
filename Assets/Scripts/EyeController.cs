@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static Varjo.XR.VarjoEyeTracking;
 
 [Serializable]
 public class Eyes
@@ -53,6 +54,7 @@ public class EyeController : MonoBehaviour
 
         if (frameCounter == eyeControllerData.Count - 1)
         {
+            Debug.LogError("Started Again");
             frameCounter = 0;
         }
         //if (framer % 60 == 0)
@@ -85,10 +87,8 @@ public class EyeController : MonoBehaviour
         Vector3 headTarget = headPos + centeredHeadDir;
         Debug.Log("Head Direction: " + headDirection);
         float angle = Vector3.Angle(Vector3.forward, headDirection);
-        //head.up = head.position + centeredHeadDir;
-
-        //head.position = headPos;
-        head.localRotation = Quaternion.LookRotation(centeredHeadDir);
+        //head.rotation = Quaternion.LookRotation(headDirection.normalized);
+        head.localRotation = Quaternion.LookRotation(-FindDirVector(headPos, headDirection).normalized);
 
 
 
@@ -105,8 +105,7 @@ public class EyeController : MonoBehaviour
         Vector3 leftEyeDirection = new Vector3(xLeftEye, yLeftEye, zLeftEye);
 
 
-        Vector3 leftEyeTarget = eyes.leftEye.position + FindDirVector(leftEyePos,leftEyeDirection).normalized;
-        //eyes.leftEye.up = (leftEyeTarget);
+        //Vector3 leftEyeTarget = eyes.leftEye.position + FindDirVector(leftEyePos,leftEyeDirection).normalized;
 
         eyes.leftEye.localRotation = Quaternion.LookRotation(FindDirVector(leftEyePos, leftEyeDirection).normalized);
 
@@ -124,9 +123,12 @@ public class EyeController : MonoBehaviour
         Vector3 rightEyeDirection = new Vector3(xRightEye, yRightEye, zRightEye);
 
 
-        Vector3 rightEyeTarget = eyes.rightEye.position + FindDirVector(rightEyePos, rightEyeDirection).normalized;
-        //eyes.rightEye.up = (rightEyeTarget);
-        eyes.rightEye.localRotation = Quaternion.LookRotation(FindDirVector(rightEyePos, rightEyeDirection).normalized);
+       // Vector3 rightEyeTarget = eyes.rightEye.position + FindDirVector(rightEyePos, rightEyeDirection).normalized;
+         eyes.rightEye.localRotation = Quaternion.LookRotation(FindDirVector(rightEyePos, rightEyeDirection).normalized);
+        /*eyes.leftEye.position = leftEyePos;
+        eyes.rightEye.position = rightEyePos;
+        eyes.leftEye.rotation = Quaternion.LookRotation(leftEyeDirection.normalized);
+        eyes.rightEye.rotation = Quaternion.LookRotation(rightEyeDirection.normalized);*/
 
 
 
