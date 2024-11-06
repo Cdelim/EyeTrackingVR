@@ -74,21 +74,23 @@ public class EyeController : MonoBehaviour
         float yPos = float.Parse(frameData[EyeTrackDataColums.HeadPositionY]);
         float zPos = float.Parse(frameData[EyeTrackDataColums.HeadPositionZ]);
 
-        Vector3 headPos = new Vector3(xPos, yPos, zPos);
+        Vector3 headPos = new Vector3(xPos, zPos,-yPos);
+        //Vector3 headPos = new Vector3(xPos, yPos, -zPos);
 
 
         float x = float.Parse(frameData[EyeTrackDataColums.HeadDirectionX]);
         float y = float.Parse(frameData[EyeTrackDataColums.HeadDirectionY]);
         float z = float.Parse(frameData[EyeTrackDataColums.HeadDirectionZ]);
-        Vector3 headDirection = new Vector3(x, y, z);
+        Vector3 headDirection = new Vector3(x, z, -y);
+        //Vector3 headDirection = new Vector3(x, y, -z);
 
         Vector3 centeredHeadDir = FindDirVector(headPos,headDirection).normalized;
 
         Vector3 headTarget = headPos + centeredHeadDir;
         Debug.Log("Head Direction: " + headDirection);
         float angle = Vector3.Angle(Vector3.forward, headDirection);
-        //head.rotation = Quaternion.LookRotation(headDirection.normalized);
-        head.localRotation = Quaternion.LookRotation(-FindDirVector(headPos, headDirection).normalized);
+        //head.localRotation = Quaternion.LookRotation(headDirection.normalized);
+        head.localRotation = Quaternion.LookRotation(FindDirVector(headPos, headDirection).normalized);
 
 
 
@@ -108,6 +110,7 @@ public class EyeController : MonoBehaviour
         //Vector3 leftEyeTarget = eyes.leftEye.position + FindDirVector(leftEyePos,leftEyeDirection).normalized;
 
         eyes.leftEye.localRotation = Quaternion.LookRotation(FindDirVector(leftEyePos, leftEyeDirection).normalized);
+        //eyes.leftEye.localRotation = Quaternion.LookRotation(leftEyeDirection.normalized);
 
 
         float xRightEyePos = float.Parse(frameData[EyeTrackDataColums.RightEyePositionX]);
@@ -120,15 +123,13 @@ public class EyeController : MonoBehaviour
         float yRightEye = float.Parse(frameData[EyeTrackDataColums.RightGazeDirectionY]);
         float zRightEye = float.Parse(frameData[EyeTrackDataColums.RightGazeDirectionZ]);
 
-        Vector3 rightEyeDirection = new Vector3(xRightEye, yRightEye, zRightEye);
+        Vector3 rightEyeDirection = new Vector3(xRightEye, yRightEye, zRightEye );
 
 
        // Vector3 rightEyeTarget = eyes.rightEye.position + FindDirVector(rightEyePos, rightEyeDirection).normalized;
          eyes.rightEye.localRotation = Quaternion.LookRotation(FindDirVector(rightEyePos, rightEyeDirection).normalized);
-        /*eyes.leftEye.position = leftEyePos;
-        eyes.rightEye.position = rightEyePos;
-        eyes.leftEye.rotation = Quaternion.LookRotation(leftEyeDirection.normalized);
-        eyes.rightEye.rotation = Quaternion.LookRotation(rightEyeDirection.normalized);*/
+        //eyes.rightEye.localRotation = Quaternion.LookRotation( rightEyeDirection.normalized);
+        
 
 
 
