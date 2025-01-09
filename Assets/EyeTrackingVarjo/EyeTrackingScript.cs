@@ -191,7 +191,6 @@ public class EyeTrackingScript : MonoBehaviour
 
     void Update()
     {
-        //https://docs.unity3d.com/ScriptReference/MonoBehaviour.FixedUpdate.html
         if (logging && printFramerate)
         {
             gazeTimer += Time.deltaTime;
