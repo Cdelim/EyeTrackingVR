@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2819003326866224866}
   - component: {fileID: 3389543904861626951}
   - component: {fileID: 1540771278}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 4691398056493381941}
   - component: {fileID: 5381132872703243419}
   - component: {fileID: 7407445804816175044}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Burner_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 5934025520720928363}
   - component: {fileID: 6846498263332414143}
   - component: {fileID: 5630000864999105547}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Grate_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 86442869419094166}
   - component: {fileID: 7882573751056727584}
   - component: {fileID: 7439132136406090810}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Glass_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 3474722388403497863}
   - component: {fileID: 7123887364641930669}
   - component: {fileID: 2727512557411870558}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Oven_Grate_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -457,7 +457,7 @@ GameObject:
   - component: {fileID: 17060926636732956}
   - component: {fileID: 8687278836854110301}
   - component: {fileID: 8576747901601535659}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Oven_Grate_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +541,7 @@ GameObject:
   - component: {fileID: 504567621630045694}
   - component: {fileID: 1074876505209954824}
   - component: {fileID: 1167171021}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Plate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -758,7 +758,7 @@ GameObject:
   - component: {fileID: 6861949820762299173}
   - component: {fileID: 6991706395753616751}
   - component: {fileID: 2568006272979055752}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ControlPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -841,7 +841,7 @@ GameObject:
   - component: {fileID: 8786047655019844807}
   - component: {fileID: 4341227752708152377}
   - component: {fileID: 3775171068526941756}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -924,7 +924,7 @@ GameObject:
   - component: {fileID: 5299778854498055857}
   - component: {fileID: 8102936645674678316}
   - component: {fileID: 2495558539343943039}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1007,7 +1007,7 @@ GameObject:
   - component: {fileID: 752193481400311377}
   - component: {fileID: 3217645701812904622}
   - component: {fileID: 4001383178128876737}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Burner_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1090,7 +1090,7 @@ GameObject:
   - component: {fileID: 4073710272761956049}
   - component: {fileID: 6816533349918286735}
   - component: {fileID: 6491846581853968608}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Grate_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1173,7 +1173,7 @@ GameObject:
   - component: {fileID: 8902580629142296512}
   - component: {fileID: 7236349593729899565}
   - component: {fileID: 4827022177448594040}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1256,7 +1256,7 @@ GameObject:
   - component: {fileID: 3841973821959632397}
   - component: {fileID: 3012533161386166713}
   - component: {fileID: 9069828478419651152}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1339,7 +1339,7 @@ GameObject:
   - component: {fileID: 6024667504322537127}
   - component: {fileID: 8805092948153564216}
   - component: {fileID: 8958669079032765739}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Handle.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1422,7 +1422,7 @@ GameObject:
   - component: {fileID: 4395362443861580415}
   - component: {fileID: 1906879126675293772}
   - component: {fileID: 6008525158916412014}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Broiler_Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1505,7 +1505,7 @@ GameObject:
   - component: {fileID: 2100068650545499245}
   - component: {fileID: 7084740730167502247}
   - component: {fileID: 8701276848318599291}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Burner_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1588,7 +1588,7 @@ GameObject:
   - component: {fileID: 4092511106914655464}
   - component: {fileID: 2653668478056972986}
   - component: {fileID: 2025751280298770668}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1674,7 +1674,7 @@ GameObject:
   - component: {fileID: 546353385}
   - component: {fileID: 546353384}
   - component: {fileID: 546353383}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Oven_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1817,7 +1817,7 @@ GameObject:
   - component: {fileID: 5292732422561184780}
   - component: {fileID: 2431426505599925462}
   - component: {fileID: 6159112889054048542}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Knob_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1906,7 +1906,7 @@ GameObject:
   - component: {fileID: 3980192796136258419}
   - component: {fileID: 6048584107712650905}
   - component: {fileID: 894398219}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Feet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2010,7 +2010,7 @@ GameObject:
   - component: {fileID: 1985630238970408985}
   - component: {fileID: 5683366551997728647}
   - component: {fileID: 1466190110467672081}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Burner_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2093,7 +2093,7 @@ GameObject:
   - component: {fileID: 4133430055020452302}
   - component: {fileID: 3757786743794708995}
   - component: {fileID: 4062577542621680669}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2179,7 +2179,7 @@ GameObject:
   - component: {fileID: 2038714610}
   - component: {fileID: 2038714609}
   - component: {fileID: 2038714608}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Broiler_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2320,7 +2320,7 @@ GameObject:
   - component: {fileID: 7602666909430265009}
   - component: {fileID: 6428552306568264514}
   - component: {fileID: 3256384455194850710}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stove_Electronic
   m_TagString: Untagged
   m_Icon: {fileID: 0}

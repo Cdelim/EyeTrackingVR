@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 65868709504612588}
   - component: {fileID: 95612355802914880}
   - component: {fileID: 114471242149074242}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 4270095147669988}
   - component: {fileID: 33827763451978904}
   - component: {fileID: 23012965438759512}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Legs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 65537821703423196}
   - component: {fileID: 95138013245776194}
   - component: {fileID: 114999853259259232}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Table L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +381,7 @@ GameObject:
   - component: {fileID: 4720744037759732}
   - component: {fileID: 33820506527101274}
   - component: {fileID: 23720646006150192}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 4838552453872970}
   - component: {fileID: 33818043460629424}
   - component: {fileID: 23944941520974360}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 65910005167115510}
   - component: {fileID: 95324808187941100}
   - component: {fileID: 114814907531141046}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -692,7 +692,7 @@ GameObject:
   - component: {fileID: 4390194456335362}
   - component: {fileID: 33405926525116534}
   - component: {fileID: 23464730413406450}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Shelf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -775,7 +775,7 @@ GameObject:
   - component: {fileID: 4189122666040138}
   - component: {fileID: 33945545976153640}
   - component: {fileID: 23017228692282928}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -858,7 +858,7 @@ GameObject:
   - component: {fileID: 4459326344920206}
   - component: {fileID: 33774304442819164}
   - component: {fileID: 23096538998609706}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -942,7 +942,7 @@ GameObject:
   - component: {fileID: 4772010638521164}
   - component: {fileID: 33164618748918496}
   - component: {fileID: 23272213821212942}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1026,7 +1026,7 @@ GameObject:
   - component: {fileID: 33714633467745442}
   - component: {fileID: 23786852514003440}
   - component: {fileID: 64767572682243596}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1131,7 +1131,7 @@ GameObject:
   - component: {fileID: 4386572774831654}
   - component: {fileID: 33880900859688032}
   - component: {fileID: 23190036025612450}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Wine Rack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1214,7 +1214,7 @@ GameObject:
   - component: {fileID: 4530515072643310}
   - component: {fileID: 33129118779898090}
   - component: {fileID: 23807582537640818}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Mid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1298,7 +1298,7 @@ GameObject:
   - component: {fileID: 65991803190200250}
   - component: {fileID: 114026395332583918}
   - component: {fileID: 95805563072029092}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1389,7 +1389,7 @@ GameObject:
   - component: {fileID: 4848550526559362}
   - component: {fileID: 33089724084840488}
   - component: {fileID: 23360265066808788}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1475,7 +1475,7 @@ GameObject:
   - component: {fileID: 65879944735941958}
   - component: {fileID: 95585719814439574}
   - component: {fileID: 114750352048663634}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Table R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1615,7 +1615,7 @@ GameObject:
   - component: {fileID: 4629077393152224}
   - component: {fileID: 33029956973558508}
   - component: {fileID: 23207838570731694}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1743,7 +1743,7 @@ GameObject:
   - component: {fileID: 33667595944970282}
   - component: {fileID: 23771106563284474}
   - component: {fileID: 65789106074149366}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Table C
   m_TagString: Untagged
   m_Icon: {fileID: 0}

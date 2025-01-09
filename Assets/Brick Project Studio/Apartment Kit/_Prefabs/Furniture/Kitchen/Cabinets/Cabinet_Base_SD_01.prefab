@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2521437409786020426}
   - component: {fileID: 1214115485590276898}
   - component: {fileID: 8890422935271344918}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Counter_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 4006537208810180083}
   - component: {fileID: 1920539283515041566}
   - component: {fileID: 4958267544043016039}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer Script
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 2957309903910171578}
   - component: {fileID: 6735679154709579746}
   - component: {fileID: 7262485176414588659}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   - component: {fileID: 1537724937443711599}
   - component: {fileID: 2062854714398549913}
   - component: {fileID: 5255494460148683737}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -488,7 +488,7 @@ GameObject:
   - component: {fileID: 8504855302379988529}
   - component: {fileID: 217195733}
   - component: {fileID: 217195732}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door_L.008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -650,7 +650,7 @@ GameObject:
   - component: {fileID: 4487005575141119298}
   - component: {fileID: 563159068262514007}
   - component: {fileID: 6629047333803810925}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.020
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -95,8 +95,10 @@ public class GazeRayController : MonoBehaviour
             if (frameData[EyeTrackDataColums.LeftEyeStatus] == "INVALID"
                 || frameData[EyeTrackDataColums.RightEyeStatus] == "INVALID")
             {
+                frameCounter++;
                 return;
             }
+            frameCounter++;
 
             float xLeftEyePos = float.Parse(frameData[EyeTrackDataColums.LeftEyePositionX]);
             float yLeftEyePos = float.Parse(frameData[EyeTrackDataColums.LeftEyePositionY]);
@@ -199,7 +201,7 @@ public class GazeRayController : MonoBehaviour
             //    rotateWithGaze.RayHit();
             //}
             fixatedObj = hit.collider.gameObject;
-            gazeObjects.Find(gazeObj => gazeObj.Equals(fixatedObj)).fixatitedTimeSec += Time.deltaTime;
+            gazeObjects.Find(gazeObj => gazeObj.obj.Equals(fixatedObj)).fixatitedTimeSec += Time.deltaTime;
             Debug.Log("GazeObject" + fixatedObj.name);
 
 
@@ -212,11 +214,11 @@ public class GazeRayController : MonoBehaviour
             {
                 return;
             }
-            var lastGazeObj = gazeObjects.Find(gazeObj => gazeObj.Equals(fixatedObj));
+            var lastGazeObj = gazeObjects.Find(gazeObj => gazeObj.obj.Equals(fixatedObj));
             if (!IsEnoughFocused(lastGazeObj.fixationThresholdSec, lastGazeObj.fixatitedTimeSec))
             {
                 fixationUIController.EnableText();
-                string alertText = $"User lost attention. {lastGazeObj.fixatitedTimeSec} seconds had been focused";
+                string alertText = $"User lost attention. {String.Format("{0:0.00}", lastGazeObj.fixatitedTimeSec)} seconds had been focused";
                 fixationUIController.SetText(alertText);
             }
             gazeObjects.Find(gazeObj => gazeObj.Equals(fixatedObj)).fixatitedTimeSec = 0f;
@@ -224,7 +226,6 @@ public class GazeRayController : MonoBehaviour
         }
 
 
-        frameCounter++;
     }
 
     private bool IsEnoughFocused(float treshHoldSec, float focusedTimeSec)
@@ -244,8 +245,8 @@ public class GazeRayController : MonoBehaviour
 public class GazeObject
 {
     public GameObject obj;
-    public int fixationThresholdSec;
-    public float fixatitedTimeSec;
+    public int fixationThresholdSec = 0;
+    public float fixatitedTimeSec = 0;
 }
 
 

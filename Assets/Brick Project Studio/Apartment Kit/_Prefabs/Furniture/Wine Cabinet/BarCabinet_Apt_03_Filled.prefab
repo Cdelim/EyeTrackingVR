@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4607733208715458}
   - component: {fileID: 33783886727326384}
   - component: {fileID: 23487349571161270}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4303051177648222}
   - component: {fileID: 33966623273122310}
   - component: {fileID: 23986530858621732}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 4937748145328168}
   - component: {fileID: 33850577575343378}
   - component: {fileID: 23898375420776518}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 65836496598065066}
   - component: {fileID: 95500828490099190}
   - component: {fileID: 114927153661774718}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Front Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 4337271792951476}
   - component: {fileID: 33826849674874286}
   - component: {fileID: 23853533535658028}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 33307102185206886}
   - component: {fileID: 23929228888885516}
   - component: {fileID: 64417533236154970}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -595,7 +595,7 @@ GameObject:
   - component: {fileID: 4207550268588234}
   - component: {fileID: 33170165463347678}
   - component: {fileID: 23583814349856476}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -678,7 +678,7 @@ GameObject:
   - component: {fileID: 4327048464153774}
   - component: {fileID: 33251466268745306}
   - component: {fileID: 23612310229273194}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -761,7 +761,7 @@ GameObject:
   - component: {fileID: 4845214245253018}
   - component: {fileID: 33773324834954048}
   - component: {fileID: 23978708150216742}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -844,7 +844,7 @@ GameObject:
   - component: {fileID: 4172325930006552}
   - component: {fileID: 33510388038314976}
   - component: {fileID: 23734283110185124}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Back Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -931,7 +931,7 @@ GameObject:
   - component: {fileID: 33074682194752346}
   - component: {fileID: 23706841261178212}
   - component: {fileID: 64073653140628540}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1036,7 +1036,7 @@ GameObject:
   - component: {fileID: 4601638213387284}
   - component: {fileID: 33381162950558732}
   - component: {fileID: 23292776650986422}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Mirror.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1117,7 +1117,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4478110777686340}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Props
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1162,7 +1162,7 @@ GameObject:
   - component: {fileID: 33443826842806868}
   - component: {fileID: 23686344936152216}
   - component: {fileID: 64577613334226638}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Self Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1267,7 +1267,7 @@ GameObject:
   - component: {fileID: 4935813653016308}
   - component: {fileID: 33857989609632616}
   - component: {fileID: 23707225932780102}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1350,7 +1350,7 @@ GameObject:
   - component: {fileID: 4399467839584152}
   - component: {fileID: 33517735290830336}
   - component: {fileID: 23539269861571340}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Mirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1550,7 +1550,7 @@ GameObject:
   - component: {fileID: 4796840950760438}
   - component: {fileID: 33028372278757144}
   - component: {fileID: 23162554907596910}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1633,7 +1633,7 @@ GameObject:
   - component: {fileID: 4215454735663672}
   - component: {fileID: 33583538487898550}
   - component: {fileID: 23507235003907420}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1716,7 +1716,7 @@ GameObject:
   - component: {fileID: 4753882652044496}
   - component: {fileID: 33193191142135318}
   - component: {fileID: 23880876819630234}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1800,7 +1800,7 @@ GameObject:
   - component: {fileID: 33826963690177904}
   - component: {fileID: 23434570565737058}
   - component: {fileID: 64786651423348066}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Shelf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1906,7 +1906,7 @@ GameObject:
   - component: {fileID: 33085374272661266}
   - component: {fileID: 23959499315456908}
   - component: {fileID: 64482108317175138}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Glass.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2011,7 +2011,7 @@ GameObject:
   - component: {fileID: 4112922962414450}
   - component: {fileID: 33691183400405362}
   - component: {fileID: 23806913437959862}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: wine thin glass (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2094,7 +2094,7 @@ GameObject:
   - component: {fileID: 4800761225126718}
   - component: {fileID: 33060977104514564}
   - component: {fileID: 23543283228518070}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Wine Glass Bars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2177,7 +2177,7 @@ GameObject:
   - component: {fileID: 4303511448422590}
   - component: {fileID: 33741589834778264}
   - component: {fileID: 23115631091586824}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Glass Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2259,11 +2259,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5638865034277454344, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454348, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454350, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Name
@@ -2271,7 +2271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454350, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277625390, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_RootOrder
@@ -2337,11 +2337,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5638865034277454344, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454348, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454350, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Name
@@ -2349,7 +2349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454350, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277625390, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_RootOrder
@@ -2415,11 +2415,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5638865034277454344, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454348, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454350, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Name
@@ -2427,7 +2427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454350, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277625390, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_RootOrder
@@ -2493,11 +2493,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5638865034277454344, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454348, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454350, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Name
@@ -2505,7 +2505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277454350, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638865034277625390, guid: e0f8fa703bcf04a419f5263f5020b059, type: 3}
       propertyPath: m_RootOrder

@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 4192917931096783764}
   - component: {fileID: 5101371539006663129}
   - component: {fileID: 8137235233352474271}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Legs Chair
   m_TagString: Untagged
   m_Icon: {fileID: 0}

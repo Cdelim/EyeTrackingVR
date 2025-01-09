@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4280047071520491384}
   - component: {fileID: 9044201956051886802}
   - component: {fileID: 3500244799234168616}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: MirrorDoor_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 4652718636371656584}
   - component: {fileID: 1593702059901516290}
   - component: {fileID: 2539940527647856536}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: MirrorDoor_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   - component: {fileID: 6829557528369459011}
   - component: {fileID: 2074327612278466696}
   - component: {fileID: 4879106458403398592}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: MirrorDoor_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

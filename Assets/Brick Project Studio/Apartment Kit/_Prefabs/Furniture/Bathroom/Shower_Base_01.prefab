@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2670268691931388238}
   - component: {fileID: 8332910906641173866}
   - component: {fileID: 2478631784955173572}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ShowerDoorBase_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5379127478781411463}
   - component: {fileID: 5379127478781411461}
   - component: {fileID: 5379127478781411462}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: GlassDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 5675728322700796440}
   - component: {fileID: 6540013535726552908}
   - component: {fileID: 5813041673940132417}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: GlassDoor.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ GameObject:
   - component: {fileID: 4323620185228568943}
   - component: {fileID: 1850152275160042932}
   - component: {fileID: 5379127479023123384}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: GlassWall_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

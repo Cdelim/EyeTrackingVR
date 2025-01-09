@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 3453720633500742286}
   - component: {fileID: 8572431357258464367}
   - component: {fileID: 3689055774668413431}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 7253341085123616560}
   - component: {fileID: 6336352813258936012}
   - component: {fileID: 2363954020705631436}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: BarDrawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   - component: {fileID: 6492364185780223023}
   - component: {fileID: 901841378853521513}
   - component: {fileID: 2326447125805115383}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

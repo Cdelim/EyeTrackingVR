@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 625481971148334283}
   - component: {fileID: 625481971148334276}
   - component: {fileID: 625481971148334277}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: HamperFlap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

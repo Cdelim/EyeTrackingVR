@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 985869745}
   - component: {fileID: 3030883274049242116}
   - component: {fileID: 299394129503171715}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: WoodBars
   m_TagString: Untagged
   m_Icon: {fileID: 0}

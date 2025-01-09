@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8507928975720522875}
   - component: {fileID: 8164530032163000030}
   - component: {fileID: 2870885538681386171}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Vent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 6465006489263534047}
   - component: {fileID: 940772399123208670}
   - component: {fileID: 3465153203454040381}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hood_Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 4037919039378183508}
   - component: {fileID: 3116554130547319807}
   - component: {fileID: 3784195418552449825}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Hood_Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

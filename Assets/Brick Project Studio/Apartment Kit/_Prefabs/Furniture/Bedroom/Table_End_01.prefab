@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5018950054057871641}
   - component: {fileID: 5018950054057871646}
   - component: {fileID: 5018950054057871647}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 5018950054084982447}
   - component: {fileID: 5018950054084982441}
   - component: {fileID: 5018950054084982446}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 5018950054119123286}
   - component: {fileID: 5018950054119123280}
   - component: {fileID: 5018950054119123281}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle.009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 5018950055006186480}
   - component: {fileID: 5018950055006186481}
   - component: {fileID: 5018950055006186486}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 5018950055296117031}
   - component: {fileID: 5018950055296117025}
   - component: {fileID: 5018950055296117030}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -571,7 +571,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5018950055716668700}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer Script
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,7 +606,7 @@ GameObject:
   - component: {fileID: 5018950055889833694}
   - component: {fileID: 5018950055889833691}
   - component: {fileID: 5018950055889833688}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}

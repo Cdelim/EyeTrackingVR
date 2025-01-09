@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4120553472839636}
   - component: {fileID: 33855077858149368}
   - component: {fileID: 23357216511727270}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Wine Rack.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}

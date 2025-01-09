@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4688291960002304}
   - component: {fileID: 33014088204638532}
   - component: {fileID: 23844931654713290}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Base Wine Rack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4157347907480048}
   - component: {fileID: 33442157447455554}
   - component: {fileID: 23765672821018418}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 33008752424522852}
   - component: {fileID: 23167321954079310}
   - component: {fileID: 65625245128940226}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Side Counter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 4251959636674942}
   - component: {fileID: 33152584115277504}
   - component: {fileID: 23168391828842186}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -476,7 +476,7 @@ GameObject:
   - component: {fileID: 114457192913335682}
   - component: {fileID: 95972458183408088}
   - component: {fileID: 65403389442906218}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer 01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

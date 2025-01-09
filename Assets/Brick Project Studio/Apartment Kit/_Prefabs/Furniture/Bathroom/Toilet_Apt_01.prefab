@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 2928308741890861072}
   - component: {fileID: 2022574529777350873}
   - component: {fileID: 6035212948037553138}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Toilet_Cover_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 3447398674445884295}
   - component: {fileID: 5075293977324638007}
   - component: {fileID: 3070919692050592260}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Toilet_Seat_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2085779863}
   - component: {fileID: 2085779862}
   - component: {fileID: 2085779861}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door_R.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 5981312398670442002}
   - component: {fileID: 930671007284499683}
   - component: {fileID: 1304516290}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Sink_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 1812438999546872745}
   - component: {fileID: 5296144653232170813}
   - component: {fileID: 3839673798871723138}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Plane.035
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +346,7 @@ GameObject:
   - component: {fileID: 5506400091662956956}
   - component: {fileID: 1010528763243940918}
   - component: {fileID: 1530711580}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Counter_Sink_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 8497062129118137618}
   - component: {fileID: 387984373358443831}
   - component: {fileID: 419214226735809696}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 648409543804205582}
   - component: {fileID: 6831815772878716823}
   - component: {fileID: 8327374210316135251}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Faucet_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -730,7 +730,7 @@ GameObject:
   - component: {fileID: 901358496101444900}
   - component: {fileID: 6113636579651065412}
   - component: {fileID: 8804458096166816265}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.023
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -813,7 +813,7 @@ GameObject:
   - component: {fileID: 8057375113621754382}
   - component: {fileID: 7945999411930362666}
   - component: {fileID: 8105658573363773079}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Faucet_Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -896,7 +896,7 @@ GameObject:
   - component: {fileID: 4307757637526884979}
   - component: {fileID: 4151150987193190162}
   - component: {fileID: 4918262337602451422}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -982,7 +982,7 @@ GameObject:
   - component: {fileID: 17990687}
   - component: {fileID: 17990686}
   - component: {fileID: 17990685}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door_L.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}

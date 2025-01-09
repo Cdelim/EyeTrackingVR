@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8372081406558004440}
   - component: {fileID: 4342015093667416135}
   - component: {fileID: 3586842074972672346}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8383330820956632840}
   - component: {fileID: 3951569358535438735}
   - component: {fileID: 3512531869402892359}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 2116746182}
   - component: {fileID: 2116746181}
   - component: {fileID: 2116746180}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Plane.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 1751959427}
   - component: {fileID: 1751959426}
   - component: {fileID: 1751959425}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 8546443893606358373}
   - component: {fileID: 6950274936154623208}
   - component: {fileID: 8058587635031527623}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.017
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 1034749827}
   - component: {fileID: 1034749826}
   - component: {fileID: 1034749825}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door_R.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}

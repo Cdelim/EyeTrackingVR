@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8899013725498939984}
   - component: {fileID: 7997614693308240600}
   - component: {fileID: 7979109652019651266}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4197659242072857505}
   - component: {fileID: 3733310346567751210}
   - component: {fileID: 5966681178083245025}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 6690522062149850269}
   - component: {fileID: 383542474052912220}
   - component: {fileID: 1100744791765794836}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Mirror.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 5386436854384878195}
   - component: {fileID: 5386436854384878192}
   - component: {fileID: 5386436854384878193}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 2539617341585544652}
   - component: {fileID: 8058243860799863049}
   - component: {fileID: 2042971497877908306}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -491,7 +491,7 @@ GameObject:
   - component: {fileID: 5483040691484923745}
   - component: {fileID: 5483040691484923750}
   - component: {fileID: 5483040691484923751}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -632,7 +632,7 @@ GameObject:
   - component: {fileID: 3259769981080225546}
   - component: {fileID: 3320060039976221633}
   - component: {fileID: 5388169518430828167}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Mirror.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}

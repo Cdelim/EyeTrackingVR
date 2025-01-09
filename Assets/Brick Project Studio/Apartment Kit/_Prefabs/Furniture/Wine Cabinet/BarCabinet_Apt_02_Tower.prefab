@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4306425564101134}
   - component: {fileID: 33990508703129482}
   - component: {fileID: 23928384752740490}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Side Counter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4659524710912000}
   - component: {fileID: 33275728194716340}
   - component: {fileID: 23031217569237350}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Wine Rack.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 4418619948808000}
   - component: {fileID: 33427057974010076}
   - component: {fileID: 23825393024354226}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 4002545134652610}
   - component: {fileID: 33953585841669914}
   - component: {fileID: 23637409833708018}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Base Wine Rack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 33865895670841806}
   - component: {fileID: 23440644837380098}
   - component: {fileID: 64486584679873608}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Side Cab 01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 33826710192232692}
   - component: {fileID: 23441006114196624}
   - component: {fileID: 64998425866348356}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Tower Cab 01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -559,7 +559,7 @@ GameObject:
   - component: {fileID: 4348901489428828}
   - component: {fileID: 33689289435373794}
   - component: {fileID: 23565107397444320}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -644,7 +644,7 @@ GameObject:
   - component: {fileID: 114064435312890050}
   - component: {fileID: 95831971524895502}
   - component: {fileID: 65267512378120534}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer 01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

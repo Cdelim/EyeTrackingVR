@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2061951137126809883}
   - component: {fileID: 2255247479494259507}
   - component: {fileID: 2112037616177321720}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pillow_Apt_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 3848076423006941425}
   - component: {fileID: 1839907776765993108}
   - component: {fileID: 2549145306513761032}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Sheet_Apt_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 2915043974780966476}
   - component: {fileID: 2178181277392150257}
   - component: {fileID: 7551278821581706151}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Mattress_Apt_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1156630855148100272}
   - component: {fileID: 3177711140217651393}
   - component: {fileID: 7342260068141504141}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5729171370081967675}
   - component: {fileID: 6003167648504272448}
   - component: {fileID: 3297817259607778510}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Glass.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 5115128040404578129}
   - component: {fileID: 4908497385124745134}
   - component: {fileID: 477980694909090120}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Knob.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,7 +371,7 @@ GameObject:
   - component: {fileID: 5545287591542597059}
   - component: {fileID: 5545287591542597058}
   - component: {fileID: 5545287591542597057}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer_Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -463,7 +463,7 @@ GameObject:
   - component: {fileID: 5545287591628662487}
   - component: {fileID: 5545287591628662486}
   - component: {fileID: 5545287591628662485}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -557,7 +557,7 @@ GameObject:
   - component: {fileID: 3075772650325086569}
   - component: {fileID: 5545287591788728563}
   - component: {fileID: 5545287591788728562}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door.R.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 1791910593797874242}
   - component: {fileID: 5545287590895851206}
   - component: {fileID: 5545287590895851207}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door.L.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -844,7 +844,7 @@ GameObject:
   - component: {fileID: 7379288159043699012}
   - component: {fileID: 4169385128719732101}
   - component: {fileID: 2682280246509566433}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -927,7 +927,7 @@ GameObject:
   - component: {fileID: 1978079422507803294}
   - component: {fileID: 5781235530410409309}
   - component: {fileID: 4703042667662292625}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer_02.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1011,7 +1011,7 @@ GameObject:
   - component: {fileID: 1400901970729557676}
   - component: {fileID: 7374252184845329650}
   - component: {fileID: 9075589321936726508}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1094,7 +1094,7 @@ GameObject:
   - component: {fileID: 2445016746565545167}
   - component: {fileID: 5693601238100927992}
   - component: {fileID: 1934624309666171856}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer_01.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1178,7 +1178,7 @@ GameObject:
   - component: {fileID: 4955268793296524010}
   - component: {fileID: 2093956897205614183}
   - component: {fileID: 3411144757421279670}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}

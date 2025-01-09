@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5110928843565055657}
   - component: {fileID: 3110252276469808952}
   - component: {fileID: 285306348611198262}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 5561709389037293351}
   - component: {fileID: 2477751794665388606}
   - component: {fileID: 6452636391370429362}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 6839929502595673797}
   - component: {fileID: 8101267470140332359}
   - component: {fileID: 374507579}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Counter_Corner_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 5363743883038329900}
   - component: {fileID: 2063900117880940935}
   - component: {fileID: 1994679593173956436}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pull.021
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +479,7 @@ GameObject:
   - component: {fileID: 745671375}
   - component: {fileID: 745671374}
   - component: {fileID: 745671373}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Door_L.007
   m_TagString: Untagged
   m_Icon: {fileID: 0}

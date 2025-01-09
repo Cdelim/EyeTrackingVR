@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 8722149950046626367}
   - component: {fileID: 4289846115821185018}
   - component: {fileID: 6471184083371856728}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 5213435544768149446}
   - component: {fileID: 7161535968814058960}
   - component: {fileID: 8025527974131381722}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Handle.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 5594884921497808162}
   - component: {fileID: 1165858228339764706}
   - component: {fileID: 8896407596103779847}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 8698839405852113476}
   - component: {fileID: 8698839405852113477}
   - component: {fileID: 8698839405852113498}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Drawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
