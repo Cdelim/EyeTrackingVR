@@ -6,7 +6,7 @@ import json
 from scipy.signal import savgol_filter
 import matplotlib.pyplot as plt
 import pickle
-
+from flask import Flask, request, jsonify
 
 
 
@@ -1204,7 +1204,7 @@ def read_general_questionnaire(file_path):
     return questionnaire_results
 
 
-def process_all_files_in_folder(folder_path, nasatlx_filepath,questionnaire_filepath, video_games_filepath, double_slit_filepath):
+"""def process_all_files_in_folder(folder_path, nasatlx_filepath,questionnaire_filepath, video_games_filepath, double_slit_filepath):
     results = {}
 
     # Read NASA TLX results from the file
@@ -1303,7 +1303,7 @@ double_slit_filepath = '/Users/suleymanozdel/Downloads/VRClassroomEyeTrackingDat
 questionnaire_filepath= '/Users/suleymanozdel/Downloads/VRClassroomEyeTrackingData/vrClassroom/questionaries/VRClassroom General Questionnaire_August 27, 2024_11.08.csv'
 nasatlx_filepath = '/Users/suleymanozdel/Downloads/VRClassroomEyeTrackingData/vrClassroom/nasaTLX/nasatlx_raw.txt'
 folder_path = '/Users/suleymanozdel/Downloads/VRClassroomEyeTrackingData/EyeTrackingLogs/'
-results = process_all_files_in_folder(folder_path, nasatlx_filepath, questionnaire_filepath, video_games_filepath, double_slit_filepath)
+results = process_all_files_in_folder(folder_path, nasatlx_filepath, questionnaire_filepath, video_games_filepath, double_slit_filepath)"""
 
 # Convert results dictionary to JSON-compatible format (e.g., handling non-serializable objects)
 def make_json_serializable(obj):
@@ -1339,9 +1339,9 @@ def convert_keys_to_strings(d):
 
 
 # Convert results dictionary to have string keys
-results_with_string_keys = convert_keys_to_strings(results)
+#results_with_string_keys = convert_keys_to_strings(results)
 # Save the results dictionary to a file as JSON
-try:
+"""try:
     with open('results.json', 'w') as f:
         json.dump(results_with_string_keys, f, default=make_json_serializable, indent=4)
 except TypeError as e:
@@ -1353,4 +1353,108 @@ try:
     with open('results.pkl', 'wb') as f:
         pickle.dump(results, f)
 except pickle.PickleError as e:
-    print(f"Error during Pickle serialization: {e}")
+    print(f"Error during Pickle serialization: {e}")"""
+
+
+app = Flask(__name__)
+
+@app.route('/CalculateValue', methods=['POST'])
+def calculate():
+    data = request.get_json()
+    print(data)
+    results = process_gaze_data_from_unity(data)
+
+    print(results)
+
+  
+
+
+
+def process_gaze_data_from_unity(gaze_data):
+    # Convert the received gaze data (which is a list of dictionaries) into a DataFrame
+    df = pd.DataFrame(gaze_data)
+
+    if df.empty:
+        print("No gaze data received.")
+        return None
+
+    # Convert TimeStamp to seconds
+    df['TimeStamp'] = pd.to_numeric(df['TimeStamp'], errors='coerce') / 1_000.0
+
+    # Ensure the DataFrame is sorted by TimeStamp
+    df = df.sort_values(by='TimeStamp')
+
+    # Total duration in seconds
+    total_duration_seconds = df['TimeStamp'].iloc[-1] - df['TimeStamp'].iloc[0]
+    print(f"Total Duration (Seconds): {total_duration_seconds}")
+
+    # Total duration in minutes
+    total_duration_minutes = total_duration_seconds / 60.0
+    print(f"Total Duration (Minutes): {total_duration_minutes}")
+
+    # Calculate FPS
+    total_frames = df.shape[0]
+    average_fps = total_frames / total_duration_seconds if total_duration_seconds > 0 else 0
+    print(f"Average FPS: {average_fps}")
+
+    # Calculate Frame Duration (difference in TimeStamp)
+    df['FrameDuration'] = df['TimeStamp'].diff().fillna(0)
+    
+    # Calculate GazeObject Duration (sum of frame durations by GazedObject)
+    df['GazeObjectDuration'] = df.groupby('GazedObject')['FrameDuration'].transform('sum')
+    
+    # Total gaze duration
+    total_gaze_duration = df['GazeObjectDuration'].sum()
+    
+    # Normalize gaze durations by object
+    normalized_durations = df.groupby('GazedObject')['GazeObjectDuration'].sum() / total_gaze_duration
+
+    result_dict = {
+        'total_duration_minutes': total_duration_minutes,
+        'column_names': df.columns.tolist(),
+        'first_rows': df.head().to_dict(),
+        'average_fps': average_fps
+    }
+
+    if 'GazedObject' in df.columns:
+        result_dict['gazed_object_column'] = df['GazedObject'].tolist()
+        result_dict['unique_gazed_objects'] = df['GazedObject'].unique().tolist()
+        gazed_object_counts = df['GazedObject'].value_counts()
+        total_count = gazed_object_counts.sum()
+        result_dict['gazed_object_ratios'] = (gazed_object_counts / total_count).to_dict()
+        gazed_object_duration = df.groupby('GazedObject')['FrameDuration'].sum().to_dict()
+        result_dict['gazed_object_durations'] = gazed_object_duration
+        result_dict['normalized_gazed_object_durations'] = normalized_durations.to_dict()
+
+    # Get head and gaze movements (additional functions must be adapted for direct data)
+    head_and_gaze_df = get_valid_head_and_gaze_movements(df)
+    result_dict['head_and_gaze_df'] = head_and_gaze_df
+
+    # Detect fixations and saccades
+    stats, eye_movement_df, eye_movement_dict = detect_fixations_and_saccades(head_and_gaze_df)
+    result_dict['eye_movement_statistics'] = stats
+    result_dict['eye_movement_df'] = eye_movement_df
+    result_dict['eye_movement_dict'] = eye_movement_dict
+
+    # Combine eye_movement_df back into the original df
+    combined_df = df.merge(
+        eye_movement_df[['TimeStamp', 'MovementType', 'EyeMovementID']],
+        on='TimeStamp',
+        how='left'
+    )
+
+    # Fill NaN values for non-matching rows
+    combined_df['MovementType'] = combined_df['MovementType'].fillna('Invalid')
+    combined_df['EyeMovementID'] = combined_df['EyeMovementID'].fillna(-1)
+
+    result_dict['combined_df'] = combined_df
+
+    # Process pupil diameter data
+    pupil_data = process_pupil_diameter_data(df)
+    result_dict['pupil_data'] = pupil_data
+
+    return result_dict
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)  # Run on localhost

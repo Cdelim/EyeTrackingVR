@@ -5,6 +5,9 @@ using System;
 using Varjo.XR;
 using UnityEngine.XR;
 using System.Linq;
+using GLTFast.Schema;
+using Camera = UnityEngine.Camera;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class GazeRayController : MonoBehaviour
 {
@@ -32,6 +35,10 @@ public class GazeRayController : MonoBehaviour
     private bool isRealTime = false;
     private int frameCounter = 0;
     private VarjoEyeTracking.GazeData gazeData;
+
+    private List<VarjoEyeTracking.GazeData> dataSinceLastUpdate;
+    private List<VarjoEyeTracking.EyeMeasurements> eyeMeasurementsSinceLastUpdate;
+
     private Vector3 rayOrigin;
     private Vector3 direction;
     private RaycastHit hit;
@@ -43,14 +50,17 @@ public class GazeRayController : MonoBehaviour
     private float fixationDurationSec;
     private List<InputDevice> devices = new List<InputDevice>();
     private InputDevice device;
-    private int maxDistance = 5;
+    private int maxDistance = 50;
     private float timer;
+    private FrameBuffer messageBuffer;
 
     private void Awake()
     {
         CSVFileReader = new CSVFileReader();
         eyeControllerData = CSVFileReader.GetCSVFileListofDic("EyeTrackData2");
-        
+        messageBuffer = new FrameBuffer();
+
+
     }
 
     private void Start()
@@ -68,10 +78,9 @@ public class GazeRayController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (device.isValid)
+        if (!device.isValid)
         {
             GetDevice();
-            isRealTime = true;
         }
     }
 
@@ -79,6 +88,11 @@ public class GazeRayController : MonoBehaviour
     {
         InputDevices.GetDevicesAtXRNode(XRNode.CenterEye, devices);
         device = devices.FirstOrDefault();
+        if(device != null)
+        {
+
+            isRealTime = true;
+        }
     }
 
     private void Update()
@@ -149,8 +163,13 @@ public class GazeRayController : MonoBehaviour
         }
         else
         {
+            head.rotation = xrCamera.transform.rotation;
+            frameCounter++;
             gazeData = VarjoEyeTracking.GetGaze();
 
+            
+            int dataCount = VarjoEyeTracking.GetGazeList(out dataSinceLastUpdate, out eyeMeasurementsSinceLastUpdate);
+           
             if (gazeData.status != VarjoEyeTracking.GazeStatus.Invalid)
             {
                 // GazeRay vectors are relative to the HMD pose so they need to be transformed to world space
@@ -221,12 +240,23 @@ public class GazeRayController : MonoBehaviour
                 string alertText = $"User lost attention. {String.Format("{0:0.00}", lastGazeObj.fixatitedTimeSec)} seconds had been focused";
                 fixationUIController.SetText(alertText);
             }
-            gazeObjects.Find(gazeObj => gazeObj.Equals(fixatedObj)).fixatitedTimeSec = 0f;
+            var obj = gazeObjects.Find(gazeObj => gazeObj.Equals(fixatedObj));
+            if(obj != null)
+                obj.fixatitedTimeSec = 0f;
             fixatedObj = null;
         }
 
+        if (frameCounter % 60 == 0)
+        {
+            ServerCommunicationManager.Instance.SendFrameBufferToServer(messageBuffer);
+            messageBuffer = new FrameBuffer();
+        }
+        messageBuffer.AddFrame(new GazeData(gazeData,fixatedObj));
+
 
     }
+
+
 
     private bool IsEnoughFocused(float treshHoldSec, float focusedTimeSec)
     {
@@ -248,6 +278,142 @@ public class GazeObject
     public int fixationThresholdSec = 0;
     public float fixatitedTimeSec = 0;
 }
+
+
+[System.Serializable]
+public class GazeData
+{
+    // Constructor to convert from VarjoEyeTracking.GazeData and VarjoEyeTracking.EyeMeasurements to custom EyeTrackingData class
+    public GazeData(VarjoEyeTracking.GazeData gazeData, GameObject fixatedObj)
+    {
+        // Mapping from GazeData struct to the required properties
+        HeadPositionX = gazeData.gaze.origin.x;
+        HeadPositionY = gazeData.gaze.origin.y;
+        HeadPositionZ = gazeData.gaze.origin.z;
+
+        HeadDirectionX = gazeData.gaze.origin.x;
+        HeadDirectionY = gazeData.gaze.origin.y;
+        HeadDirectionZ = gazeData.gaze.origin.z;
+
+        CombinedGazeForwardX = gazeData.gaze.origin.x;
+        CombinedGazeForwardY = gazeData.gaze.origin.y;
+        CombinedGazeForwardZ = gazeData.gaze.origin.z;
+
+        LeftEyeStatus = (float)gazeData.leftStatus;  // Cast enum to float
+        LeftEyePositionX = gazeData.left.origin.x;
+        LeftEyePositionY = gazeData.left.origin.y;
+        LeftEyePositionZ = gazeData.left.origin.z;
+
+        LeftGazeDirectionX = gazeData.left.origin.x;
+        LeftGazeDirectionY = gazeData.left.origin.y;
+        LeftGazeDirectionZ = gazeData.left.origin.z;
+
+        RightEyeStatus = (float)gazeData.rightStatus;  // Cast enum to float
+        RightEyePositionX = gazeData.right.origin.x;
+        RightEyePositionY = gazeData.right.origin.y;
+        RightEyePositionZ = gazeData.right.origin.z;
+
+        RightGazeDirectionX = gazeData.right.origin.x;
+        RightGazeDirectionY = gazeData.right.origin.y;
+        RightGazeDirectionZ = gazeData.right.origin.z;
+
+        // Mapping from EyeMeasurements struct to the required properties
+        FocusDistance = gazeData.focusDistance;
+        FocusStability = gazeData.focusStability;
+
+        // You can populate these from additional data sources, as they are not available in the provided structs
+        Condition = "Unknown"; // Example default value
+        Scene = "Unknown"; // Example default value
+        Task = "Unknown"; // Example default value
+        GazedObject = fixatedObj == null ? "Invalid" : fixatedObj.name; // Example default value
+        ClickedObject = "Unknown"; // Example default value
+        QuizAnswer = "Unknown"; // Example default value
+        ChatBot = "Unknown"; // Example default value
+    }
+
+    public float HeadPositionX;
+    public float HeadPositionY;
+    public float HeadPositionZ;
+    public float HeadDirectionX;
+    public float HeadDirectionY;
+    public float HeadDirectionZ;
+    public float CombinedGazeForwardX;
+    public float CombinedGazeForwardY;
+    public float CombinedGazeForwardZ;
+    public float LeftEyeStatus;
+    public float LeftEyePositionX;
+    public float LeftEyePositionY;
+    public float LeftEyePositionZ;
+    public float LeftGazeDirectionX;
+    public float LeftGazeDirectionY;
+    public float LeftGazeDirectionZ;
+    public float RightEyeStatus;
+    public float RightEyePositionX;
+    public float RightEyePositionY;
+    public float RightEyePositionZ;
+    public float RightGazeDirectionX;
+    public float RightGazeDirectionY;
+    public float RightGazeDirectionZ;
+    public float FocusDistance;
+    public float FocusStability;
+    public string Condition;
+    public string Scene;
+    public string Task;
+    public string GazedObject;
+    public string ClickedObject;
+    public string QuizAnswer;
+    public string ChatBot;
+}
+
+
+[System.Serializable]
+public class FrameBuffer
+{
+    private Queue<GazeData> frameQueue;
+    private int maxSize;
+
+    public FrameBuffer(int size = 60)
+    {
+        maxSize = size;
+        frameQueue = new Queue<GazeData>();
+    }
+
+    // Add a frame to the buffer
+    public void AddFrame(GazeData newFrame)
+    {
+        if (frameQueue.Count >= maxSize)
+        {
+            frameQueue.Dequeue();  // Remove the oldest frame if we already have 60 frames
+        }
+        frameQueue.Enqueue(newFrame);  // Add the new frame
+    }
+
+    // Get the last 'maxSize' frames
+    public List<GazeData> GetLastFrames()
+    {
+        return new List<GazeData>(frameQueue);  // Convert the queue to a list
+    }
+
+    public string SerializeToJson()
+    {
+        // Convert each GazeData object to a JSON string (list of frames)
+        return JsonUtility.ToJson(new FrameBufferWrapper(this.GetLastFrames()));
+        //return JsonUtility.ToJson(frameQueue.Dequeue());
+    }
+
+    // Wrapper class to allow serialization of a list of GazeData objects
+    [System.Serializable]
+    public class FrameBufferWrapper
+    {
+        public List<GazeData> frames;
+
+        public FrameBufferWrapper(List<GazeData> frames)
+        {
+            this.frames = frames;
+        }
+    }
+}
+
 
 
 
