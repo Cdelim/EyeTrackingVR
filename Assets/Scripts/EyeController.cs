@@ -41,7 +41,7 @@ public class EyeController : MonoBehaviour
     private void Awake()
     {
         CSVFileReader = new CSVFileReader();
-        eyeControllerData = CSVFileReader.GetCSVFileListofDic("EyeTrackData");
+        eyeControllerData = CSVFileReader.GetCSVFileListofDic("EyeTrackData2");
         isRotationStart = true;
         headInitialRotation = head.localRotation;
         leftEyeInitialRot = eyes.leftEye.localRotation;

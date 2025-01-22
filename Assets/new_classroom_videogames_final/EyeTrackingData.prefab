@@ -371,7 +371,7 @@ GameObject:
   - component: {fileID: 5442963574026025036}
   - component: {fileID: 8227737102930563141}
   m_Layer: 0
-  m_Name: EyeTracking
+  m_Name: EyeTrackingLogger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -422,7 +422,7 @@ MonoBehaviour:
   checkGazeAllowed: 280
   checkGazeCalibrated: 281
   showFixationPoint: 1
-  fixationPointTransform: {fileID: 0}
+  fixationPointTransform: {fileID: 8822539408638462500}
   leftEyeTransform: {fileID: 9191892769899621442}
   rightEyeTransform: {fileID: 6482120707540344922}
   xrCamera: {fileID: 0}
