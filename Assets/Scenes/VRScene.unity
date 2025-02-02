@@ -27674,6 +27674,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 341169723}
     - target: {fileID: 8728401324102860424, guid: 187f19c2de870415985cf5b0ef60ded6, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8728401324102860424, guid: 187f19c2de870415985cf5b0ef60ded6, type: 3}
       propertyPath: gazeObjects.Array.size
       value: 6
       objectReference: {fileID: 0}
