@@ -119,6 +119,7 @@ public class ServerCommunicationManager : MonoBehaviour
     {
         File.WriteAllLines(filePath, gazeDataLines.GetLastFrames());
         // Start the coroutine to send the data
+        filePath = "Assets/Logs/EyeTrackData.csv";
         StartCoroutine(SendCSVToServer(filePath));
     }
 

@@ -408,7 +408,7 @@ public class FrameBuffer
     {
         maxSize = size;
         gazeDataLines = new List<String>();
-        gazeDataLines.Add("Frame,TimeStamp,LogTime"+
+        gazeDataLines.Add("Frame,TimeStamp,LogTime,"+
                           "HeadDirectionX,HeadDirectionY,HeadDirectionZ," +
                           "CombinedGazeForwardX,CombinedGazeForwardY,CombinedGazeForwardZ," +
                           "LeftEyeStatus,LeftEyePositionX,LeftEyePositionY,LeftEyePositionZ," +
