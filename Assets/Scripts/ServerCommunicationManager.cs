@@ -7,16 +7,18 @@ using System.Net.Http;
 using System.Text;
 using System;
 using UnityEditor.PackageManager;
+using System.IO;
 
 public class ServerCommunicationManager : MonoBehaviour
 {
 
     public static ServerCommunicationManager Instance;
     [SerializeField] private ResultsCanvasController resultsCanvasController;
+    private string filePath;
 
 
 
-    private string serverUrl = "http://127.0.0.1:5000/CalculateValue";
+    private string serverURL = "http://127.0.0.1:5000/upload";
     private Coroutine sendRequestCr;
     //private Queue<Coroutine> sendRequestQueue;
 
@@ -31,22 +33,27 @@ public class ServerCommunicationManager : MonoBehaviour
             Instance = this;
         }
         DontDestroyOnLoad(this);
+        filePath = Path.Combine(Application.persistentDataPath, "GazeData.csv");
+
     }
 
-
-    public void SendFrameBufferToServer(FrameBuffer frameBuffer)
+    /// <summary>
+    /// Send as line of dict
+    /// </summary>
+    /// <param name="frameBuffer"></param>
+    /*public void SendFrameBufferToServer(FrameBuffer frameBuffer)
     {
         string jsonData = frameBuffer.SerializeToJson();  // Get the serialized JSON string
 
         // Start the coroutine to send the data
         StartCoroutine(SendDataToServer(jsonData));
-    }
+    }*/
 
     // Coroutine to send data to the server
     private IEnumerator SendDataToServer(string jsonData)
     {
         // Create a UnityWebRequest with a POST method
-        using (UnityWebRequest www = UnityWebRequest.PostWwwForm(serverUrl, jsonData))
+        using (UnityWebRequest www = UnityWebRequest.PostWwwForm(serverURL, jsonData))
         {
             // Set the content type to "application/json"
             www.SetRequestHeader("Content-Type", "application/json");
@@ -108,6 +115,32 @@ public class ServerCommunicationManager : MonoBehaviour
         sendRequestCr = StartCoroutine(SendDataToServerCr(buffer));
     }*/
 
+    public void SendCSVBufferToServer(FrameBuffer gazeDataLines)
+    {
+        File.WriteAllLines(filePath, gazeDataLines.GetLastFrames());
+        // Start the coroutine to send the data
+        StartCoroutine(SendCSVToServer(filePath));
+    }
 
-  
+    IEnumerator SendCSVToServer(string filePath)
+    {
+        byte[] fileData = File.ReadAllBytes(filePath);
+        WWWForm form = new WWWForm();
+        form.AddBinaryData("file", fileData, "GazeData.csv", "text/csv");
+
+        using (UnityWebRequest www = UnityWebRequest.Post(serverURL, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("File uploaded successfully: " + www.downloadHandler.text);
+            }
+            else
+            {
+                Debug.LogError("File upload failed: " + www.error);
+            }
+        }
+    }
+
 }

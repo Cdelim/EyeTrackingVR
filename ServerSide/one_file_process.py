@@ -1358,10 +1358,28 @@ except pickle.PickleError as e:
 
 app = Flask(__name__)
 
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return "No file part", 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return "No selected file", 400
+
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(file_path)
+    return f"File saved: {file_path}", 200
+
+
 @app.route('/CalculateValue', methods=['POST'])
 def calculate():
     data = request.get_json()
     print(data)
+    results = process_log_file()
     results = process_gaze_data_from_unity(data)
 
     print(results)
@@ -1370,7 +1388,7 @@ def calculate():
 
 
 
-def process_gaze_data_from_unity(gaze_data):
+"""def process_gaze_data_from_unity(gaze_data):
     # Convert the received gaze data (which is a list of dictionaries) into a DataFrame
     df = pd.DataFrame(gaze_data)
 
@@ -1454,7 +1472,7 @@ def process_gaze_data_from_unity(gaze_data):
     result_dict['pupil_data'] = pupil_data
 
     return result_dict
-
+"""
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)  # Run on localhost

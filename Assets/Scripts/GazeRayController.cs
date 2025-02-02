@@ -248,7 +248,7 @@ public class GazeRayController : MonoBehaviour
 
         if (frameCounter % 60 == 0)
         {
-            ServerCommunicationManager.Instance.SendFrameBufferToServer(messageBuffer);
+            ServerCommunicationManager.Instance.SendCSVBufferToServer(messageBuffer);
             messageBuffer = new FrameBuffer();
         }
         messageBuffer.AddFrame(new GazeData(gazeData,fixatedObj));
@@ -283,6 +283,42 @@ public class GazeObject
 [System.Serializable]
 public class GazeData
 {
+   
+    public float HeadPositionX;
+    public float HeadPositionY;
+    public float HeadPositionZ;
+    public float HeadDirectionX;
+    public float HeadDirectionY;
+    public float HeadDirectionZ;
+    public float CombinedGazeForwardX;
+    public float CombinedGazeForwardY;
+    public float CombinedGazeForwardZ;
+    public float LeftEyeStatus;
+    public float LeftEyePositionX;
+    public float LeftEyePositionY;
+    public float LeftEyePositionZ;
+    public float LeftGazeDirectionX;
+    public float LeftGazeDirectionY;
+    public float LeftGazeDirectionZ;
+    public float RightEyeStatus;
+    public float RightEyePositionX;
+    public float RightEyePositionY;
+    public float RightEyePositionZ;
+    public float RightGazeDirectionX;
+    public float RightGazeDirectionY;
+    public float RightGazeDirectionZ;
+    public float FocusDistance;
+    public float FocusStability;
+    public string Condition;
+    public string Scene;
+    public string Task;
+    public string GazedObject;
+    public string ClickedObject;
+    public string QuizAnswer;
+    public string ChatBot;
+
+
+
     // Constructor to convert from VarjoEyeTracking.GazeData and VarjoEyeTracking.EyeMeasurements to custom EyeTrackingData class
     public GazeData(VarjoEyeTracking.GazeData gazeData, GameObject fixatedObj)
     {
@@ -330,88 +366,55 @@ public class GazeData
         QuizAnswer = "Unknown"; // Example default value
         ChatBot = "Unknown"; // Example default value
     }
-
-    public float HeadPositionX;
-    public float HeadPositionY;
-    public float HeadPositionZ;
-    public float HeadDirectionX;
-    public float HeadDirectionY;
-    public float HeadDirectionZ;
-    public float CombinedGazeForwardX;
-    public float CombinedGazeForwardY;
-    public float CombinedGazeForwardZ;
-    public float LeftEyeStatus;
-    public float LeftEyePositionX;
-    public float LeftEyePositionY;
-    public float LeftEyePositionZ;
-    public float LeftGazeDirectionX;
-    public float LeftGazeDirectionY;
-    public float LeftGazeDirectionZ;
-    public float RightEyeStatus;
-    public float RightEyePositionX;
-    public float RightEyePositionY;
-    public float RightEyePositionZ;
-    public float RightGazeDirectionX;
-    public float RightGazeDirectionY;
-    public float RightGazeDirectionZ;
-    public float FocusDistance;
-    public float FocusStability;
-    public string Condition;
-    public string Scene;
-    public string Task;
-    public string GazedObject;
-    public string ClickedObject;
-    public string QuizAnswer;
-    public string ChatBot;
+    public override string ToString()
+    {
+        string line = $"{HeadPositionX},{HeadPositionY},{HeadPositionZ}," +
+              $"{HeadDirectionX},{HeadDirectionY},{HeadDirectionZ}," +
+              $"{CombinedGazeForwardX},{CombinedGazeForwardY},{CombinedGazeForwardZ}," +
+              $"{LeftEyeStatus},{LeftEyePositionX},{LeftEyePositionY},{LeftEyePositionZ}," +
+              $"{LeftGazeDirectionX},{LeftGazeDirectionY},{LeftGazeDirectionZ}," +
+              $"{RightEyeStatus},{RightEyePositionX},{RightEyePositionY},{RightEyePositionZ}," +
+              $"{RightGazeDirectionX},{RightGazeDirectionY},{RightGazeDirectionZ}," +
+              $"{FocusDistance},{FocusStability}," +
+              $"{Condition},{Scene},{Task},{GazedObject},{ClickedObject},{QuizAnswer},{ChatBot}";
+        return line;
+    }
 }
 
 
 [System.Serializable]
 public class FrameBuffer
 {
-    private Queue<GazeData> frameQueue;
+    private List<String> gazeDataLines;
     private int maxSize;
 
     public FrameBuffer(int size = 60)
     {
         maxSize = size;
-        frameQueue = new Queue<GazeData>();
+        gazeDataLines.Add("HeadPositionX,HeadPositionY,HeadPositionZ," +
+                          "HeadDirectionX,HeadDirectionY,HeadDirectionZ," +
+                          "CombinedGazeForwardX,CombinedGazeForwardY,CombinedGazeForwardZ," +
+                          "LeftEyeStatus,LeftEyePositionX,LeftEyePositionY,LeftEyePositionZ," +
+                          "LeftGazeDirectionX,LeftGazeDirectionY,LeftGazeDirectionZ," +
+                          "RightEyeStatus,RightEyePositionX,RightEyePositionY,RightEyePositionZ," +
+                          "RightGazeDirectionX,RightGazeDirectionY,RightGazeDirectionZ," +
+                          "FocusDistance,FocusStability,Condition,Scene,Task,GazedObject,ClickedObject,QuizAnswer,ChatBot");
+        gazeDataLines = new List<String>();
     }
 
     // Add a frame to the buffer
     public void AddFrame(GazeData newFrame)
     {
-        if (frameQueue.Count >= maxSize)
-        {
-            frameQueue.Dequeue();  // Remove the oldest frame if we already have 60 frames
-        }
-        frameQueue.Enqueue(newFrame);  // Add the new frame
+        gazeDataLines.Add(newFrame.ToString());  // Add the new frame
     }
 
     // Get the last 'maxSize' frames
-    public List<GazeData> GetLastFrames()
+    public List<String> GetLastFrames()
     {
-        return new List<GazeData>(frameQueue);  // Convert the queue to a list
+        return (gazeDataLines);  // Convert the queue to a list
     }
 
-    public string SerializeToJson()
-    {
-        // Convert each GazeData object to a JSON string (list of frames)
-        return JsonUtility.ToJson(new FrameBufferWrapper(this.GetLastFrames()));
-        //return JsonUtility.ToJson(frameQueue.Dequeue());
-    }
 
-    // Wrapper class to allow serialization of a list of GazeData objects
-    [System.Serializable]
-    public class FrameBufferWrapper
-    {
-        public List<GazeData> frames;
-
-        public FrameBufferWrapper(List<GazeData> frames)
-        {
-            this.frames = frames;
-        }
-    }
 }
 
 
