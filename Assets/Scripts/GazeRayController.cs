@@ -260,7 +260,7 @@ public class GazeRayController : MonoBehaviour
             ServerCommunicationManager.Instance.SendCSVBufferToServer(messageBuffer);
             messageBuffer = new FrameBuffer();
         }
-        messageBuffer.AddFrame(new GazeData(gazeData,fixatedObj));
+        messageBuffer.AddFrame(new GazeData(gazeData,fixatedObj, VarjoEyeTracking.GetEyeMeasurements(),xrCamera));
 
 
     }
@@ -371,45 +371,73 @@ public class GazeData
     }
 
     // Constructor to convert from VarjoEyeTracking.GazeData and VarjoEyeTracking.EyeMeasurements to custom EyeTrackingData class
-    public GazeData(VarjoEyeTracking.GazeData gazeData, GameObject fixatedObj)
+    public GazeData(VarjoEyeTracking.GazeData data, GameObject fixatedObj, VarjoEyeTracking.EyeMeasurements eyeMeasurements
+        , Camera xrCamera)
     {
-        this.Frame = gazeData.frameNumber;
-        this.TimeStamp = gazeData.captureTime;
-        this.LogTime = 0;
-        // Mapping from GazeData struct to the required properties
-        HeadPositionX = gazeData.gaze.origin.x;
-        HeadPositionY = gazeData.gaze.origin.y;
-        HeadPositionZ = gazeData.gaze.origin.z;
 
-        HeadDirectionX = gazeData.gaze.origin.x;
-        HeadDirectionY = gazeData.gaze.origin.y;
-        HeadDirectionZ = gazeData.gaze.origin.z;
 
-        CombinedGazeForwardX = gazeData.gaze.origin.x;
-        CombinedGazeForwardY = gazeData.gaze.origin.y;
-        CombinedGazeForwardZ = gazeData.gaze.origin.z;
+        Frame = data.frameNumber;
 
-        LeftEyeStatus = (float)gazeData.leftStatus;  // Cast enum to float
-        LeftEyePositionX = gazeData.left.origin.x;
-        LeftEyePositionY = gazeData.left.origin.y;
-        LeftEyePositionZ = gazeData.left.origin.z;
+        
+        TimeStamp = data.captureTime / 1000000;
 
-        LeftGazeDirectionX = gazeData.left.origin.x;
-        LeftGazeDirectionY = gazeData.left.origin.y;
-        LeftGazeDirectionZ = gazeData.left.origin.z;
+      
+        LogTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
-        RightEyeStatus = (float)gazeData.rightStatus;  // Cast enum to float
-        RightEyePositionX = gazeData.right.origin.x;
-        RightEyePositionY = gazeData.right.origin.y;
-        RightEyePositionZ = gazeData.right.origin.z;
+        
+        HeadPositionX = xrCamera.transform.localPosition.x;
+        HeadPositionY = xrCamera.transform.localPosition.y;
+        HeadPositionZ = xrCamera.transform.localPosition.z;
+        HeadDirectionX = xrCamera.transform.localRotation.x;
+        HeadDirectionY = xrCamera.transform.localRotation.y;
+        HeadDirectionZ = xrCamera.transform.localRotation.z;
 
-        RightGazeDirectionX = gazeData.right.origin.x;
-        RightGazeDirectionY = gazeData.right.origin.y;
-        RightGazeDirectionZ = gazeData.right.origin.z;
+        // Combined gaze
+        bool invalid = data.status == VarjoEyeTracking.GazeStatus.Invalid;
+        GazeStatus = invalid ? -1 : 1;
+        CombinedGazeForwardX = invalid ? 0 : data.gaze.forward.x;
+        CombinedGazeForwardY = invalid ? 0 : data.gaze.forward.y;
+        CombinedGazeForwardZ = invalid ? 0 : data.gaze.forward.z;
+        CombinedGazePositionX = invalid ? 0 : data.gaze.origin.x;
+        CombinedGazePositionY = invalid ? 0 : data.gaze.origin.y;
+        CombinedGazePositionZ = invalid ? 0 : data.gaze.origin.z;
 
-        // Mapping from EyeMeasurements struct to the required properties
-        FocusDistance = gazeData.focusDistance;
-        FocusStability = gazeData.focusStability;
+        // IPD
+        InterPupillaryDistanceInMM = invalid ? 0 : eyeMeasurements.interPupillaryDistanceInMM;
+
+        // Left eye
+        bool leftInvalid = data.leftStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
+        LeftEyeStatus = leftInvalid ? -1 : 1;
+        LeftGazeDirectionX = leftInvalid ? 0 : data.left.forward.x;
+        LeftGazeDirectionY = leftInvalid ? 0 : data.left.forward.y;
+        LeftGazeDirectionZ = leftInvalid ? 0 : data.left.forward.z;
+        LeftEyePositionX = leftInvalid ? 0 : data.left.origin.x;
+        LeftEyePositionY = leftInvalid ? 0 : data.left.origin.y;
+        LeftEyePositionZ = leftInvalid ? 0 : data.left.origin.z;
+        LeftPupilIrisDiameterRatio = leftInvalid ? 0 : eyeMeasurements.leftPupilIrisDiameterRatio;
+        LeftPupilDiameterInMM = leftInvalid ? 0 : eyeMeasurements.leftPupilDiameterInMM;
+        LeftIrisDiameterInMM = leftInvalid ? 0 : eyeMeasurements.leftIrisDiameterInMM;
+        LeftEyeOpenness = leftInvalid ? 0 : eyeMeasurements.leftEyeOpenness;
+
+        // Right eye
+        bool rightInvalid = data.rightStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
+        RightEyeStatus = rightInvalid ? -1 : 1;
+        RightGazeDirectionX = rightInvalid ? 0 : data.right.forward.x;
+        RightGazeDirectionY = rightInvalid ? 0 : data.right.forward.y;
+        RightGazeDirectionZ = rightInvalid ? 0 : data.right.forward.z;
+        RightEyePositionX = rightInvalid ? 0 : data.right.origin.x;
+        RightEyePositionY = rightInvalid ? 0 : data.right.origin.y;
+        RightEyePositionZ = rightInvalid ? 0 : data.right.origin.z;
+        RightPupilIrisDiameterRatio = rightInvalid ? 0 : eyeMeasurements.rightPupilIrisDiameterRatio;
+        RightPupilDiameterInMM = rightInvalid ? 0 : eyeMeasurements.rightPupilDiameterInMM;
+        RightIrisDiameterInMM = rightInvalid ? 0 : eyeMeasurements.rightIrisDiameterInMM;
+        RightEyeOpenness = rightInvalid ? 0 : eyeMeasurements.rightEyeOpenness;
+
+        // Focus
+        FocusDistance = invalid ? 0 : data.focusDistance;
+        FocusStability = invalid ? 0 : data.focusStability;
+
+        
 
         // You can populate these from additional data sources, as they are not available in the provided structs
         Condition = "Unknown"; // Example default value
@@ -423,114 +451,7 @@ public class GazeData
    
 
 
-    void LogGazeData(VarjoEyeTracking.GazeData data, VarjoEyeTracking.EyeMeasurements eyeMeasurements)
-    {
-        string[] logData = new string[49];
-
-        // Gaze data frame number
-        logData[0] = data.frameNumber.ToString();
-
-        // Gaze data capture time (nanoseconds)
-
-        logData[1] = (data.captureTime / 1000000).ToString();
-
-
-        // Log time (milliseconds)
-        logData[2] = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
-
-        // HMD
-        logData[3] = xrCamera.transform.localPosition.x.ToString("F3");
-        logData[4] = xrCamera.transform.localPosition.y.ToString("F3");
-        logData[5] = xrCamera.transform.localPosition.z.ToString("F3");
-        logData[6] = xrCamera.transform.localRotation.x.ToString("F3");
-        logData[7] = xrCamera.transform.localRotation.y.ToString("F3");
-        logData[8] = xrCamera.transform.localRotation.z.ToString("F3");
-
-        // Combined gaze
-        bool invalid = data.status == VarjoEyeTracking.GazeStatus.Invalid;
-        logData[9] = invalid ? InvalidString : ValidString;
-        logData[10] = invalid ? "" : data.gaze.forward.x.ToString("F3");
-        logData[11] = invalid ? "" : data.gaze.forward.y.ToString("F3");
-        logData[12] = invalid ? "" : data.gaze.forward.z.ToString("F3");
-        logData[13] = invalid ? "" : data.gaze.origin.x.ToString("F3");
-        logData[14] = invalid ? "" : data.gaze.origin.y.ToString("F3");
-        logData[15] = invalid ? "" : data.gaze.origin.z.ToString("F3");
-
-        // IPD
-        logData[16] = invalid ? "" : eyeMeasurements.interPupillaryDistanceInMM.ToString("F3");
-
-        // Left eye
-        bool leftInvalid = data.leftStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
-        logData[17] = leftInvalid ? InvalidString : ValidString;
-        logData[18] = leftInvalid ? "" : data.left.forward.x.ToString("F3");
-        logData[19] = leftInvalid ? "" : data.left.forward.y.ToString("F3");
-        logData[20] = leftInvalid ? "" : data.left.forward.z.ToString("F3");
-        logData[21] = leftInvalid ? "" : data.left.origin.x.ToString("F3");
-        logData[22] = leftInvalid ? "" : data.left.origin.y.ToString("F3");
-        logData[23] = leftInvalid ? "" : data.left.origin.z.ToString("F3");
-        logData[24] = leftInvalid ? "" : eyeMeasurements.leftPupilIrisDiameterRatio.ToString("F3");
-        logData[25] = leftInvalid ? "" : eyeMeasurements.leftPupilDiameterInMM.ToString("F3");
-        logData[26] = leftInvalid ? "" : eyeMeasurements.leftIrisDiameterInMM.ToString("F3");
-        logData[27] = leftInvalid ? "" : eyeMeasurements.leftEyeOpenness.ToString("F3");
-
-        // Right eye
-        bool rightInvalid = data.rightStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
-        logData[28] = rightInvalid ? InvalidString : ValidString;
-        logData[29] = rightInvalid ? "" : data.right.forward.x.ToString("F3");
-        logData[30] = rightInvalid ? "" : data.right.forward.y.ToString("F3");
-        logData[31] = rightInvalid ? "" : data.right.forward.z.ToString("F3");
-        logData[32] = rightInvalid ? "" : data.right.origin.x.ToString("F3");
-        logData[33] = rightInvalid ? "" : data.right.origin.y.ToString("F3");
-        logData[34] = rightInvalid ? "" : data.right.origin.z.ToString("F3");
-        logData[35] = rightInvalid ? "" : eyeMeasurements.rightPupilIrisDiameterRatio.ToString("F3");
-        logData[36] = rightInvalid ? "" : eyeMeasurements.rightPupilDiameterInMM.ToString("F3");
-        logData[37] = rightInvalid ? "" : eyeMeasurements.rightIrisDiameterInMM.ToString("F3");
-        logData[38] = rightInvalid ? "" : eyeMeasurements.rightEyeOpenness.ToString("F3");
-
-        // Focus
-        logData[39] = invalid ? "" : data.focusDistance.ToString();
-        logData[40] = invalid ? "" : data.focusStability.ToString();
-
-        ////C, N, W, H
-        //public string condition = "";
-        ////1,2,3,4,5
-        //public string scene = "";
-        ////1,2,3,4
-        //public int task = 0;
-
-        //public string gazedObject = "";
-        ////"" or 1
-        //public string clickedObject = "";
-
-        //public string quizAnswer = "";
-        ////1 or 0
-        //public int chatBot = 0;
-
-        //condition
-        logData[41] = invalid ? "" : condition.ToString();
-        //scene
-        logData[42] = invalid ? "" : scene;
-        //task
-        logData[43] = invalid ? "" : task.ToString();
-        //gazedObject
-        logData[44] = invalid ? "" : gazedObject;
-
-        //clickedObject
-        logData[45] = invalid ? "" : clickedObject;
-        clickedObject = "";
-
-        //quizAnswer
-        logData[46] = invalid ? "" : quizAnswer;
-        quizAnswer = "";
-        //chatBot
-        logData[47] = invalid ? "" : chatBot.ToString();
-        //Performance
-        logData[48] = performance;
-        performance = "";
-
-        Log(logData);
-    }
-
+   
 }
 
 
