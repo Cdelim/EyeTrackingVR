@@ -335,7 +335,6 @@ def process_log_file(file_path):
         rows = [line.strip().split(';') for line in lines]
         headers = rows[0]
         data = rows[1:]
-        print(rows)
         for i in range(len(data)):
             if len(data[i]) > len(headers):
                 data[i] = data[i][:-1]
@@ -346,7 +345,19 @@ def process_log_file(file_path):
             print(f"File {file_path} is empty.")
             return None
 
+        # Check if 'TimeStamp' column exists
+        if 'TimeStamp' not in df.columns:
+            print(f"The 'TimeStamp' column is missing in the file {file_path}.")
+            return None
+
+        # Convert 'TimeStamp' to numeric and handle errors
         df['TimeStamp'] = pd.to_numeric(df['TimeStamp'], errors='coerce') / 1_000.0  # Convert to seconds
+
+        # Check if 'TimeStamp' column has valid data
+        if df['TimeStamp'].isnull().all():
+            print(f"All 'TimeStamp' values are invalid in the file {file_path}.")
+            return None
+
 
         total_duration_seconds = df['TimeStamp'].iloc[-1] - df['TimeStamp'].iloc[0]
         print(f"Total Duration (Seconds): {total_duration_seconds}")
@@ -366,7 +377,8 @@ def process_log_file(file_path):
         result_dict = {}
         result_dict['total_duration_minutes'] = total_duration_minutes
         result_dict['column_names'] = df.columns.tolist()
-        result_dict['first_rows'] = df.head().to_dict()
+        result_dict['first_rows'] = df.head().to_dict(orient='records')
+
 
         if 'GazedObject' in df.columns:
             result_dict['gazed_object_column'] = df['GazedObject'].tolist()
@@ -382,7 +394,7 @@ def process_log_file(file_path):
         head_and_gaze_df = get_valid_head_and_gaze_movements(df)
         result_dict['head_and_gaze_df'] = head_and_gaze_df
 
-        stats,eye_movement_df,eye_movement_dict = detect_fixations_and_saccades(head_and_gaze_df)
+        """stats,eye_movement_df,eye_movement_dict = detect_fixations_and_saccades(head_and_gaze_df)
 
 
         result_dict['eye_movement_statistics'] = stats
@@ -403,10 +415,11 @@ def process_log_file(file_path):
 
         result_dict['combined_df'] = combined_df
 
-
+    
         # Process pupil diameter data using the new function
         pupil_data = process_pupil_diameter_data(df)
-        result_dict['pupil_data'] = pupil_data
+        
+        result_dict['pupil_data'] = pupil_data"""
 
         return result_dict
     else:
@@ -1011,7 +1024,17 @@ def interpolate_high_angular_velocities(angular_velocity, threshold=500):
     total_values = len(angular_velocity)
 
     # Calculate the percentage of changed values
-    percentage_changed = (total_changed_count / total_values) * 100
+    print(total_values)
+    print(total_changed_count)
+    if total_values != 0 and not np.isnan(total_values):
+        if not np.isnan(total_changed_count) and np.isfinite(total_values):
+            percentage_changed = (total_changed_count / total_values) * 100
+        else:
+            percentage_changed = 0  # or another default value
+    else:
+        percentage_changed = 0  # or any other fallback value
+    
+    #percentage_changed = (total_changed_count / total_values) * 100
 
     return interpolated_angular_velocity, percentage_changed
 
@@ -1376,8 +1399,22 @@ def upload_file():
     # Process the file and get the results
     results_dict = process_log_file(file_path)
 
+    if results_dict is None:
+        return "Error processing file", 400
+    
+    # Convert DataFrames in results_dict to JSON serializable formats
+    results_dict = convert_dataframes_to_json(results_dict)
+    
     return jsonify(results_dict), 200
 
+def convert_dataframes_to_json(results_dict):
+    # Convert DataFrames to JSON-serializable formats
+    for key, value in results_dict.items():
+        if isinstance(value, pd.DataFrame):
+            results_dict[key] = value.to_dict(orient='records')  # Convert DataFrame to list of dicts
+        elif isinstance(value, dict):  # Recursively check nested dictionaries
+            results_dict[key] = convert_dataframes_to_json(value)
+    return results_dict
 
 """@app.route('/CalculateValue', methods=['POST'])
 def calculate():
