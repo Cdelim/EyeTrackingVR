@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class ResultsCanvasController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]private TMPro.TextMeshProUGUI resultsText;
 
-    // Update is called once per frame
-    void Update()
+    public void SetResultsText(string txt)
     {
-        
+        resultsText.text = txt;
     }
 }

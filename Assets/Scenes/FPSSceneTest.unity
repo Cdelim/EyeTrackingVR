@@ -628,6 +628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178a460d5dd724694afad28ea3661f99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resultsText: {fileID: 438216026}
 --- !u!1001 &17493073
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27664,6 +27665,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 211009644}
+    - target: {fileID: 8082111844384115954, guid: 187f19c2de870415985cf5b0ef60ded6, type: 3}
+      propertyPath: resultsCanvasController
+      value: 
+      objectReference: {fileID: 16946039}
     - target: {fileID: 8728401324102860424, guid: 187f19c2de870415985cf5b0ef60ded6, type: 3}
       propertyPath: xrCamera
       value: 

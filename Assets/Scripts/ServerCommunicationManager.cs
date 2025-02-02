@@ -12,6 +12,7 @@ public class ServerCommunicationManager : MonoBehaviour
 {
 
     public static ServerCommunicationManager Instance;
+    [SerializeField] private ResultsCanvasController resultsCanvasController;
 
 
 
