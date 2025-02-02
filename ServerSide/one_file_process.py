@@ -335,7 +335,7 @@ def process_log_file(file_path):
         rows = [line.strip().split(';') for line in lines]
         headers = rows[0]
         data = rows[1:]
-
+        print(rows)
         for i in range(len(data)):
             if len(data[i]) > len(headers):
                 data[i] = data[i][:-1]

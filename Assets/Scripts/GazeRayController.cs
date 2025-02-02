@@ -560,8 +560,6 @@ public class FrameBuffer
             "RightPupilIrisDiameterRatio;RightPupilDiameterInMM;RightIrisDiameterInMM;" +
             "RightEyeOpenness;FocusDistance;FocusStability;" +
             "Condition;Scene;Task;GazedObject;ClickedObject;QuizAnswer;ChatBot");
-
-
     }
 
     // Add a frame to the buffer
