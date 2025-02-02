@@ -1416,18 +1416,15 @@ def convert_dataframes_to_json(results_dict):
             results_dict[key] = convert_dataframes_to_json(value)
     return results_dict
 
-"""@app.route('/CalculateValue', methods=['POST'])
-def calculate():
-    data = request.get_json()
-    print(data)
-    results = process_log_file()
-    results = process_gaze_data_from_unity(data)
+
+def localTest(file_path):
+    print(file_path)
+    results = process_log_file(file_path)
 
     print(results)
-"""
   
 
-
+localTest("ID_002_Scene__Condition_0_2024-11-05-13-01.csv")
 
 """def process_gaze_data_from_unity(gaze_data):
     # Convert the received gaze data (which is a list of dictionaries) into a DataFrame
