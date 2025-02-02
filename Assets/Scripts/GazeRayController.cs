@@ -293,34 +293,57 @@ public class GazeObject
 public class GazeData
 {
 
+    private const string ValidString = "VALID";
+    private const string InvalidString = "INVALID";
+
+
     public float Frame = 0;
     public float TimeStamp = 0;
     public float LogTime = 0;
+
     public float HeadPositionX;
     public float HeadPositionY;
     public float HeadPositionZ;
     public float HeadDirectionX;
     public float HeadDirectionY;
     public float HeadDirectionZ;
+
+    public float GazeStatus;
     public float CombinedGazeForwardX;
     public float CombinedGazeForwardY;
     public float CombinedGazeForwardZ;
+    public float CombinedGazePositionX;
+    public float CombinedGazePositionY;
+    public float CombinedGazePositionZ;
+    public float InterPupillaryDistanceInMM;
+
     public float LeftEyeStatus;
-    public float LeftEyePositionX;
-    public float LeftEyePositionY;
-    public float LeftEyePositionZ;
     public float LeftGazeDirectionX;
     public float LeftGazeDirectionY;
     public float LeftGazeDirectionZ;
+    public float LeftEyePositionX;
+    public float LeftEyePositionY;
+    public float LeftEyePositionZ;
+    public float LeftPupilIrisDiameterRatio;
+    public float LeftPupilDiameterInMM;
+    public float LeftIrisDiameterInMM;
+    public float LeftEyeOpenness;
+
     public float RightEyeStatus;
-    public float RightEyePositionX;
-    public float RightEyePositionY;
-    public float RightEyePositionZ;
     public float RightGazeDirectionX;
     public float RightGazeDirectionY;
     public float RightGazeDirectionZ;
+    public float RightEyePositionX;
+    public float RightEyePositionY;
+    public float RightEyePositionZ;
+    public float RightPupilIrisDiameterRatio;
+    public float RightPupilDiameterInMM;
+    public float RightIrisDiameterInMM;
+    public float RightEyeOpenness;
+
     public float FocusDistance;
     public float FocusStability;
+
     public string Condition;
     public string Scene;
     public string Task;
@@ -329,7 +352,23 @@ public class GazeData
     public string QuizAnswer;
     public string ChatBot;
 
-
+    public override string ToString()
+    {
+        return $"{Frame};{TimeStamp};{LogTime};" +
+               $"{HeadPositionX};{HeadPositionY};{HeadPositionZ};" +
+               $"{HeadDirectionX};{HeadDirectionY};{HeadDirectionZ};" +
+               $"{GazeStatus};{CombinedGazeForwardX};{CombinedGazeForwardY};{CombinedGazeForwardZ};" +
+               $"{CombinedGazePositionX};{CombinedGazePositionY};{CombinedGazePositionZ};" +
+               $"{InterPupillaryDistanceInMM};" +
+               $"{LeftEyeStatus};{LeftGazeDirectionX};{LeftGazeDirectionY};{LeftGazeDirectionZ};" +
+               $"{LeftEyePositionX};{LeftEyePositionY};{LeftEyePositionZ};" +
+               $"{LeftPupilIrisDiameterRatio};{LeftPupilDiameterInMM};{LeftIrisDiameterInMM};{LeftEyeOpenness};" +
+               $"{RightEyeStatus};{RightGazeDirectionX};{RightGazeDirectionY};{RightGazeDirectionZ};" +
+               $"{RightEyePositionX};{RightEyePositionY};{RightEyePositionZ};" +
+               $"{RightPupilIrisDiameterRatio};{RightPupilDiameterInMM};{RightIrisDiameterInMM};{RightEyeOpenness};" +
+               $"{FocusDistance};{FocusStability};" +
+               $"{Condition};{Scene};{Task};{GazedObject};{ClickedObject};{QuizAnswer};{ChatBot}";
+    }
 
     // Constructor to convert from VarjoEyeTracking.GazeData and VarjoEyeTracking.EyeMeasurements to custom EyeTrackingData class
     public GazeData(VarjoEyeTracking.GazeData gazeData, GameObject fixatedObj)
@@ -381,20 +420,117 @@ public class GazeData
         QuizAnswer = "Unknown"; // Example default value
         ChatBot = "Unknown"; // Example default value
     }
-    public override string ToString()
+   
+
+
+    void LogGazeData(VarjoEyeTracking.GazeData data, VarjoEyeTracking.EyeMeasurements eyeMeasurements)
     {
-        string line = $"{Frame},{TimeStamp},{LogTime}," +
-            $"{HeadPositionX},{HeadPositionY},{HeadPositionZ}," +
-              $"{HeadDirectionX},{HeadDirectionY},{HeadDirectionZ}," +
-              $"{CombinedGazeForwardX},{CombinedGazeForwardY},{CombinedGazeForwardZ}," +
-              $"{LeftEyeStatus},{LeftEyePositionX},{LeftEyePositionY},{LeftEyePositionZ}," +
-              $"{LeftGazeDirectionX},{LeftGazeDirectionY},{LeftGazeDirectionZ}," +
-              $"{RightEyeStatus},{RightEyePositionX},{RightEyePositionY},{RightEyePositionZ}," +
-              $"{RightGazeDirectionX},{RightGazeDirectionY},{RightGazeDirectionZ}," +
-              $"{FocusDistance},{FocusStability}," +
-              $"{Condition},{Scene},{Task},{GazedObject},{ClickedObject},{QuizAnswer},{ChatBot}";
-        return line;
+        string[] logData = new string[49];
+
+        // Gaze data frame number
+        logData[0] = data.frameNumber.ToString();
+
+        // Gaze data capture time (nanoseconds)
+
+        logData[1] = (data.captureTime / 1000000).ToString();
+
+
+        // Log time (milliseconds)
+        logData[2] = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
+
+        // HMD
+        logData[3] = xrCamera.transform.localPosition.x.ToString("F3");
+        logData[4] = xrCamera.transform.localPosition.y.ToString("F3");
+        logData[5] = xrCamera.transform.localPosition.z.ToString("F3");
+        logData[6] = xrCamera.transform.localRotation.x.ToString("F3");
+        logData[7] = xrCamera.transform.localRotation.y.ToString("F3");
+        logData[8] = xrCamera.transform.localRotation.z.ToString("F3");
+
+        // Combined gaze
+        bool invalid = data.status == VarjoEyeTracking.GazeStatus.Invalid;
+        logData[9] = invalid ? InvalidString : ValidString;
+        logData[10] = invalid ? "" : data.gaze.forward.x.ToString("F3");
+        logData[11] = invalid ? "" : data.gaze.forward.y.ToString("F3");
+        logData[12] = invalid ? "" : data.gaze.forward.z.ToString("F3");
+        logData[13] = invalid ? "" : data.gaze.origin.x.ToString("F3");
+        logData[14] = invalid ? "" : data.gaze.origin.y.ToString("F3");
+        logData[15] = invalid ? "" : data.gaze.origin.z.ToString("F3");
+
+        // IPD
+        logData[16] = invalid ? "" : eyeMeasurements.interPupillaryDistanceInMM.ToString("F3");
+
+        // Left eye
+        bool leftInvalid = data.leftStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
+        logData[17] = leftInvalid ? InvalidString : ValidString;
+        logData[18] = leftInvalid ? "" : data.left.forward.x.ToString("F3");
+        logData[19] = leftInvalid ? "" : data.left.forward.y.ToString("F3");
+        logData[20] = leftInvalid ? "" : data.left.forward.z.ToString("F3");
+        logData[21] = leftInvalid ? "" : data.left.origin.x.ToString("F3");
+        logData[22] = leftInvalid ? "" : data.left.origin.y.ToString("F3");
+        logData[23] = leftInvalid ? "" : data.left.origin.z.ToString("F3");
+        logData[24] = leftInvalid ? "" : eyeMeasurements.leftPupilIrisDiameterRatio.ToString("F3");
+        logData[25] = leftInvalid ? "" : eyeMeasurements.leftPupilDiameterInMM.ToString("F3");
+        logData[26] = leftInvalid ? "" : eyeMeasurements.leftIrisDiameterInMM.ToString("F3");
+        logData[27] = leftInvalid ? "" : eyeMeasurements.leftEyeOpenness.ToString("F3");
+
+        // Right eye
+        bool rightInvalid = data.rightStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
+        logData[28] = rightInvalid ? InvalidString : ValidString;
+        logData[29] = rightInvalid ? "" : data.right.forward.x.ToString("F3");
+        logData[30] = rightInvalid ? "" : data.right.forward.y.ToString("F3");
+        logData[31] = rightInvalid ? "" : data.right.forward.z.ToString("F3");
+        logData[32] = rightInvalid ? "" : data.right.origin.x.ToString("F3");
+        logData[33] = rightInvalid ? "" : data.right.origin.y.ToString("F3");
+        logData[34] = rightInvalid ? "" : data.right.origin.z.ToString("F3");
+        logData[35] = rightInvalid ? "" : eyeMeasurements.rightPupilIrisDiameterRatio.ToString("F3");
+        logData[36] = rightInvalid ? "" : eyeMeasurements.rightPupilDiameterInMM.ToString("F3");
+        logData[37] = rightInvalid ? "" : eyeMeasurements.rightIrisDiameterInMM.ToString("F3");
+        logData[38] = rightInvalid ? "" : eyeMeasurements.rightEyeOpenness.ToString("F3");
+
+        // Focus
+        logData[39] = invalid ? "" : data.focusDistance.ToString();
+        logData[40] = invalid ? "" : data.focusStability.ToString();
+
+        ////C, N, W, H
+        //public string condition = "";
+        ////1,2,3,4,5
+        //public string scene = "";
+        ////1,2,3,4
+        //public int task = 0;
+
+        //public string gazedObject = "";
+        ////"" or 1
+        //public string clickedObject = "";
+
+        //public string quizAnswer = "";
+        ////1 or 0
+        //public int chatBot = 0;
+
+        //condition
+        logData[41] = invalid ? "" : condition.ToString();
+        //scene
+        logData[42] = invalid ? "" : scene;
+        //task
+        logData[43] = invalid ? "" : task.ToString();
+        //gazedObject
+        logData[44] = invalid ? "" : gazedObject;
+
+        //clickedObject
+        logData[45] = invalid ? "" : clickedObject;
+        clickedObject = "";
+
+        //quizAnswer
+        logData[46] = invalid ? "" : quizAnswer;
+        quizAnswer = "";
+        //chatBot
+        logData[47] = invalid ? "" : chatBot.ToString();
+        //Performance
+        logData[48] = performance;
+        performance = "";
+
+        Log(logData);
     }
+
 }
 
 
@@ -408,15 +544,24 @@ public class FrameBuffer
     {
         maxSize = size;
         gazeDataLines = new List<String>();
-        gazeDataLines.Add("Frame,TimeStamp,LogTime"+
-                          "HeadDirectionX,HeadDirectionY,HeadDirectionZ," +
-                          "CombinedGazeForwardX,CombinedGazeForwardY,CombinedGazeForwardZ," +
-                          "LeftEyeStatus,LeftEyePositionX,LeftEyePositionY,LeftEyePositionZ," +
-                          "LeftGazeDirectionX,LeftGazeDirectionY,LeftGazeDirectionZ," +
-                          "RightEyeStatus,RightEyePositionX,RightEyePositionY,RightEyePositionZ," +
-                          "RightGazeDirectionX,RightGazeDirectionY,RightGazeDirectionZ," +
-                          "FocusDistance,FocusStability,Condition,Scene,Task,GazedObject,ClickedObject,QuizAnswer,ChatBot");
-        
+        gazeDataLines.Add("Frame;TimeStamp;LogTime;" +
+            "HeadPositionX;HeadPositionY;HeadPositionZ;" +
+            "HeadDirectionX;HeadDirectionY;HeadDirectionZ;" +
+            "GazeStatus;CombinedGazeForwardX;CombinedGazeForwardY;" +
+            "CombinedGazeForwardZ;CombinedGazePositionX;CombinedGazePositionY;CombinedGazePositionZ;" +
+            "InterPupillaryDistanceInMM;LeftEyeStatus;" +
+            "LeftGazeDirectionX;LeftGazeDirectionY;LeftGazeDirectionZ;" +
+            "LeftEyePositionX;LeftEyePositionY;LeftEyePositionZ;" +
+            "LeftPupilIrisDiameterRatio;LeftPupilDiameterInMM;" +
+            "LeftIrisDiameterInMM;LeftEyeOpenness;" +
+            "RightEyeStatus;" +
+            "RightGazeDirectionX;RightGazeDirectionY;RightGazeDirectionZ;" +
+            "RightEyePositionX;RightEyePositionY;RightEyePositionZ;" +
+            "RightPupilIrisDiameterRatio;RightPupilDiameterInMM;RightIrisDiameterInMM;" +
+            "RightEyeOpenness;FocusDistance;FocusStability;" +
+            "Condition;Scene;Task;GazedObject;ClickedObject;QuizAnswer;ChatBot");
+
+
     }
 
     // Add a frame to the buffer
