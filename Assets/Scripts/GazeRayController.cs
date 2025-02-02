@@ -283,7 +283,10 @@ public class GazeObject
 [System.Serializable]
 public class GazeData
 {
-   
+
+    public float Frame = 0;
+    public float TimeStamp = 0;
+    public float LogTime = 0;
     public float HeadPositionX;
     public float HeadPositionY;
     public float HeadPositionZ;
@@ -322,6 +325,9 @@ public class GazeData
     // Constructor to convert from VarjoEyeTracking.GazeData and VarjoEyeTracking.EyeMeasurements to custom EyeTrackingData class
     public GazeData(VarjoEyeTracking.GazeData gazeData, GameObject fixatedObj)
     {
+        this.Frame = gazeData.frameNumber;
+        this.TimeStamp = gazeData.captureTime;
+        this.LogTime = 0;
         // Mapping from GazeData struct to the required properties
         HeadPositionX = gazeData.gaze.origin.x;
         HeadPositionY = gazeData.gaze.origin.y;
@@ -368,7 +374,8 @@ public class GazeData
     }
     public override string ToString()
     {
-        string line = $"{HeadPositionX},{HeadPositionY},{HeadPositionZ}," +
+        string line = $"{Frame},{TimeStamp},{LogTime}," +
+            $"{HeadPositionX},{HeadPositionY},{HeadPositionZ}," +
               $"{HeadDirectionX},{HeadDirectionY},{HeadDirectionZ}," +
               $"{CombinedGazeForwardX},{CombinedGazeForwardY},{CombinedGazeForwardZ}," +
               $"{LeftEyeStatus},{LeftEyePositionX},{LeftEyePositionY},{LeftEyePositionZ}," +
@@ -391,7 +398,8 @@ public class FrameBuffer
     public FrameBuffer(int size = 60)
     {
         maxSize = size;
-        gazeDataLines.Add("HeadPositionX,HeadPositionY,HeadPositionZ," +
+        gazeDataLines.Add("Frame,TimeStamp,LogTime"+
+                          "HeadPositionX,HeadPositionY,HeadPositionZ," +
                           "HeadDirectionX,HeadDirectionY,HeadDirectionZ," +
                           "CombinedGazeForwardX,CombinedGazeForwardY,CombinedGazeForwardZ," +
                           "LeftEyeStatus,LeftEyePositionX,LeftEyePositionY,LeftEyePositionZ," +
