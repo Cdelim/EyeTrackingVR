@@ -1372,10 +1372,14 @@ def upload_file():
 
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
-    return f"File saved: {file_path}", 200
+
+    # Process the file and get the results
+    results_dict = process_log_file(file_path)
+
+    return jsonify(results_dict), 200
 
 
-@app.route('/CalculateValue', methods=['POST'])
+"""@app.route('/CalculateValue', methods=['POST'])
 def calculate():
     data = request.get_json()
     print(data)
@@ -1383,7 +1387,7 @@ def calculate():
     results = process_gaze_data_from_unity(data)
 
     print(results)
-
+"""
   
 
 

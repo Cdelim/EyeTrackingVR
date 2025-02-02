@@ -8,6 +8,7 @@ using System.Linq;
 using GLTFast.Schema;
 using Camera = UnityEngine.Camera;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+using UnityEngine.UI;
 
 public class GazeRayController : MonoBehaviour
 {
@@ -70,9 +71,17 @@ public class GazeRayController : MonoBehaviour
 
     private void SetGazeObjLayers()
     {
+
         foreach (var gazeObj in gazeObjects)
         {
-            gazeObj.obj.layer = gazeHitLayer;
+            if (gazeHitLayer.value == 0)
+            {
+                Debug.LogWarning("Mask is empty. Assigning default layer.");
+            }
+            else
+            {
+                gazeObj.obj.layer = Mathf.RoundToInt(Mathf.Log(gazeHitLayer.value, 2));
+            }
         }
     }
 
@@ -91,7 +100,7 @@ public class GazeRayController : MonoBehaviour
         if(device != null)
         {
 
-            isRealTime = true;
+            isRealTime = device.isValid;
         }
     }
 
@@ -398,8 +407,8 @@ public class FrameBuffer
     public FrameBuffer(int size = 60)
     {
         maxSize = size;
+        gazeDataLines = new List<String>();
         gazeDataLines.Add("Frame,TimeStamp,LogTime"+
-                          "HeadPositionX,HeadPositionY,HeadPositionZ," +
                           "HeadDirectionX,HeadDirectionY,HeadDirectionZ," +
                           "CombinedGazeForwardX,CombinedGazeForwardY,CombinedGazeForwardZ," +
                           "LeftEyeStatus,LeftEyePositionX,LeftEyePositionY,LeftEyePositionZ," +
@@ -407,7 +416,7 @@ public class FrameBuffer
                           "RightEyeStatus,RightEyePositionX,RightEyePositionY,RightEyePositionZ," +
                           "RightGazeDirectionX,RightGazeDirectionY,RightGazeDirectionZ," +
                           "FocusDistance,FocusStability,Condition,Scene,Task,GazedObject,ClickedObject,QuizAnswer,ChatBot");
-        gazeDataLines = new List<String>();
+        
     }
 
     // Add a frame to the buffer

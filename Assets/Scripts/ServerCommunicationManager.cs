@@ -132,15 +132,60 @@ public class ServerCommunicationManager : MonoBehaviour
         {
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.Success)
+            if (www.result != UnityWebRequest.Result.Success)
             {
-                Debug.Log("File uploaded successfully: " + www.downloadHandler.text);
+                Debug.LogError("Error: " + www.error);
             }
             else
             {
-                Debug.LogError("File upload failed: " + www.error);
+                string jsonResponse = www.downloadHandler.text;
+                Debug.Log("Response from server: " + jsonResponse);
+                ProcessServerResponse(jsonResponse);
             }
         }
     }
 
+    void ProcessServerResponse(string jsonResponse)
+    {
+        ServerResponse response = JsonUtility.FromJson<ServerResponse>(jsonResponse);
+
+        string formattedText =
+            $"Total Duration: {response.total_duration_minutes} min\n" +
+            $"Average FPS: {response.average_fps}\n\n" +
+            $"Columns: {string.Join(", ", response.column_names)}\n\n" +
+            $"Gazed Objects: {string.Join(", ", response.unique_gazed_objects)}\n\n" +
+            $"Head & Gaze Data: {response.head_and_gaze_df}\n\n" +
+            $"Eye Movement Statistics: {response.eye_movement_statistics}\n\n" +
+            $"Combined Data: {response.combined_df}\n\n" +
+            $"Pupil Data: {response.pupil_data}";
+
+        resultsCanvasController.SetResultsText(formattedText);
+    }
+
 }
+
+
+[System.Serializable]
+public class ServerResponse
+{
+    public float total_duration_minutes;
+    public string[] column_names;
+    public string first_rows;
+
+    public string[] gazed_object_column;
+    public string[] unique_gazed_objects;
+    public Dictionary<string, string> gazed_object_ratios;
+    public Dictionary<string, string> gazed_object_durations;
+    public Dictionary<string, string> normalized_gazed_object_durations;
+
+    public float average_fps;
+    public string head_and_gaze_df;
+
+    public string eye_movement_statistics;
+    public string eye_movement_df;
+    public string eye_movement_dict;
+
+    public string combined_df;
+    public string pupil_data;
+}
+
