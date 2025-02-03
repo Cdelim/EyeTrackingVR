@@ -114,11 +114,13 @@ def process_pupil_diameter_data(df):
 
     # Extract pupil diameter data
     pupil_df = get_pupil_diameter_data(df)
-
+    pupil_df.fillna(value=0)
     # Step 1: Smooth Pupil Diameter Data
     window_length = WINDOW_LENGTH  # Example window length for smoothing
     polyorder = POLYORDER  # Example polynomial order for smoothing
-    pupil_df['SmoothedPupilDiameter'] = savgol_filter(pupil_df['AvgPupilDiameter'], window_length, polyorder)
+    pupil_df['SmoothedPupilDiameter'] = savgol_filter(pupil_df['AvgPupilDiameter'], window_length, polyorder,
+                                                      0, 1.0,
+                                                    -1, 'nearest', 0.0)
 
     # Step 2: Baseline Correction (Subtractive)
     baseline_duration = BASELINE_DURATION  # in seconds
@@ -394,7 +396,7 @@ def process_log_file(file_path):
         head_and_gaze_df = get_valid_head_and_gaze_movements(df)
         result_dict['head_and_gaze_df'] = head_and_gaze_df
 
-        """stats,eye_movement_df,eye_movement_dict = detect_fixations_and_saccades(head_and_gaze_df)
+        stats,eye_movement_df,eye_movement_dict = detect_fixations_and_saccades(head_and_gaze_df)
 
 
         result_dict['eye_movement_statistics'] = stats
@@ -419,7 +421,7 @@ def process_log_file(file_path):
         # Process pupil diameter data using the new function
         pupil_data = process_pupil_diameter_data(df)
         
-        result_dict['pupil_data'] = pupil_data"""
+        result_dict['pupil_data'] = pupil_data
 
         return result_dict
     else:
@@ -1416,15 +1418,89 @@ def convert_dataframes_to_json(results_dict):
             results_dict[key] = convert_dataframes_to_json(value)
     return results_dict
 
+import pandas as pd
+import numpy as np
 
-def localTest(file_path):
+# Constants for fixation detection
+FIXATION_THRESHOLD = 100  # milliseconds
+SACCADE_VELOCITY_THRESHOLD = 30  # degrees per second
+COGNITIVE_OVERLOAD_THRESHOLD = 3  # Example threshold for overload
+
+def load_eye_tracking_data(file_path):
+    """Load and preprocess eye-tracking data."""
+    df = pd.read_csv(file_path, delimiter=';', low_memory=False)
+    df = df.dropna()  # Remove missing data
+    df['TimeStamp'] = pd.to_numeric(df['TimeStamp'], errors='coerce')
+    df = df.sort_values(by='TimeStamp').reset_index(drop=True)
+    return df
+
+def detect_fixations_and_saccades(df):
+    """Detect fixations and saccades based on gaze stability."""
+    fixations = []
+    saccades = []
+    current_fixation = []
+    
+    for i in range(1, len(df)):
+        time_diff = df['TimeStamp'].iloc[i] - df['TimeStamp'].iloc[i-1]
+        gaze_diff = np.linalg.norm(df[['CombinedGazePositionX', 'CombinedGazePositionY', 'CombinedGazePositionZ']].iloc[i] -
+                                   df[['CombinedGazePositionX', 'CombinedGazePositionY', 'CombinedGazePositionZ']].iloc[i-1])
+        
+        if gaze_diff < 0.01:  # Considered a fixation if small movement
+            current_fixation.append(df.iloc[i])
+        else:
+            if len(current_fixation) > 0:
+                fixations.append(current_fixation)
+                current_fixation = []
+            saccades.append(df.iloc[i])
+    
+    fixation_ratio = len(fixations) / (len(fixations) + len(saccades) + 1e-6)
+    saccade_ratio = len(saccades) / (len(fixations) + len(saccades) + 1e-6)
+    return fixations, saccades, fixation_ratio, saccade_ratio
+
+def detect_distraction(df, fixation_threshold=FIXATION_THRESHOLD):
+    """Detect when a user looks away from the blackboard."""
+    blackboard_fixations = df[df['GazedObject'] == 'Blackboard']
+    distraction_count = 0
+    
+    for i in range(1, len(blackboard_fixations)):
+        time_diff = blackboard_fixations['TimeStamp'].iloc[i] - blackboard_fixations['TimeStamp'].iloc[i-1]
+        if time_diff < fixation_threshold:
+            distraction_count += 1
+    
+    return distraction_count > 3  # Signal distraction if repeated quick lookaways
+
+def cognitive_overload_detection(fixations):
+    """Detect cognitive overload based on fixation duration and frequency."""
+    fixation_durations = [len(fix) for fix in fixations]
+    overload = any(duration > COGNITIVE_OVERLOAD_THRESHOLD for duration in fixation_durations)
+    return overload
+
+def process_eye_tracking_data(file_path):
+    """Main function to process eye-tracking data."""
+    df = load_eye_tracking_data(file_path)
+    fixations, saccades, fixation_ratio, saccade_ratio = detect_fixations_and_saccades(df)
+    distraction_detected = detect_distraction(df)
+    overload_detected = cognitive_overload_detection(fixations)
+    
+    return {
+        'Fixation Ratio': fixation_ratio,
+        'Saccade Ratio': saccade_ratio,
+        'Distraction Detected': distraction_detected,
+        'Cognitive Overload': overload_detected
+    }
+
+# Example usage
+file_path = 'ID_002_Scene__Condition_0_2024-11-05-13-01.csv'
+results = process_eye_tracking_data(file_path)
+print(results)
+
+
+"""def localTest(file_path):
     print(file_path)
     results = process_log_file(file_path)
 
     print(results)
-  
-
-localTest("ID_002_Scene__Condition_0_2024-11-05-13-01.csv")
+localTest("ID_002_Scene__Condition_0_2024-11-05-13-01.csv")"""
 
 """def process_gaze_data_from_unity(gaze_data):
     # Convert the received gaze data (which is a list of dictionaries) into a DataFrame

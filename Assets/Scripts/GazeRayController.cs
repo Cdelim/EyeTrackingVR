@@ -58,7 +58,7 @@ public class GazeRayController : MonoBehaviour
     private void Awake()
     {
         CSVFileReader = new CSVFileReader();
-        eyeControllerData = CSVFileReader.GetCSVFileListofDic("EyeTrackData2");
+        eyeControllerData = CSVFileReader.GetCSVFileListofDic("ID_002_Scene__Condition_0_2024-11-05-13-01");
         messageBuffer = new FrameBuffer();
 
 
@@ -255,7 +255,7 @@ public class GazeRayController : MonoBehaviour
             fixatedObj = null;
         }
 
-        if (frameCounter % 60 == 0)
+        if (frameCounter % 240 == 0)
         {
             ServerCommunicationManager.Instance.SendCSVBufferToServer(messageBuffer);
             messageBuffer = new FrameBuffer();
