@@ -13,6 +13,7 @@ public class ServerCommunicationManager : MonoBehaviour
 {
 
     public static ServerCommunicationManager Instance;
+    public string userId = "user_1";
     [SerializeField] private ResultsCanvasController resultsCanvasController;
     private string filePath;
 
@@ -34,86 +35,30 @@ public class ServerCommunicationManager : MonoBehaviour
         }
         DontDestroyOnLoad(this);
         filePath = Path.Combine(Application.persistentDataPath, "GazeData.csv");
+        StartCoroutine(StartSession());
 
     }
 
-    /// <summary>
-    /// Send as line of dict
-    /// </summary>
-    /// <param name="frameBuffer"></param>
-    /*public void SendFrameBufferToServer(FrameBuffer frameBuffer)
+    // Start the session by sending a POST request to /start_session
+    IEnumerator StartSession()
     {
-        string jsonData = frameBuffer.SerializeToJson();  // Get the serialized JSON string
+        WWWForm form = new WWWForm();
+        form.AddField("user_id", userId);
 
-        // Start the coroutine to send the data
-        StartCoroutine(SendDataToServer(jsonData));
-    }*/
-
-    // Coroutine to send data to the server
-    private IEnumerator SendDataToServer(string jsonData)
-    {
-        // Create a UnityWebRequest with a POST method
-        using (UnityWebRequest www = UnityWebRequest.PostWwwForm(serverURL, jsonData))
+        using (UnityWebRequest www = UnityWebRequest.Post(serverURL + "/start_session", form))
         {
-            // Set the content type to "application/json"
-            www.SetRequestHeader("Content-Type", "application/json");
-
-            // Convert the JSON string to a byte array and send it
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
-            www.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            www.downloadHandler = new DownloadHandlerBuffer();
-
-            // Wait for the response from the server
             yield return www.SendWebRequest();
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("Data sent successfully to Python server");
+                Debug.Log("Session started: " + www.downloadHandler.text);
             }
             else
             {
-                Debug.Log("Error sending data to server: " + www.error);
+                Debug.LogError("Session start failed: " + www.error);
             }
         }
     }
-
-    /*private IEnumerator SendDataToServerCr(FrameBuffer buffer)
-    {
-        // Prepare data
-        string jsonData = JsonUtility.ToJson(buffer);
-
-        // Send POST request
-        UnityWebRequest request = new UnityWebRequest("http://127.0.0.1:5000/CalculateValue", "POST");
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            // Parse the response
-            string responseText = request.downloadHandler.text;
-            //int result = JsonUtility.FromJson<CalculationResult>(responseText);
-            //Debug.Log("Result from server: " + result.result);
-        }
-        else
-        {
-            Debug.LogError("Server error: " + request.error);
-        }
-    }
-
-
-
-    public void SendDataToServer(FrameBuffer buffer)
-    {
-        if (sendRequestCr != null)
-        {
-            StopCoroutine(sendRequestCr);
-        }
-        sendRequestCr = StartCoroutine(SendDataToServerCr(buffer));
-    }*/
 
     public void SendCSVBufferToServer(FrameBuffer gazeDataLines)
     {

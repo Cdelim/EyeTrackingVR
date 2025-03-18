@@ -6,7 +6,9 @@ import json
 from scipy.signal import savgol_filter
 import matplotlib.pyplot as plt
 import pickle
-from flask import Flask, request, jsonify
+from flask import Flask, request, session, jsonify
+from werkzeug.utils import secure_filename
+from datetime import timedelta
 
 
 
@@ -1040,8 +1042,9 @@ def interpolate_high_angular_velocities(angular_velocity, threshold=500):
 
     return interpolated_angular_velocity, percentage_changed
 
+# Calculate gaze and head angular velocities
 def detect_fixations_and_saccades(valid_head_gaze_df):
-    # Calculate gaze and head angular velocities
+    
 
     gaze_vectors = calculate_gaze_vectors(valid_head_gaze_df)
     _, gaze_angular_velocity = calculate_angles_and_angular_velocity(gaze_vectors, valid_head_gaze_df['TimeStamp'])
@@ -1383,17 +1386,45 @@ except pickle.PickleError as e:
 
 app = Flask(__name__)
 
+
+app.secret_key = 'your_secret_key'  # Used for sessions
+app.config['UPLOAD_FOLDER'] = 'uploads'  # Folder to store uploaded files
+app.config['ALLOWED_EXTENSIONS'] = {'csv'}  # Allowed file types
+app.config['SESSION_PERMANENT'] = False
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)  # Session timeout
+
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+
+# Function to check allowed file types
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+@app.route('/start_session', methods=['POST'])
+def start_session():
+    """Start a session for the user."""
+    session['user_id'] = request.json.get('user_id', 'default_user')  # Assign a user ID from request
+    return jsonify({'message': 'Session started', 'user_id': session['user_id']}), 200
+
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
+
+     """Handle file upload for the authenticated user."""
+    if 'user_id' not in session:
+        return jsonify({'error': 'User not authenticated'}), 400
+
+    user_id = session['user_id']
+    file = request.files.get('file')
+
+    if not file or not allowed_file(file.filename):
+        return jsonify({'error': 'Invalid file or no file provided'}), 400
+
     if 'file' not in request.files:
         return "No file part", 400
-
-    file = request.files['file']
-    if file.filename == '':
-        return "No selected file", 400
 
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
@@ -1409,6 +1440,13 @@ def upload_file():
     
     return jsonify(results_dict), 200
 
+@app.route('/logout', methods=['POST'])
+def logout():
+    """Log out the user and clear session."""
+    session.pop('user_id', None)
+    return jsonify({'message': 'User logged out'}), 200
+
+
 def convert_dataframes_to_json(results_dict):
     # Convert DataFrames to JSON-serializable formats
     for key, value in results_dict.items():
@@ -1417,6 +1455,8 @@ def convert_dataframes_to_json(results_dict):
         elif isinstance(value, dict):  # Recursively check nested dictionaries
             results_dict[key] = convert_dataframes_to_json(value)
     return results_dict
+
+
 
 import pandas as pd
 import numpy as np
