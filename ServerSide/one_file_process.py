@@ -265,7 +265,6 @@ def parse_filename(filename):
 
 def get_valid_head_and_gaze_movements(df):
     # Extract the relevant columns for head and gaze movements
-
     valid_gaze_df= df[df['GazeStatus']=='VALID']
 
     head_and_gaze_columns = [
@@ -274,10 +273,10 @@ def get_valid_head_and_gaze_movements(df):
         'CombinedGazeForwardX', 'CombinedGazeForwardY', 'CombinedGazeForwardZ',
         'CombinedGazePositionX', 'CombinedGazePositionY', 'CombinedGazePositionZ'
     ]
-
+    
     # Select the relevant columns and convert them to float, except 'GazeStatus'
     valid_gaze_df = valid_gaze_df[head_and_gaze_columns].apply(lambda x: pd.to_numeric(x, errors='coerce') if x.name != 'GazeStatus' else x)
-
+    print(valid_gaze_df.dtypes)
     return valid_gaze_df
 
 
@@ -356,7 +355,10 @@ def process_log_file(file_path):
 
         # Convert 'TimeStamp' to numeric and handle errors
         df['TimeStamp'] = pd.to_numeric(df['TimeStamp'], errors='coerce') / 1_000.0  # Convert to seconds
-
+        non_digit_columns = ['GazeStatus', 'Condition', 'Scene', 'Task', 'GazedObject', 'ClickedObject', 'QuizAnswer', 'ChatBot']
+        # Apply conversion only to columns that are not in non_digit_columns
+        df = df.apply(lambda col: col.astype(str).str.replace(',', '.', regex=False).apply(pd.to_numeric, errors='coerce') if col.name not in non_digit_columns else col)
+        
         # Check if 'TimeStamp' column has valid data
         if df['TimeStamp'].isnull().all():
             print(f"All 'TimeStamp' values are invalid in the file {file_path}.")
@@ -398,6 +400,7 @@ def process_log_file(file_path):
         head_and_gaze_df = get_valid_head_and_gaze_movements(df)
         result_dict['head_and_gaze_df'] = head_and_gaze_df
 
+    
         stats,eye_movement_df,eye_movement_dict = detect_fixations_and_saccades(head_and_gaze_df)
 
 
@@ -405,14 +408,12 @@ def process_log_file(file_path):
         result_dict['eye_movement_df'] = eye_movement_df
         result_dict['eye_movement_dict'] = eye_movement_dict
 
-
         # Combine eye_movement_df back into the original df
         combined_df = df.merge(
             eye_movement_df[['TimeStamp', 'MovementType', 'EyeMovementID']],
             on='TimeStamp',
             how='left'
         )
-
         # Fill NaN values in the combined DataFrame for non-matching rows
         combined_df['MovementType'] = combined_df['MovementType'].fillna('Invalid')
         combined_df['EyeMovementID'] = combined_df['EyeMovementID'].fillna(-1)
@@ -1045,7 +1046,6 @@ def interpolate_high_angular_velocities(angular_velocity, threshold=500):
 # Calculate gaze and head angular velocities
 def detect_fixations_and_saccades(valid_head_gaze_df):
     
-
     gaze_vectors = calculate_gaze_vectors(valid_head_gaze_df)
     _, gaze_angular_velocity = calculate_angles_and_angular_velocity(gaze_vectors, valid_head_gaze_df['TimeStamp'])
     head_vectors = calculate_head_direction_vectors(valid_head_gaze_df)
@@ -1483,12 +1483,63 @@ def load_eye_tracking_data(file_path):
     df = df.sort_values(by='TimeStamp').reset_index(drop=True)
     return df
 
-def detect_fixations_and_saccades(df):
-    """Detect fixations and saccades based on gaze stability."""
+def read_csv_file(file_path):
+    df_test = pd.read_csv(file_path, delimiter = ';',na_values='-')
+    df_test.fillna('INVALID',inplace=True)
+    return df_test
+    if os.path.isfile(file_path):
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+        rows = [line.strip().split(';') for line in lines]
+        headers = rows[0]
+        data = rows[1:]
+        for i in range(len(data)):
+            if len(data[i]) > len(headers):
+                data[i] = data[i][:-1]
+
+        df = pd.DataFrame(data, columns=headers)
+
+        if df.empty:
+            print(f"File {file_path} is empty.")
+            return None
+        
+        
+        df = df.dropna()  # Remove missing data
+        #df['TimeStamp'] = pd.to_numeric(df['TimeStamp'], errors='coerce')
+        #df = df.sort_values(by='TimeStamp').reset_index(drop=True)
+
+        # Check if 'TimeStamp' column exists
+        if 'TimeStamp' not in df.columns:
+            print(f"The 'TimeStamp' column is missing in the file {file_path}.")
+            return None
+        df['TimeStamp'] = pd.to_numeric(df['TimeStamp'], errors='coerce') / 1_000.0  # Convert to seconds
+
+        # Check if 'TimeStamp' column has valid data
+        if df['TimeStamp'].isnull().all():
+            print(f"All 'TimeStamp' values are invalid in the file {file_path}.")
+            return None
+
+
+        total_duration_seconds = df['TimeStamp'].iloc[-1] - df['TimeStamp'].iloc[0]
+        print(f"Total Duration (Seconds): {total_duration_seconds}")
+
+        total_duration_minutes = total_duration_seconds / 60.0
+        print(f"Total Duration (Minutes): {total_duration_minutes}")
+
+        total_frames = df.shape[0]
+        average_fps = total_frames / total_duration_seconds if total_duration_seconds > 0 else 0
+        print(f"Average FPS: {average_fps}")
+
+        return df
+    return None
+"""def detect_fixations_and_saccades(df):
     fixations = []
     saccades = []
     current_fixation = []
-    
+    df =get_valid_head_and_gaze_movements(df)
+    print(df)
+    print("*")
     for i in range(1, len(df)):
         time_diff = df['TimeStamp'].iloc[i] - df['TimeStamp'].iloc[i-1]
         gaze_diff = np.linalg.norm(df[['CombinedGazePositionX', 'CombinedGazePositionY', 'CombinedGazePositionZ']].iloc[i] -
@@ -1504,11 +1555,19 @@ def detect_fixations_and_saccades(df):
     
     fixation_ratio = len(fixations) / (len(fixations) + len(saccades) + 1e-6)
     saccade_ratio = len(saccades) / (len(fixations) + len(saccades) + 1e-6)
-    return fixations, saccades, fixation_ratio, saccade_ratio
+    return fixations, saccades, fixation_ratio, saccade_ratio"""
 
 def detect_distraction(df, fixation_threshold=FIXATION_THRESHOLD):
     """Detect when a user looks away from the blackboard."""
-    gazedObject_fixations = df[df['GazedObject'] == df['Task']]
+    print(df.columns)  # Check column names
+    print(df.head())  # See sample rows
+
+    if 'GazedObject' in df.columns and 'Task' in df.columns:
+        print(df['GazedObject'])  # Ensure it exists
+        print('---------')
+        gazedObject_fixations = df[df['GazedObject'] == df['Task']]
+    else:
+        print("One of the required columns is missing!")
     distraction_count = 0
     
     for i in range(1, len(gazedObject_fixations)):
@@ -1529,6 +1588,7 @@ def calculate_gaze_distribution(df, fixations):
     # Flatten the list of fixations (if each fixation is a list of rows)
     fixation_data = [row for fixation in fixations for row in fixation]
     fixation_df = pd.DataFrame(fixation_data)
+    print(fixation_df)
     
     # Count the number of fixations for each object during fixations
     gaze_counts = fixation_df['GazedObject'].value_counts()
@@ -1546,7 +1606,10 @@ def calculate_gaze_distribution(df, fixations):
 
 def process_eye_tracking_data(file_path):
     """Main function to process eye-tracking data."""
-    df = load_eye_tracking_data(file_path)
+    #df = load_eye_tracking_data(file_path)
+    result_dict = process_log_file(file_path)
+    return result_dict
+    """df = read_csv_file(file_path)
     fixations, saccades, fixation_ratio, saccade_ratio = detect_fixations_and_saccades(df)
     distraction_detected = detect_distraction(df)
     overload_detected = cognitive_overload_detection(fixations)
@@ -1558,12 +1621,11 @@ def process_eye_tracking_data(file_path):
         'Distraction Detected': distraction_detected,
         'Cognitive Overload': overload_detected,
         'Gaze_Object_Percentages': gaze_dict
-    }
+    }"""
 
 # Example usage
 file_path = 'ID_002_Scene__Condition_0_2024-11-05-13-01.csv'
 results = process_eye_tracking_data(file_path)
-print(results)
 
 
 """def localTest(file_path):
