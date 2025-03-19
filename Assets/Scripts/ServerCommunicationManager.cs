@@ -12,7 +12,6 @@ using System.IO;
 public class ServerCommunicationManager : MonoBehaviour
 {
 
-    public static ServerCommunicationManager Instance;
     public string userId = "user_1";
     [SerializeField] private ResultsCanvasController resultsCanvasController;
     private string filePath;
@@ -21,19 +20,12 @@ public class ServerCommunicationManager : MonoBehaviour
 
     private string serverURL = "http://127.0.0.1:5000/upload";
     private Coroutine sendRequestCr;
+    private ServerResponseMinimized lastServerResponse;
     //private Queue<Coroutine> sendRequestQueue;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-        DontDestroyOnLoad(this);
+       
         filePath = Path.Combine(Application.persistentDataPath, "GazeData.csv");
         StartCoroutine(StartSession());
 
@@ -90,23 +82,29 @@ public class ServerCommunicationManager : MonoBehaviour
         }
     }
 
-    void ProcessServerResponse(string jsonResponse)
+    private void ProcessServerResponse(string jsonResponse)
     {
-        ServerResponse response = JsonUtility.FromJson<ServerResponse>(jsonResponse);
+        lastServerResponse = JsonUtility.FromJson<ServerResponseMinimized>(jsonResponse);
+        resultsCanvasController.SetResultsByServer(lastServerResponse);
+    }
+
+   /* void ProcessServerResponse(string jsonResponse)
+    {
+        lastServerResponse = JsonUtility.FromJson<ServerResponse>(jsonResponse);
 
         // Format the eye movement statistics into a readable string
-        string eyeMovementStats = FormatEyeMovementStatistics(response);
+        string eyeMovementStats = FormatEyeMovementStatistics(lastServerResponse);
 
         // Format the full response text
         string formattedText =
-            $"Total Duration: {response.total_duration_minutes} min\n" +
-            $"Average FPS: {response.average_fps}\n\n" +
-            $"Columns: {string.Join(", ", response.column_names)}\n\n" +
-            $"Gazed Objects: {string.Join(", ", response.unique_gazed_objects)}\n\n" +
-            $"Head & Gaze Data: {response.head_and_gaze_df}\n\n" +
+            $"Total Duration: {lastServerResponse.total_duration_minutes} min\n" +
+            $"Average FPS: {lastServerResponse.average_fps}\n\n" +
+            $"Columns: {string.Join(", ", lastServerResponse.column_names)}\n\n" +
+            $"Gazed Objects: {string.Join(", ", lastServerResponse.unique_gazed_objects)}\n\n" +
+            $"Head & Gaze Data: {lastServerResponse.head_and_gaze_df}\n\n" +
             $"Eye Movement Statistics:\n{eyeMovementStats}\n\n" +
-            $"Combined Data: {response.combined_df}\n\n" +
-            $"Pupil Data: {response.pupil_data}";
+            $"Combined Data: {lastServerResponse.combined_df}\n\n" +
+            $"Pupil Data: {lastServerResponse.pupil_data}";
 
         // Set the results text on the results canvas
         resultsCanvasController.SetResultsText(formattedText);
@@ -132,7 +130,7 @@ public class ServerCommunicationManager : MonoBehaviour
                $"Percentage: {stats.percentage:F2}%, " +
                $"Time: {stats.time:F3}s, " +
                $"Time Percentage: {stats.time_percentage:F2}%";
-    }
+    }*/
 
 
 }
@@ -180,4 +178,12 @@ public class EyeMovementStatistics
     public float time_percentage;
 }
 
-
+[System.Serializable]
+public class ServerResponseMinimized
+{
+    public float FixationRatio;
+    public float SaccadeRatio;
+    public bool DistractionDetected;
+    public float CognitiveOverload;
+    public Dictionary<string, float> Gaze_Object_Percentages;
+}

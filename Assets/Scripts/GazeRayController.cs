@@ -12,7 +12,8 @@ using UnityEngine.UI;
 
 public class GazeRayController : MonoBehaviour
 {
-    [SerializeField] private List<GazeObject> gazeObjects;
+    [SerializeField] private List<GameObject> gazeObjects;
+    [SerializeField] private GameObject targetObject;
     [SerializeField]private FixationUIController fixationUIController;
     [SerializeField] private Eyes eyes;
     [SerializeField] private Transform head;
@@ -27,6 +28,7 @@ public class GazeRayController : MonoBehaviour
 
 
     [SerializeField] private LayerMask gazeHitLayer;
+    [SerializeField] private ServerCommunicationManager serverCommunicationManager;
 
 
 
@@ -80,7 +82,7 @@ public class GazeRayController : MonoBehaviour
             }
             else
             {
-                gazeObj.obj.layer = Mathf.RoundToInt(Mathf.Log(gazeHitLayer.value, 2));
+                gazeObj.layer = Mathf.RoundToInt(Mathf.Log(gazeHitLayer.value, 2));
             }
         }
     }
@@ -229,8 +231,8 @@ public class GazeRayController : MonoBehaviour
             //    rotateWithGaze.RayHit();
             //}
             fixatedObj = hit.collider.gameObject;
-            gazeObjects.Find(gazeObj => gazeObj.obj.Equals(fixatedObj)).fixatitedTimeSec += Time.deltaTime;
-            Debug.Log("GazeObject" + fixatedObj.name);
+            /*gazeObjects.Find(gazeObj => gazeObj..Equals(fixatedObj)).fixatitedTimeSec += Time.deltaTime;
+            Debug.Log("GazeObject" + fixatedObj.name);*/
 
 
             
@@ -242,8 +244,8 @@ public class GazeRayController : MonoBehaviour
             {
                 return;
             }
-            var lastGazeObj = gazeObjects.Find(gazeObj => gazeObj.obj.Equals(fixatedObj));
-            if (!IsEnoughFocused(lastGazeObj.fixationThresholdSec, lastGazeObj.fixatitedTimeSec))
+            var lastGazeObj = gazeObjects.Find(gazeObj => gazeObj.Equals(fixatedObj));
+            /*if (!IsEnoughFocused(lastGazeObj.fixationThresholdSec, lastGazeObj.fixatitedTimeSec))
             {
                 fixationUIController.EnableText();
                 string alertText = $"User lost attention. {String.Format("{0:0.00}", lastGazeObj.fixatitedTimeSec)} seconds had been focused";
@@ -252,15 +254,15 @@ public class GazeRayController : MonoBehaviour
             var obj = gazeObjects.Find(gazeObj => gazeObj.Equals(fixatedObj));
             if(obj != null)
                 obj.fixatitedTimeSec = 0f;
-            fixatedObj = null;
+            fixatedObj = null;*/
         }
 
         if (frameCounter % 240 == 0)
         {
-            ServerCommunicationManager.Instance.SendCSVBufferToServer(messageBuffer);
+            serverCommunicationManager.SendCSVBufferToServer(messageBuffer);
             messageBuffer = new FrameBuffer();
         }
-        messageBuffer.AddFrame(new GazeData(gazeData,fixatedObj, VarjoEyeTracking.GetEyeMeasurements(),xrCamera));
+        messageBuffer.AddFrame(new GazeData(gazeData,fixatedObj, targetObject,VarjoEyeTracking.GetEyeMeasurements(),xrCamera));
 
 
     }
@@ -371,7 +373,7 @@ public class GazeData
     }
 
     // Constructor to convert from VarjoEyeTracking.GazeData and VarjoEyeTracking.EyeMeasurements to custom EyeTrackingData class
-    public GazeData(VarjoEyeTracking.GazeData data, GameObject fixatedObj, VarjoEyeTracking.EyeMeasurements eyeMeasurements
+    public GazeData(VarjoEyeTracking.GazeData data, GameObject fixatedObj, GameObject targetObject,VarjoEyeTracking.EyeMeasurements eyeMeasurements
         , Camera xrCamera)
     {
 
@@ -442,7 +444,7 @@ public class GazeData
         // You can populate these from additional data sources, as they are not available in the provided structs
         Condition = "Unknown"; // Example default value
         Scene = "Unknown"; // Example default value
-        Task = "Unknown"; // Example default value
+        Task = targetObject == null ? "empty_task" : targetObject.name; // Example default value
         GazedObject = fixatedObj == null ? "Invalid" : fixatedObj.name; // Example default value
         ClickedObject = "Unknown"; // Example default value
         QuizAnswer = "Unknown"; // Example default value

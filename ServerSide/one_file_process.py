@@ -1413,7 +1413,7 @@ def start_session():
 @app.route('/upload', methods=['POST'])
 def upload_file():
 
-     """Handle file upload for the authenticated user."""
+    """Handle file upload for the authenticated user."""
     if 'user_id' not in session:
         return jsonify({'error': 'User not authenticated'}), 400
 
@@ -1430,21 +1430,28 @@ def upload_file():
     file.save(file_path)
 
     # Process the file and get the results
-    results_dict = process_log_file(file_path)
+    #results_dict = process_log_file(file_path)
+    try:
+        # Process the file and get the results
+        results_dict = process_eye_tracking_data(file_path)
+        
+        if results_dict is None:
+            return jsonify({'error': 'Error processing file'}), 400
 
-    if results_dict is None:
-        return "Error processing file", 400
+        # Convert DataFrames to JSON-serializable formats
+        results_dict = convert_dataframes_to_json(results_dict)
+
+        return jsonify(results_dict), 200
     
-    # Convert DataFrames in results_dict to JSON serializable formats
-    results_dict = convert_dataframes_to_json(results_dict)
-    
-    return jsonify(results_dict), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500  # Return error message
 
 @app.route('/logout', methods=['POST'])
 def logout():
     """Log out the user and clear session."""
     session.pop('user_id', None)
     return jsonify({'message': 'User logged out'}), 200
+
 
 
 def convert_dataframes_to_json(results_dict):
@@ -1458,6 +1465,7 @@ def convert_dataframes_to_json(results_dict):
 
 
 
+
 import pandas as pd
 import numpy as np
 
@@ -1465,6 +1473,7 @@ import numpy as np
 FIXATION_THRESHOLD = 100  # milliseconds
 SACCADE_VELOCITY_THRESHOLD = 30  # degrees per second
 COGNITIVE_OVERLOAD_THRESHOLD = 3  # Example threshold for overload
+DISTRACTION_TRESHOLD = 5 # Example threshold for overload
 
 def load_eye_tracking_data(file_path):
     """Load and preprocess eye-tracking data."""
@@ -1499,15 +1508,15 @@ def detect_fixations_and_saccades(df):
 
 def detect_distraction(df, fixation_threshold=FIXATION_THRESHOLD):
     """Detect when a user looks away from the blackboard."""
-    blackboard_fixations = df[df['GazedObject'] == 'Blackboard']
+    gazedObject_fixations = df[df['GazedObject'] == df['Task']]
     distraction_count = 0
     
-    for i in range(1, len(blackboard_fixations)):
-        time_diff = blackboard_fixations['TimeStamp'].iloc[i] - blackboard_fixations['TimeStamp'].iloc[i-1]
+    for i in range(1, len(gazedObject_fixations)):
+        time_diff = gazedObject_fixations['TimeStamp'].iloc[i] - gazedObject_fixations['TimeStamp'].iloc[i-1]
         if time_diff < fixation_threshold:
             distraction_count += 1
     
-    return distraction_count > 3  # Signal distraction if repeated quick lookaways
+    return distraction_count > DISTRACTION_TRESHOLD  # Signal distraction if repeated quick lookaways
 
 def cognitive_overload_detection(fixations):
     """Detect cognitive overload based on fixation duration and frequency."""
@@ -1515,18 +1524,40 @@ def cognitive_overload_detection(fixations):
     overload = any(duration > COGNITIVE_OVERLOAD_THRESHOLD for duration in fixation_durations)
     return overload
 
+def calculate_gaze_distribution(df, fixations):
+    """Calculate the percentage of time spent gazing at each object during fixations."""
+    # Flatten the list of fixations (if each fixation is a list of rows)
+    fixation_data = [row for fixation in fixations for row in fixation]
+    fixation_df = pd.DataFrame(fixation_data)
+    
+    # Count the number of fixations for each object during fixations
+    gaze_counts = fixation_df['GazedObject'].value_counts()
+    
+    # Calculate the total number of fixations
+    total_fixations = len(fixation_df)
+    
+    # Calculate the percentage of time spent looking at each object
+    gaze_percentages = (gaze_counts / total_fixations) * 100
+    
+     # Convert to dictionary { "ObjectName": percentage }
+    gaze_dict = gaze_percentages.to_dict()
+    
+    return gaze_dict  # Send this to Unity
+
 def process_eye_tracking_data(file_path):
     """Main function to process eye-tracking data."""
     df = load_eye_tracking_data(file_path)
     fixations, saccades, fixation_ratio, saccade_ratio = detect_fixations_and_saccades(df)
     distraction_detected = detect_distraction(df)
     overload_detected = cognitive_overload_detection(fixations)
+    gaze_dict = calculate_gaze_distribution(df, fixations)
     
     return {
         'Fixation Ratio': fixation_ratio,
         'Saccade Ratio': saccade_ratio,
         'Distraction Detected': distraction_detected,
-        'Cognitive Overload': overload_detected
+        'Cognitive Overload': overload_detected,
+        'Gaze_Object_Percentages': gaze_dict
     }
 
 # Example usage
