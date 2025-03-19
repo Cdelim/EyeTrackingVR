@@ -29,6 +29,7 @@ public class GazeRayController : MonoBehaviour
 
     [SerializeField] private LayerMask gazeHitLayer;
     [SerializeField] private ServerCommunicationManager serverCommunicationManager;
+    [SerializeField] private ResultsCanvasController resultsCanvasController;
 
 
 
@@ -62,6 +63,7 @@ public class GazeRayController : MonoBehaviour
         CSVFileReader = new CSVFileReader();
         eyeControllerData = CSVFileReader.GetCSVFileListofDic("ID_002_Scene__Condition_0_2024-11-05-13-01");
         messageBuffer = new FrameBuffer();
+        resultsCanvasController.Initialize(gazeObjects);
 
 
     }

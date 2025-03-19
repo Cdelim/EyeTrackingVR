@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ResultsCanvasController : MonoBehaviour
 {
     [SerializeField] private GameObject percentageBarPrefab;
     [SerializeField]private TMPro.TextMeshProUGUI resultsText;
+    [SerializeField]private Transform percentageBarParent;
+    [SerializeField] private DistractionAlert distractionAlert;
 
     private ServerResponseMinimized serverResponseMinimized;
     private Dictionary<string, PercentageBar> objPercentageBar;
@@ -17,7 +18,7 @@ public class ResultsCanvasController : MonoBehaviour
         objPercentageBar = new();
         foreach (var gazeObj in possibleGazeObj)
         {
-            var newPercentageBar = GameObject.Instantiate(percentageBarPrefab, transform).GetComponent<PercentageBar>();
+            var newPercentageBar = GameObject.Instantiate(percentageBarPrefab, percentageBarParent).GetComponent<PercentageBar>();
             var gazeObjName = gazeObj.ToString();
             objPercentageBar.Add(gazeObjName, newPercentageBar);
             newPercentageBar.SetPercentage(0, gazeObjName);
@@ -38,42 +39,37 @@ public class ResultsCanvasController : MonoBehaviour
     private void OnResponseRecived()
     {
         resultsText.text = FormatText();
+        DistractionAlert(serverResponseMinimized.DistractionDetected);
+        UpdatePercentages();
+
+
     }
     private string FormatText()
     {
         string formattedText =
             $"Fixation Ratio: {serverResponseMinimized.FixationRatio}" +
             $"Saccade Ratio: {serverResponseMinimized.SaccadeRatio}\n" +
-            $"Distraction Detected: {string.Join(", ", serverResponseMinimized.DistractionDetected)}\n" +
+            //$"Distraction Detected: {string.Join(", ", serverResponseMinimized.DistractionDetected)}\n" +
             $"Is CognitiveOverload: {string.Join(", ", serverResponseMinimized.CognitiveOverload)}\n";
         return formattedText;
     }
 
     private void UpdatePercentages()
     {
-
+        foreach(var key in objPercentageBar.Keys)
+        {
+            objPercentageBar[key].SetPercentage(serverResponseMinimized.Gaze_Object_Percentages[key], key);
+        }
     }
-    private void DistractionAlert()
+    private void DistractionAlert(bool isActive)
     {
-
+        if (isActive)
+        {
+            distractionAlert.gameObject.SetActive(true);
+        }
+        else
+        {
+            distractionAlert.gameObject.SetActive(false);
+        }
     }
-}
-
-public class PercentageBar : MonoBehaviour
-{
-    [SerializeField] private Image fillImage;
-    [SerializeField] private TMPro.TextMeshProUGUI percentageText;
-    [SerializeField] private TMPro.TextMeshProUGUI gameObjectName;
-
-    private float percentage;
-
-    public void SetPercentage(float val, string gameObjName)
-    {
-        percentage = val;
-        fillImage.fillAmount = percentage * .01f;
-        percentageText.text = percentage.ToString();
-        gameObjectName.text = gameObjName;
-
-    }
-
 }
