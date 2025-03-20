@@ -18,7 +18,7 @@ public class ServerCommunicationManager : MonoBehaviour
 
 
 
-    private string serverURL = "http://127.0.0.1:5000/upload";
+    private string serverURL = "http://127.0.0.1:5000";
     private Coroutine sendRequestCr;
     private ServerResponseMinimized lastServerResponse;
     //private Queue<Coroutine> sendRequestQueue;
@@ -65,7 +65,7 @@ public class ServerCommunicationManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddBinaryData("file", fileData, "GazeData.csv", "text/csv");
 
-        using (UnityWebRequest www = UnityWebRequest.Post(serverURL, form))
+        using (UnityWebRequest www = UnityWebRequest.Post(serverURL + "/upload", form))
         {
             yield return www.SendWebRequest();
 

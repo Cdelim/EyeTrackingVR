@@ -954,6 +954,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   serverCommunicationManager: {fileID: 8082111844384115954}
+  resultsCanvasController: {fileID: 3593971475635041692}
 --- !u!114 &8082111844384115954
 MonoBehaviour:
   m_ObjectHideFlags: 0

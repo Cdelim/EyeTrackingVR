@@ -364,7 +364,10 @@ def process_log_file(file_path):
             print(f"All 'TimeStamp' values are invalid in the file {file_path}.")
             return None
 
-
+        if df['TimeStamp'].isnull().any() or df['GazedObject'].isnull().any():
+            print("Error: Missing data in 'TimeStamp' or 'GazedObject' columns")
+            return None
+        
         total_duration_seconds = df['TimeStamp'].iloc[-1] - df['TimeStamp'].iloc[0]
         print(f"Total Duration (Seconds): {total_duration_seconds}")
 
@@ -385,7 +388,6 @@ def process_log_file(file_path):
         result_dict['total_duration_seconds'] = total_duration_seconds
         result_dict['column_names'] = df.columns.tolist()
         result_dict['first_rows'] = df.head().to_dict(orient='records')
-
 
         if 'GazedObject' in df.columns:
             result_dict['gazed_object_column'] = df['GazedObject'].tolist()
@@ -764,7 +766,7 @@ def process_outliers_saccade(movement_types, eye_movement_ids, movement_duration
     return new_movement_types, new_eye_movement_ids, new_movement_durations, new_movement_amplitudes, new_movement_velocities
 
 
-def classify_points(df):
+#def classify_points(df):
     # Initialize lists with default values corresponding to each row in the DataFrame
     eye_movement_ids = [None] * len(df)  # Using None as a placeholder
     last_type_list = ['outlier'] * len(df)  # Default all to 'outlier'
@@ -780,6 +782,110 @@ def classify_points(df):
 
     # Iterate over DataFrame rows
     for i in range(1, len(df)):
+        gaze_velocity = df['GazeVelocity'].iloc[i]
+        head_velocity = df['HeadVelocity'].iloc[i]
+        timestamp = df['TimeStamp'].iloc[i]
+
+        # Determine the current movement type based on gaze and head velocities
+        if head_velocity < HEAD_VELOCITY_THRESHOLD and gaze_velocity < GAZE_VELOCITY_FIXATION_THRESHOLD:
+            current_type = 'fixation_candidate'
+        elif gaze_velocity > GAZE_VELOCITY_SACCADE_THRESHOLD:
+            current_type = 'saccade_candidate'
+        else:
+            current_type = 'outlier'  # Mark as outlier if it doesn't meet any criteria
+
+        # If movement type changes, calculate duration and update the movement_durations and velocities
+        if current_type != last_type:
+            movement_duration = (timestamp - movement_start_time)  # Duration in seconds
+
+            # Check if the duration is valid for fixation or saccade
+            if (last_type == 'fixation_candidate' and MIN_FIXATION_DURATION <= movement_duration <= MAX_FIXATION_DURATION) or \
+                    (last_type == 'saccade_candidate' and MIN_SACCADE_DURATION <= movement_duration <= MAX_SACCADE_DURATION):
+                # If valid, assign indexes to the movement ID
+                for idx in range(movement_start_index, i):
+                    eye_movement_ids[idx] = current_id
+                    last_type_list[idx] = 'fixation' if last_type == 'fixation_candidate' else 'saccade'
+
+                # Store the duration and amplitude of valid movement
+                movement_durations[current_id] = movement_duration
+                movement_amplitudes[current_id] = df['GazeVelocity'].iloc[movement_start_index:i].mean()  # Calculate mean velocity as amplitude
+
+                # Store all velocity values for this movement
+                movement_velocities[current_id] = df['GazeVelocity'].iloc[movement_start_index:i].tolist()
+
+                current_id += 1
+            else:
+                for idx in range(movement_start_index, i):
+                    eye_movement_ids[idx] = current_id
+                    last_type_list[idx] = last_type
+
+                # Store the duration of valid movement
+                movement_durations[current_id] = movement_duration
+                movement_amplitudes[current_id] = df['GazeVelocity'].iloc[movement_start_index:i].mean()  # Calculate mean velocity as amplitude
+
+                # Store all velocity values for this movement
+                movement_velocities[current_id] = df['GazeVelocity'].iloc[movement_start_index:i].tolist()
+
+                current_id += 1
+
+            # Update start index and time for the new movement
+            movement_start_time = timestamp
+            movement_start_index = i
+            last_type = current_type
+
+    # Handle the last movement after the loop, regardless of type
+    final_duration = (df['TimeStamp'].iloc[-1] - movement_start_time)
+    if (last_type == 'fixation_candidate' and MIN_FIXATION_DURATION <= final_duration <= MAX_FIXATION_DURATION) or \
+            (last_type == 'saccade_candidate' and MIN_SACCADE_DURATION <= final_duration <= MAX_SACCADE_DURATION):
+        for idx in range(movement_start_index, len(df)):
+            eye_movement_ids[idx] = current_id
+            last_type_list[idx] = 'fixation' if last_type == 'fixation_candidate' else 'saccade'
+        movement_durations[current_id] = final_duration
+        movement_amplitudes[current_id] = df['GazeVelocity'].iloc[movement_start_index:].mean()  # Calculate mean velocity as amplitude
+
+        # Store all velocity values for this last movement
+        movement_velocities[current_id] = df['GazeVelocity'].iloc[movement_start_index:].tolist()
+    else:
+        for idx in range(movement_start_index, len(df)):
+            eye_movement_ids[idx] = current_id
+            last_type_list[idx] = last_type
+
+        # Store the duration of valid movement
+        movement_durations[current_id] = final_duration
+        movement_amplitudes[current_id] = df['GazeVelocity'].iloc[movement_start_index:].mean()  # Calculate mean velocity as amplitude
+
+        # Store all velocity values for this last movement
+        movement_velocities[current_id] = df['GazeVelocity'].iloc[movement_start_index:].tolist()
+
+    # Convert lists to DataFrame to keep the indexes consistent
+    movement_df = df[['TimeStamp']].copy()
+    movement_df['MovementType'] = last_type_list
+    movement_df['EyeMovementID'] = eye_movement_ids
+
+    return last_type_list, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities
+def classify_points(df):
+    # Ensure df has data
+    if df.empty:
+        raise ValueError("The DataFrame is empty.")
+
+    # Initialize lists with default values corresponding to each row in the DataFrame
+    eye_movement_ids = [None] * len(df)  # Using None as a placeholder
+    last_type_list = ['outlier'] * len(df)  # Default all to 'outlier'
+    movement_durations = {}  # Dictionary to store the duration for each movement ID
+    movement_amplitudes = {}  # Dictionary to store the average speed (amplitude) for each movement ID
+    movement_velocities = {}  # Dictionary to store all velocity values for each movement ID
+    current_id = 1  # Starting ID for movements
+    last_type = 'saccade_candidate'  # Initialize the last movement type as 'saccade'
+    movement_start_time = df['TimeStamp'].iloc[0]  # Initial timestamp for movement start
+
+    # Initialize start index for the first movement
+    movement_start_index = 0
+
+    # Iterate over DataFrame rows
+    for i in range(1, len(df)):
+        # Print debug info to track i, movement_start_index, and df length
+        print(f"Processing index {i}, movement_start_index {movement_start_index}, df length {len(df)}")
+
         gaze_velocity = df['GazeVelocity'].iloc[i]
         head_velocity = df['HeadVelocity'].iloc[i]
         timestamp = df['TimeStamp'].iloc[i]
@@ -1071,14 +1177,17 @@ def detect_fixations_and_saccades(valid_head_gaze_df):
     valid_head_gaze_df['GazeVelocity'] = gaze_angular_velocity
     valid_head_gaze_df['HeadVelocity'] = head_angular_velocity
 
+    print("Check5")
 
     # Classify points using updated conditions
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = classify_points(
         valid_head_gaze_df)
+    print("Check4")
 
     # Include movement_velocities in the call to process_outliers_fixation
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = process_outliers_fixation(
         movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities)
+    print("Check3")
 
    # # Step 4: Process groups of outliers and saccade candidates
    # movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = process_outliers_saccade_candidates(
@@ -1087,12 +1196,14 @@ def detect_fixations_and_saccades(valid_head_gaze_df):
     # Include movement_velocities in the call to process_outliers_saccade
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = process_outliers_saccade(
         movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities)
+    print("Check2")
 
     # Get statistics of detected movements
 
     # Calculate total time from the DataFrame
     total_time = valid_head_gaze_df['TimeStamp'].iloc[-1] - valid_head_gaze_df['TimeStamp'].iloc[0]
 
+    print("Check1")
     # Get statistics of detected movements
     stats = get_movement_statistics(movement_types, eye_movement_ids, movement_durations, total_time)
 
@@ -1403,8 +1514,8 @@ def allowed_file(filename):
 
 @app.route('/start_session', methods=['POST'])
 def start_session():
-    """Start a session for the user."""
-    session['user_id'] = request.json.get('user_id', 'default_user')  # Assign a user ID from request
+    user_id = request.form.get('user_id', 'default_user')  # Read from form data
+    session['user_id'] = user_id  # Store in session
     return jsonify({'message': 'Session started', 'user_id': session['user_id']}), 200
 
 
@@ -1416,32 +1527,36 @@ def upload_file():
         return jsonify({'error': 'User not authenticated'}), 400
 
     user_id = session['user_id']
-    file = request.files.get('file')
+    # Debug: Check what files are in request
+    print("Received files:", request.files.keys())
+
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
 
     if not file or not allowed_file(file.filename):
         return jsonify({'error': 'Invalid file or no file provided'}), 400
 
-    if 'file' not in request.files:
-        return "No file part", 400
-
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(file_path)
-
-    # Process the file and get the results
-    #results_dict = process_log_file(file_path)
     try:
-        # Process the file and get the results
+        file.save(file_path)
+        print(f"File saved to {file_path}")
+
+        # Process the file
         results_dict = process_eye_tracking_data(file_path)
         
         if results_dict is None:
             return jsonify({'error': 'Error processing file'}), 400
 
-        # Convert DataFrames to JSON-serializable formats
-        results_dict = convert_dataframes_to_json(results_dict)
+        # Print the results to check what's being processed
+        print("Results:", results_dict)
 
         return jsonify(results_dict), 200
-    
+
     except Exception as e:
+        # Catch the error and print it
+        print("Error processing file:", str(e))
         return jsonify({'error': str(e)}), 500  # Return error message
 
 @app.route('/logout', methods=['POST'])
@@ -1649,10 +1764,10 @@ def process_eye_tracking_data(file_path):
     }"""
 
 # Example usage
-file_path = 'ID_002_Scene__Condition_0_2024-11-05-13-01.csv'
+"""file_path = 'ID_002_Scene__Condition_0_2024-11-05-13-01.csv'
 #file_path = 'uploads/GazeData.csv'
 results = process_eye_tracking_data(file_path)
-print(results)
+print(results)"""
 
 
 """def localTest(file_path):
