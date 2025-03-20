@@ -1650,6 +1650,7 @@ def process_eye_tracking_data(file_path):
 
 # Example usage
 file_path = 'ID_002_Scene__Condition_0_2024-11-05-13-01.csv'
+#file_path = 'uploads/GazeData.csv'
 results = process_eye_tracking_data(file_path)
 print(results)
 
