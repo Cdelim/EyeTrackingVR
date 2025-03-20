@@ -104,7 +104,7 @@ public class GazeRayController : MonoBehaviour
         if(device != null)
         {
 
-            isRealTime = device.isValid;
+            isRealTime = !device.isValid;
         }
     }
 
@@ -117,7 +117,7 @@ public class GazeRayController : MonoBehaviour
                 Debug.LogError("Started Again");
                 frameCounter = 0;
             };
-
+            Debug.LogError("Not Real Time Data");
             Dictionary<string, string> frameData = eyeControllerData[frameCounter];
             if (frameData[EyeTrackDataColums.LeftEyeStatus] == "INVALID"
                 || frameData[EyeTrackDataColums.RightEyeStatus] == "INVALID")
@@ -265,6 +265,7 @@ public class GazeRayController : MonoBehaviour
             messageBuffer = new FrameBuffer();
         }
         messageBuffer.AddFrame(new GazeData(gazeData,fixatedObj, targetObject,VarjoEyeTracking.GetEyeMeasurements(),xrCamera));
+        Debug.Log(gazeData.status);
 
 
     }
@@ -302,7 +303,7 @@ public class GazeData
 
 
     public float Frame = 0;
-    public float TimeStamp = 0;
+    public long TimeStamp = 0;
     public float LogTime = 0;
 
     public float HeadPositionX;
@@ -312,7 +313,7 @@ public class GazeData
     public float HeadDirectionY;
     public float HeadDirectionZ;
 
-    public float GazeStatus;
+    public string GazeStatus;
     public float CombinedGazeForwardX;
     public float CombinedGazeForwardY;
     public float CombinedGazeForwardZ;
@@ -321,7 +322,7 @@ public class GazeData
     public float CombinedGazePositionZ;
     public float InterPupillaryDistanceInMM;
 
-    public float LeftEyeStatus;
+    public string LeftEyeStatus;
     public float LeftGazeDirectionX;
     public float LeftGazeDirectionY;
     public float LeftGazeDirectionZ;
@@ -333,7 +334,7 @@ public class GazeData
     public float LeftIrisDiameterInMM;
     public float LeftEyeOpenness;
 
-    public float RightEyeStatus;
+    public string RightEyeStatus;
     public float RightGazeDirectionX;
     public float RightGazeDirectionY;
     public float RightGazeDirectionZ;
@@ -383,7 +384,8 @@ public class GazeData
         Frame = data.frameNumber;
 
         
-        TimeStamp = data.captureTime / 1000000;
+        TimeStamp = data.captureTime;
+
 
       
         LogTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
@@ -398,7 +400,7 @@ public class GazeData
 
         // Combined gaze
         bool invalid = data.status == VarjoEyeTracking.GazeStatus.Invalid;
-        GazeStatus = invalid ? -1 : 1;
+        GazeStatus = invalid ? "INVALID" : "VALID";
         CombinedGazeForwardX = invalid ? 0 : data.gaze.forward.x;
         CombinedGazeForwardY = invalid ? 0 : data.gaze.forward.y;
         CombinedGazeForwardZ = invalid ? 0 : data.gaze.forward.z;
@@ -411,7 +413,7 @@ public class GazeData
 
         // Left eye
         bool leftInvalid = data.leftStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
-        LeftEyeStatus = leftInvalid ? -1 : 1;
+        LeftEyeStatus = invalid ? "INVALID" : "VALID";
         LeftGazeDirectionX = leftInvalid ? 0 : data.left.forward.x;
         LeftGazeDirectionY = leftInvalid ? 0 : data.left.forward.y;
         LeftGazeDirectionZ = leftInvalid ? 0 : data.left.forward.z;
@@ -425,7 +427,7 @@ public class GazeData
 
         // Right eye
         bool rightInvalid = data.rightStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
-        RightEyeStatus = rightInvalid ? -1 : 1;
+        RightEyeStatus = invalid ? "INVALID" : "VALID";
         RightGazeDirectionX = rightInvalid ? 0 : data.right.forward.x;
         RightGazeDirectionY = rightInvalid ? 0 : data.right.forward.y;
         RightGazeDirectionZ = rightInvalid ? 0 : data.right.forward.z;

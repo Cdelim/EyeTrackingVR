@@ -352,12 +352,20 @@ def process_log_file(file_path):
         if 'TimeStamp' not in df.columns:
             print(f"The 'TimeStamp' column is missing in the file {file_path}.")
             return None
+        
+        # Check if 'TimeStamp' column exists
+        if df['GazeStatus'].all == 'INVALID':
+            print(f"The GazeStatus column is missing in the file {file_path}.")
+            return None
 
+        
         # Convert 'TimeStamp' to numeric and handle errors
-        df['TimeStamp'] = pd.to_numeric(df['TimeStamp'], errors='coerce') / 1_000.0  # Convert to seconds
+        df['TimeStamp'] = df['TimeStamp'].astype(str).str.replace(',', '.', regex=False)
+        df['TimeStamp'] = pd.to_numeric(df['TimeStamp'], errors='coerce') / 1000.0  # Convert to seconds
         non_digit_columns = ['GazeStatus', 'Condition', 'Scene', 'Task', 'GazedObject', 'ClickedObject', 'QuizAnswer', 'ChatBot']
         # Apply conversion only to columns that are not in non_digit_columns
         df = df.apply(lambda col: col.astype(str).str.replace(',', '.', regex=False).apply(pd.to_numeric, errors='coerce') if col.name not in non_digit_columns else col)
+        
         
         # Check if 'TimeStamp' column has valid data
         if df['TimeStamp'].isnull().all():
@@ -890,6 +898,11 @@ def classify_points(df):
         head_velocity = df['HeadVelocity'].iloc[i]
         timestamp = df['TimeStamp'].iloc[i]
 
+
+        if pd.isna(gaze_velocity) or pd.isna(head_velocity) or pd.isna(timestamp):
+            print(f"Skipping index {i} due to NaN value in one of the columns.")
+            continue  # Skip this row if any of the columns has NaN value
+
         # Determine the current movement type based on gaze and head velocities
         if head_velocity < HEAD_VELOCITY_THRESHOLD and gaze_velocity < GAZE_VELOCITY_FIXATION_THRESHOLD:
             current_type = 'fixation_candidate'
@@ -1177,17 +1190,15 @@ def detect_fixations_and_saccades(valid_head_gaze_df):
     valid_head_gaze_df['GazeVelocity'] = gaze_angular_velocity
     valid_head_gaze_df['HeadVelocity'] = head_angular_velocity
 
-    print("Check5")
+   
 
     # Classify points using updated conditions
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = classify_points(
         valid_head_gaze_df)
-    print("Check4")
 
     # Include movement_velocities in the call to process_outliers_fixation
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = process_outliers_fixation(
         movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities)
-    print("Check3")
 
    # # Step 4: Process groups of outliers and saccade candidates
    # movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = process_outliers_saccade_candidates(
@@ -1196,14 +1207,12 @@ def detect_fixations_and_saccades(valid_head_gaze_df):
     # Include movement_velocities in the call to process_outliers_saccade
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = process_outliers_saccade(
         movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities)
-    print("Check2")
 
     # Get statistics of detected movements
 
     # Calculate total time from the DataFrame
     total_time = valid_head_gaze_df['TimeStamp'].iloc[-1] - valid_head_gaze_df['TimeStamp'].iloc[0]
 
-    print("Check1")
     # Get statistics of detected movements
     stats = get_movement_statistics(movement_types, eye_movement_ids, movement_durations, total_time)
 
@@ -1692,6 +1701,9 @@ def cognitive_overload_detection(results_dict):
     fixation_mean = results_dict['eye_movement_statistics']["fixation"]["mean"]
     saccade_mean = results_dict['eye_movement_statistics']["saccade"]["mean"]
     pupil_diameter_mean = results_dict['pupil_data']['normalized_statistics']["mean_pupil_diameter"]
+
+    if pd.isna(fixation_mean) or pd.isna(saccade_mean) or pd.isna(pupil_diameter_mean):
+        return False
     cognitive_overload = (
         fixation_mean > FIXATION_OVERLOAD_THRESHOLD
         and saccade_mean < SACCADE_UNDERLOAD_THRESHOLD
@@ -1764,10 +1776,10 @@ def process_eye_tracking_data(file_path):
     }"""
 
 # Example usage
-"""file_path = 'ID_002_Scene__Condition_0_2024-11-05-13-01.csv'
-#file_path = 'uploads/GazeData.csv'
+#file_path = 'ID_002_Scene__Condition_0_2024-11-05-13-01.csv'
+file_path = 'uploads/GazeData.csv'
 results = process_eye_tracking_data(file_path)
-print(results)"""
+print(results)
 
 
 """def localTest(file_path):
