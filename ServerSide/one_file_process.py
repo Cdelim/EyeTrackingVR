@@ -276,7 +276,7 @@ def get_valid_head_and_gaze_movements(df):
     
     # Select the relevant columns and convert them to float, except 'GazeStatus'
     valid_gaze_df = valid_gaze_df[head_and_gaze_columns].apply(lambda x: pd.to_numeric(x, errors='coerce') if x.name != 'GazeStatus' else x)
-    print(valid_gaze_df.dtypes)
+    
     return valid_gaze_df
 
 
@@ -382,6 +382,7 @@ def process_log_file(file_path):
 
         result_dict = {}
         result_dict['total_duration_minutes'] = total_duration_minutes
+        result_dict['total_duration_seconds'] = total_duration_seconds
         result_dict['column_names'] = df.columns.tolist()
         result_dict['first_rows'] = df.head().to_dict(orient='records')
 
@@ -402,7 +403,6 @@ def process_log_file(file_path):
 
     
         stats,eye_movement_df,eye_movement_dict = detect_fixations_and_saccades(head_and_gaze_df)
-
 
         result_dict['eye_movement_statistics'] = stats
         result_dict['eye_movement_df'] = eye_movement_df
@@ -426,7 +426,7 @@ def process_log_file(file_path):
         
         result_dict['pupil_data'] = pupil_data
 
-        return result_dict
+        return result_dict,df
     else:
         print(f"File {file_path} does not exist.")
         return None
@@ -1029,8 +1029,6 @@ def interpolate_high_angular_velocities(angular_velocity, threshold=500):
     total_values = len(angular_velocity)
 
     # Calculate the percentage of changed values
-    print(total_values)
-    print(total_changed_count)
     if total_values != 0 and not np.isnan(total_values):
         if not np.isnan(total_changed_count) and np.isfinite(total_values):
             percentage_changed = (total_changed_count / total_values) * 100
@@ -1098,7 +1096,7 @@ def detect_fixations_and_saccades(valid_head_gaze_df):
     # Get statistics of detected movements
     stats = get_movement_statistics(movement_types, eye_movement_ids, movement_durations, total_time)
 
-    print(stats)
+    
 
     valid_head_gaze_df['FrameDuration'] = valid_head_gaze_df['TimeStamp'].diff().fillna(0)
     valid_head_gaze_df['MovementType'] = movement_types
@@ -1472,8 +1470,10 @@ import numpy as np
 # Constants for fixation detection
 FIXATION_THRESHOLD = 100  # milliseconds
 SACCADE_VELOCITY_THRESHOLD = 30  # degrees per second
-COGNITIVE_OVERLOAD_THRESHOLD = 3  # Example threshold for overload
-DISTRACTION_TRESHOLD = 5 # Example threshold for overload
+FIXATION_OVERLOAD_THRESHOLD = 1.5  # Example: fixations longer than 1.5s
+SACCADE_UNDERLOAD_THRESHOLD = 0.1  # Example: saccades shorter than 0.1s
+PUPIL_OVERLOAD_THRESHOLD = 7.0  # Example threshold for pupil dilation
+DISTRACTION_TIME_TRESHOLD = 5 # Example threshold for overload
 
 def load_eye_tracking_data(file_path):
     """Load and preprocess eye-tracking data."""
@@ -1557,58 +1557,83 @@ def read_csv_file(file_path):
     saccade_ratio = len(saccades) / (len(fixations) + len(saccades) + 1e-6)
     return fixations, saccades, fixation_ratio, saccade_ratio"""
 
-def detect_distraction(df, fixation_threshold=FIXATION_THRESHOLD):
-    """Detect when a user looks away from the blackboard."""
-    print(df.columns)  # Check column names
-    print(df.head())  # See sample rows
+def detect_distraction(df):
+    distraction_events = []  # Store distraction events
+    distraction_start = None
 
-    if 'GazedObject' in df.columns and 'Task' in df.columns:
-        print(df['GazedObject'])  # Ensure it exists
-        print('---------')
-        gazedObject_fixations = df[df['GazedObject'] == df['Task']]
-    else:
-        print("One of the required columns is missing!")
-    distraction_count = 0
-    
-    for i in range(1, len(gazedObject_fixations)):
-        time_diff = gazedObject_fixations['TimeStamp'].iloc[i] - gazedObject_fixations['TimeStamp'].iloc[i-1]
-        if time_diff < fixation_threshold:
-            distraction_count += 1
-    
-    return distraction_count > DISTRACTION_TRESHOLD  # Signal distraction if repeated quick lookaways
+    for index, row in df.iterrows():
+        if row['GazedObject'] != row['Task']:  # Gaze is not on the task
+            if distraction_start is None:
+                distraction_start = row['TimeStamp']  # Start distraction timer
+            elif row['TimeStamp'] - distraction_start > DISTRACTION_TIME_TRESHOLD:
+                distraction_events.append((distraction_start, row['TimeStamp']))  # Store distraction period
+                distraction_start = None  # Reset after recording event
+                return True
+        else:
+            distraction_start = None  # Reset if attention returns
 
-def cognitive_overload_detection(fixations):
-    """Detect cognitive overload based on fixation duration and frequency."""
-    fixation_durations = [len(fix) for fix in fixations]
-    overload = any(duration > COGNITIVE_OVERLOAD_THRESHOLD for duration in fixation_durations)
-    return overload
+    return False  # Return all detected distraction events
+def cognitive_overload_detection(results_dict):
+    fixation_mean = results_dict['eye_movement_statistics']["fixation"]["mean"]
+    saccade_mean = results_dict['eye_movement_statistics']["saccade"]["mean"]
+    pupil_diameter_mean = results_dict['pupil_data']['normalized_statistics']["mean_pupil_diameter"]
+    cognitive_overload = (
+        fixation_mean > FIXATION_OVERLOAD_THRESHOLD
+        and saccade_mean < SACCADE_UNDERLOAD_THRESHOLD
+        and pupil_diameter_mean > PUPIL_OVERLOAD_THRESHOLD
+    )
+    return cognitive_overload
 
-def calculate_gaze_distribution(df, fixations):
+def calculate_gaze_distribution(df):
     """Calculate the percentage of time spent gazing at each object during fixations."""
     # Flatten the list of fixations (if each fixation is a list of rows)
-    fixation_data = [row for fixation in fixations for row in fixation]
-    fixation_df = pd.DataFrame(fixation_data)
-    print(fixation_df)
-    
-    # Count the number of fixations for each object during fixations
-    gaze_counts = fixation_df['GazedObject'].value_counts()
-    
-    # Calculate the total number of fixations
-    total_fixations = len(fixation_df)
-    
-    # Calculate the percentage of time spent looking at each object
-    gaze_percentages = (gaze_counts / total_fixations) * 100
-    
-     # Convert to dictionary { "ObjectName": percentage }
-    gaze_dict = gaze_percentages.to_dict()
-    
-    return gaze_dict  # Send this to Unity
+    result_dict = {}
+    result_dict['gazed_object_column'] = df['GazedObject'].tolist()
+    result_dict['unique_gazed_objects'] = df['GazedObject'].unique().tolist()
+
+    # Store counts with object names
+    gazed_object_counts = df['GazedObject'].value_counts()
+    result_dict['gazed_object_counts'] = gazed_object_counts.to_dict()
+
+    # Compute total count
+    total_count = gazed_object_counts.sum()
+
+    # Store gaze ratios
+    result_dict['gazed_object_ratios'] = (gazed_object_counts / total_count).to_dict()
+
+    # Store durations per object
+    gazed_object_duration = df.groupby('GazedObject')['FrameDuration'].sum().to_dict()
+    result_dict['gazed_object_durations'] = gazed_object_duration
+
+    #result_dict['normalized_gazed_object_durations'] = normalized_durations.to_dict()
+    return result_dict
+
+
+def calculate_fixation_saccade_ratio(results_dict):
+
+    fixation_ratio = results_dict['eye_movement_statistics']["fixation"]["percentage"]
+    saccade_ratio = results_dict['eye_movement_statistics']["saccade"]["percentage"]
+
+    return fixation_ratio, saccade_ratio
+    print(f"Fixation Ratio: {fixation_ratio:.2f}")
+    print(f"Saccade Ratio: {saccade_ratio:.2f}")
 
 def process_eye_tracking_data(file_path):
     """Main function to process eye-tracking data."""
     #df = load_eye_tracking_data(file_path)
-    result_dict = process_log_file(file_path)
-    return result_dict
+    result_dict,df = process_log_file(file_path)
+    fixation_ratio, saccade_ratio = calculate_fixation_saccade_ratio(result_dict)
+    distraction_detected = detect_distraction(df)
+    overload_detected = cognitive_overload_detection(result_dict)
+    gaze_dict = calculate_gaze_distribution(df)
+    gaze_durations_dict = result_dict['gazed_object_durations']
+    return {
+        'Fixation Ratio': fixation_ratio,
+        'Saccade Ratio': saccade_ratio,
+        'Distraction Detected': distraction_detected,
+        'Cognitive Overload': overload_detected,
+        'Gaze_Object_Percentages': gaze_durations_dict
+    }
     """df = read_csv_file(file_path)
     fixations, saccades, fixation_ratio, saccade_ratio = detect_fixations_and_saccades(df)
     distraction_detected = detect_distraction(df)
@@ -1626,6 +1651,7 @@ def process_eye_tracking_data(file_path):
 # Example usage
 file_path = 'ID_002_Scene__Condition_0_2024-11-05-13-01.csv'
 results = process_eye_tracking_data(file_path)
+print(results)
 
 
 """def localTest(file_path):
