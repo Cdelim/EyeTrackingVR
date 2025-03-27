@@ -892,7 +892,6 @@ def classify_points(df):
     # Iterate over DataFrame rows
     for i in range(1, len(df)):
         # Print debug info to track i, movement_start_index, and df length
-        print(f"Processing index {i}, movement_start_index {movement_start_index}, df length {len(df)}")
 
         gaze_velocity = df['GazeVelocity'].iloc[i]
         head_velocity = df['HeadVelocity'].iloc[i]
@@ -902,7 +901,6 @@ def classify_points(df):
         if pd.isna(gaze_velocity) or pd.isna(head_velocity) or pd.isna(timestamp):
             print(f"Skipping index {i} due to NaN value in one of the columns.")
             continue  # Skip this row if any of the columns has NaN value
-
         # Determine the current movement type based on gaze and head velocities
         if head_velocity < HEAD_VELOCITY_THRESHOLD and gaze_velocity < GAZE_VELOCITY_FIXATION_THRESHOLD:
             current_type = 'fixation_candidate'
@@ -914,7 +912,6 @@ def classify_points(df):
         # If movement type changes, calculate duration and update the movement_durations and velocities
         if current_type != last_type:
             movement_duration = (timestamp - movement_start_time)  # Duration in seconds
-
             # Check if the duration is valid for fixation or saccade
             if (last_type == 'fixation_candidate' and MIN_FIXATION_DURATION <= movement_duration <= MAX_FIXATION_DURATION) or \
                     (last_type == 'saccade_candidate' and MIN_SACCADE_DURATION <= movement_duration <= MAX_SACCADE_DURATION):
@@ -952,6 +949,7 @@ def classify_points(df):
 
     # Handle the last movement after the loop, regardless of type
     final_duration = (df['TimeStamp'].iloc[-1] - movement_start_time)
+    print(final_duration)
     if (last_type == 'fixation_candidate' and MIN_FIXATION_DURATION <= final_duration <= MAX_FIXATION_DURATION) or \
             (last_type == 'saccade_candidate' and MIN_SACCADE_DURATION <= final_duration <= MAX_SACCADE_DURATION):
         for idx in range(movement_start_index, len(df)):
@@ -1074,6 +1072,7 @@ def get_movement_statistics(movement_types, eye_movement_ids, movement_durations
             # If there are no durations, return default stats
             return {'min': None, 'max': None, 'mean': None, 'count': 0, 'percentage': 0.0, 'time_percentage': 0.0}
 
+   
     # Assign calculated statistics to the respective movement types
     stats['fixation'].update(calculate_stats(durations['fixation'], total_time))
     stats['saccade'].update(calculate_stats(durations['saccade'], total_time))
@@ -1190,12 +1189,13 @@ def detect_fixations_and_saccades(valid_head_gaze_df):
     valid_head_gaze_df['GazeVelocity'] = gaze_angular_velocity
     valid_head_gaze_df['HeadVelocity'] = head_angular_velocity
 
-   
+    print(gaze_angular_velocity)
+    print(head_angular_velocity)
 
     # Classify points using updated conditions
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = classify_points(
         valid_head_gaze_df)
-
+    print(movement_types)
     # Include movement_velocities in the call to process_outliers_fixation
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = process_outliers_fixation(
         movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities)
@@ -1208,6 +1208,7 @@ def detect_fixations_and_saccades(valid_head_gaze_df):
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = process_outliers_saccade(
         movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities)
 
+    
     # Get statistics of detected movements
 
     # Calculate total time from the DataFrame
@@ -1215,8 +1216,6 @@ def detect_fixations_and_saccades(valid_head_gaze_df):
 
     # Get statistics of detected movements
     stats = get_movement_statistics(movement_types, eye_movement_ids, movement_durations, total_time)
-
-    
 
     valid_head_gaze_df['FrameDuration'] = valid_head_gaze_df['TimeStamp'].diff().fillna(0)
     valid_head_gaze_df['MovementType'] = movement_types

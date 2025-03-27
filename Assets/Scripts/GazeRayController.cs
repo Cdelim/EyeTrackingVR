@@ -12,6 +12,7 @@ using UnityEngine.UI;
 
 public class GazeRayController : MonoBehaviour
 {
+    [SerializeField] private float serverFrameBufferSize = 2400;
     [SerializeField] private List<GameObject> gazeObjects;
     [SerializeField] private GameObject targetObject;
     [SerializeField]private FixationUIController fixationUIController;
@@ -259,7 +260,7 @@ public class GazeRayController : MonoBehaviour
             fixatedObj = null;*/
         }
 
-        if (frameCounter % 240 == 0)
+        if (frameCounter % serverFrameBufferSize == 0)
         {
             serverCommunicationManager.SendCSVBufferToServer(messageBuffer);
             messageBuffer = new FrameBuffer();
@@ -384,13 +385,13 @@ public class GazeData
         Frame = data.frameNumber;
 
         
-        TimeStamp = data.captureTime;
+        TimeStamp = (data.captureTime / 1000000);
 
 
-      
-        LogTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
-        
+        LogTime = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
+
+
         HeadPositionX = xrCamera.transform.localPosition.x;
         HeadPositionY = xrCamera.transform.localPosition.y;
         HeadPositionZ = xrCamera.transform.localPosition.z;
