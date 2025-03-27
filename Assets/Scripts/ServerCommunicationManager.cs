@@ -14,6 +14,7 @@ public class ServerCommunicationManager : MonoBehaviour
 
     public string userId = "user_1";
     [SerializeField] private ResultsCanvasController resultsCanvasController;
+    [SerializeField] private TaskSettingsController taskSettingsController;
     private string filePath;
 
 

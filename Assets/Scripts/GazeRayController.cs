@@ -9,23 +9,13 @@ using GLTFast.Schema;
 using Camera = UnityEngine.Camera;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using UnityEngine.UI;
-
 public class GazeRayController : MonoBehaviour
 {
-    [SerializeField] private float serverFrameBufferSize = 2400;
-    [SerializeField] private List<GameObject> gazeObjects;
-    [SerializeField] private GameObject targetObject;
-    [SerializeField]private FixationUIController fixationUIController;
-    [SerializeField] private Eyes eyes;
-    [SerializeField] private Transform head;
+    [SerializeField] private TaskSettingsController taskSettingsController;
     [Header("XR camera")]
     [SerializeField] private Camera xrCamera;
-    [Header("Visualization Transforms")]
-    [SerializeField] private Transform fixationPointTransform;
     [Header("Gaze Settings")]
     [SerializeField] private float gazeRadius = 0.01f;
-    [Header("Gaze target offset towards viewer")]
-    [SerializeField] private float targetOffset = 0.2f;
 
 
     [SerializeField] private LayerMask gazeHitLayer;
@@ -64,31 +54,13 @@ public class GazeRayController : MonoBehaviour
         CSVFileReader = new CSVFileReader();
         eyeControllerData = CSVFileReader.GetCSVFileListofDic("ID_002_Scene__Condition_0_2024-11-05-13-01");
         messageBuffer = new FrameBuffer();
-        resultsCanvasController.Initialize(gazeObjects);
+        taskSettingsController.SetGazeObjLayers();
+        resultsCanvasController.Initialize(taskSettingsController.gazeObjects);
 
 
     }
 
-    private void Start()
-    {
-        SetGazeObjLayers();
-    }
-
-    private void SetGazeObjLayers()
-    {
-
-        foreach (var gazeObj in gazeObjects)
-        {
-            if (gazeHitLayer.value == 0)
-            {
-                Debug.LogWarning("Mask is empty. Assigning default layer.");
-            }
-            else
-            {
-                gazeObj.layer = Mathf.RoundToInt(Mathf.Log(gazeHitLayer.value, 2));
-            }
-        }
-    }
+    
 
     private void OnEnable()
     {
@@ -155,29 +127,29 @@ public class GazeRayController : MonoBehaviour
             Vector3 rightEyeDirection = new Vector3(xRightEye, yRightEye, zRightEye);
 
             //eyes.leftEye.position = xrCamera.transform.TransformPoint(leftEyePos);
-            eyes.leftEye.localRotation = Quaternion.LookRotation(FindDirVector(leftEyePos, leftEyeDirection).normalized);
+            taskSettingsController.eyes.leftEye.localRotation = Quaternion.LookRotation(FindDirVector(leftEyePos, leftEyeDirection).normalized);
             //eyes.leftEye.rotation = Quaternion.LookRotation(xrCamera.transform.TransformDirection(gazeData.left.forward));
 
             //eyes.rightEye.position = xrCamera.transform.TransformPoint(leftEyePos);
-            eyes.rightEye.localRotation = Quaternion.LookRotation(FindDirVector(rightEyePos, rightEyeDirection).normalized);
+            taskSettingsController.eyes.rightEye.localRotation = Quaternion.LookRotation(FindDirVector(rightEyePos, rightEyeDirection).normalized);
             //eyes.rightEye.rotation = Quaternion.LookRotation(xrCamera.transform.TransformDirection(gazeData.right.forward));
 
 
             // Set gaze origin as raycast origin
-            rayOrigin = (eyes.rightEye.position + eyes.leftEye.position)*.5f;
+            rayOrigin = (taskSettingsController.eyes.rightEye.position + taskSettingsController.eyes.leftEye.position)*.5f;
 
             // Set gaze direction as raycast direction
             direction = FindDirVector(leftEyePos, leftEyeDirection).normalized;
 
             // Fixation point can be calculated using ray origin, direction and focus distance
-            fixationPointTransform.position = rayOrigin + direction * maxDistance;
+            //fixationPointTransform.position = rayOrigin + direction * maxDistance;
 
             Debug.DrawLine(rayOrigin, rayOrigin + direction * maxDistance);
 
         }
         else
         {
-            head.rotation = xrCamera.transform.rotation;
+            taskSettingsController.head.rotation = xrCamera.transform.rotation;
             frameCounter++;
             gazeData = VarjoEyeTracking.GetGaze();
 
@@ -189,14 +161,14 @@ public class GazeRayController : MonoBehaviour
                 // GazeRay vectors are relative to the HMD pose so they need to be transformed to world space
                 if (gazeData.leftStatus != VarjoEyeTracking.GazeEyeStatus.Invalid)
                 {
-                    eyes.leftEye.position = xrCamera.transform.TransformPoint(gazeData.left.origin);
-                    eyes.leftEye.rotation = Quaternion.LookRotation(xrCamera.transform.TransformDirection(gazeData.left.forward));
+                    taskSettingsController.eyes.leftEye.position = xrCamera.transform.TransformPoint(gazeData.left.origin);
+                    taskSettingsController.eyes.leftEye.rotation = Quaternion.LookRotation(xrCamera.transform.TransformDirection(gazeData.left.forward));
                 }
 
                 if (gazeData.rightStatus != VarjoEyeTracking.GazeEyeStatus.Invalid)
                 {
-                    eyes.rightEye.position = xrCamera.transform.TransformPoint(gazeData.right.origin);
-                    eyes.rightEye.rotation = Quaternion.LookRotation(xrCamera.transform.TransformDirection(gazeData.right.forward));
+                    taskSettingsController.eyes.rightEye.position = xrCamera.transform.TransformPoint(gazeData.right.origin);
+                    taskSettingsController.eyes.rightEye.rotation = Quaternion.LookRotation(xrCamera.transform.TransformDirection(gazeData.right.forward));
                 }
 
                 // Set gaze origin as raycast origin
@@ -206,7 +178,7 @@ public class GazeRayController : MonoBehaviour
                 direction = xrCamera.transform.TransformDirection(gazeData.gaze.forward);
 
                 // Fixation point can be calculated using ray origin, direction and focus distance
-                fixationPointTransform.position = rayOrigin + direction * gazeData.focusDistance;
+                //fixationPointTransform.position = rayOrigin + direction * gazeData.focusDistance;
             }
         }
 
@@ -215,27 +187,8 @@ public class GazeRayController : MonoBehaviour
         {
 
 
-            /*// Put target on gaze raycast position with offset towards user
-            gazeTarget.transform.position = hit.point - direction * targetOffset;
-
-            // Make gaze target point towards user
-            gazeTarget.transform.LookAt(rayOrigin, Vector3.up);
-
-            // Scale gazetarget with distance so it apperas to be always same size
-            distance = hit.distance;
-            gazeTarget.transform.localScale = Vector3.one * distance;*/
-
-
-            // Prefer layers or tags to identify looked objects in your application
-            // This is done here using GetComponent for the sake of clarity as an example
-            //RotateWithGaze rotateWithGaze = hit.collider.gameObject.GetComponent<RotateWithGaze>();
-            //if (rotateWithGaze != null)
-            //{
-            //    rotateWithGaze.RayHit();
-            //}
+            
             fixatedObj = hit.collider.gameObject;
-            /*gazeObjects.Find(gazeObj => gazeObj..Equals(fixatedObj)).fixatitedTimeSec += Time.deltaTime;
-            Debug.Log("GazeObject" + fixatedObj.name);*/
 
 
             
@@ -247,7 +200,7 @@ public class GazeRayController : MonoBehaviour
             {
                 return;
             }
-            var lastGazeObj = gazeObjects.Find(gazeObj => gazeObj.Equals(fixatedObj));
+            var lastGazeObj = taskSettingsController.gazeObjects.Find(gazeObj => gazeObj.Equals(fixatedObj));
             /*if (!IsEnoughFocused(lastGazeObj.fixationThresholdSec, lastGazeObj.fixatitedTimeSec))
             {
                 fixationUIController.EnableText();
@@ -260,12 +213,12 @@ public class GazeRayController : MonoBehaviour
             fixatedObj = null;*/
         }
 
-        if (frameCounter % serverFrameBufferSize == 0)
+        if (frameCounter % taskSettingsController.serverFrameBufferSize == 0)
         {
             serverCommunicationManager.SendCSVBufferToServer(messageBuffer);
             messageBuffer = new FrameBuffer();
         }
-        messageBuffer.AddFrame(new GazeData(gazeData,fixatedObj, targetObject,VarjoEyeTracking.GetEyeMeasurements(),xrCamera));
+        messageBuffer.AddFrame(new GazeData(gazeData,fixatedObj, taskSettingsController.targetObject, VarjoEyeTracking.GetEyeMeasurements(),xrCamera));
         Debug.Log(gazeData.status);
 
 

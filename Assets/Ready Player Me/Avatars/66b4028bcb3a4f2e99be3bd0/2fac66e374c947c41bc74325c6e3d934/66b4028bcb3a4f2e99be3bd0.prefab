@@ -854,6 +854,7 @@ GameObject:
   - component: {fileID: 6717258313985311258}
   - component: {fileID: 8728401324102860424}
   - component: {fileID: 8082111844384115954}
+  - component: {fileID: 8059307286187858150}
   m_Layer: 0
   m_Name: 66b4028bcb3a4f2e99be3bd0
   m_TagString: Untagged
@@ -939,18 +940,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeab569ff566d4978b01e17752660cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverFrameBufferSize: 2400
-  gazeObjects: []
-  targetObject: {fileID: 0}
-  fixationUIController: {fileID: 6475539396796047850}
-  eyes:
-    leftEye: {fileID: 534917250764554952}
-    rightEye: {fileID: 276685397380461527}
-  head: {fileID: 2594928976478321044}
+  taskSettingsController: {fileID: 8059307286187858150}
   xrCamera: {fileID: 0}
-  fixationPointTransform: {fileID: 371485772062673346}
   gazeRadius: 0.01
-  targetOffset: 0.2
   gazeHitLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -970,6 +962,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   userId: user_1
   resultsCanvasController: {fileID: 3593971475635041692}
+  taskSettingsController: {fileID: 8059307286187858150}
+--- !u!114 &8059307286187858150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518301842043233931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94c295c8c724b4151ae834a6fb750570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverFrameBufferSize: 2400
+  gazeObjects: []
+  targetObject: {fileID: 0}
+  eyes:
+    leftEye: {fileID: 534917250764554952}
+    rightEye: {fileID: 276685397380461527}
+  head: {fileID: 7708906925741902291}
+  gazeHitLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  targetHighlightColor: {r: 0.8867924, g: 0.85825324, b: 0.36391956, a: 0}
 --- !u!1 &1549010993154273874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,6 +1639,7 @@ MonoBehaviour:
   resultsText: {fileID: 3230448759855657900}
   percentageBarParent: {fileID: 4977403360508206971}
   distractionAlert: {fileID: 3316297828301976652}
+  showObjectPercentages: 1
 --- !u!1 &2881953431882824702
 GameObject:
   m_ObjectHideFlags: 0
@@ -5146,17 +5163,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6966656118319328771, guid: fcc08c51cf5d14ea593dbb140f0bcbe0, type: 3}
   m_PrefabInstance: {fileID: 5733733287668148806}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6475539396796047850 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1607763962229263276, guid: fcc08c51cf5d14ea593dbb140f0bcbe0, type: 3}
-  m_PrefabInstance: {fileID: 5733733287668148806}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18e03808754e442819da535317da4912, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5913643846081026421
 PrefabInstance:
   m_ObjectHideFlags: 0

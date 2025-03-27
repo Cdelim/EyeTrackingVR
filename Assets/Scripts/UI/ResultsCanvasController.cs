@@ -8,6 +8,7 @@ public class ResultsCanvasController : MonoBehaviour
     [SerializeField]private TMPro.TextMeshProUGUI resultsText;
     [SerializeField]private Transform percentageBarParent;
     [SerializeField] private DistractionAlert distractionAlert;
+    [SerializeField] private bool showObjectPercentages = true;
 
     private ServerResponseMinimized serverResponseMinimized;
     private Dictionary<string, PercentageBar> objPercentageBar;
@@ -24,6 +25,7 @@ public class ResultsCanvasController : MonoBehaviour
             newPercentageBar.SetPercentage(0, gazeObjName);
 
         }
+        SetActivePercentageBars();
     }
 
     public void SetResultsByServer(ServerResponseMinimized response)
@@ -34,7 +36,15 @@ public class ResultsCanvasController : MonoBehaviour
     }
 
 
-
+    private void SetActivePercentageBars()
+    {
+        if (showObjectPercentages)
+        {
+            percentageBarParent.gameObject.SetActive(true);
+            return;
+        }
+        percentageBarParent.gameObject.SetActive(false);
+    }
 
     private void OnResponseRecived()
     {
@@ -60,6 +70,7 @@ public class ResultsCanvasController : MonoBehaviour
         {
             objPercentageBar[key].SetPercentage(serverResponseMinimized.Gaze_Object_Percentages[key], key);
         }
+        SetActivePercentageBars();
     }
     private void DistractionAlert(bool isActive)
     {
