@@ -18,6 +18,8 @@ public class ServerCommunicationManager : MonoBehaviour
     [SerializeField] private ResultsCanvasController resultsCanvasController;
     [SerializeField] private TaskSettingsController taskSettingsController;
     private string filePath;
+    private string fileName = "GazeData.csv";
+    private int filePostfix = 1;
 
 
 
@@ -29,7 +31,6 @@ public class ServerCommunicationManager : MonoBehaviour
     private void Awake()
     {
        
-        filePath = Path.Combine(Application.persistentDataPath, "GazeData.csv");
         StartCoroutine(StartSession());
 
     }
@@ -57,6 +58,8 @@ public class ServerCommunicationManager : MonoBehaviour
 
     public void SendCSVBufferToServer(FrameBuffer gazeDataLines)
     {
+        filePath = Path.Combine(Application.persistentDataPath, fileName + filePostfix);
+        filePostfix++;
         File.WriteAllLines(filePath, gazeDataLines.GetLastFrames());
         // Start the coroutine to send the data
         StartCoroutine(SendCSVToServer(filePath));
@@ -66,7 +69,7 @@ public class ServerCommunicationManager : MonoBehaviour
     {
         byte[] fileData = File.ReadAllBytes(filePath);
         WWWForm form = new WWWForm();
-        form.AddBinaryData("file", fileData, "GazeData.csv", "text/csv");
+        form.AddBinaryData("file", fileData, fileName, "text/csv");
 
         using (UnityWebRequest www = UnityWebRequest.Post(serverURL + "/upload", form))
         {
