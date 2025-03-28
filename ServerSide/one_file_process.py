@@ -1517,6 +1517,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 Previous_Classified_Files = []
+file_Postfix = 1
 
 @app.route('/start_session', methods=['POST'])
 def start_session():
@@ -1540,11 +1541,11 @@ def upload_file():
         return jsonify({'error': 'No file part'}), 400
 
     file = request.files['file']
-
+    
     if not file or not allowed_file(file.filename):
         return jsonify({'error': 'Invalid file or no file provided'}), 400
 
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename + str(file_Postfix))
     try:
         file.save(file_path)
         print(f"File saved to {file_path}")
@@ -1594,7 +1595,7 @@ SACCADE_VELOCITY_THRESHOLD = 30  # degrees per second
 FIXATION_OVERLOAD_THRESHOLD = 1.5  # Example: fixations longer than 1.5s
 SACCADE_UNDERLOAD_THRESHOLD = 0.1  # Example: saccades shorter than 0.1s
 PUPIL_OVERLOAD_THRESHOLD = 7.0  # Example threshold for pupil dilation
-DISTRACTION_TIME_TRESHOLD = 5 # Example threshold for overload
+DISTRACTION_TIME_TRESHOLD = 2 # Example threshold for overload
 
 def load_eye_tracking_data(file_path):
     """Load and preprocess eye-tracking data."""

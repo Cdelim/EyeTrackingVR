@@ -3302,7 +3302,7 @@ Transform:
   m_GameObject: {fileID: 1819539279}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.177, y: 1.612, z: 7.101}
+  m_LocalPosition: {x: 20.08, y: 0.178, z: 7.101}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3969,7 +3969,7 @@ PrefabInstance:
       objectReference: {fileID: 668488442}
     - target: {fileID: 8059307286187858150, guid: 187f19c2de870415985cf5b0ef60ded6, type: 3}
       propertyPath: serverFrameBufferSize
-      value: 1200
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8059307286187858150, guid: 187f19c2de870415985cf5b0ef60ded6, type: 3}
       propertyPath: gazeObjects.Array.size

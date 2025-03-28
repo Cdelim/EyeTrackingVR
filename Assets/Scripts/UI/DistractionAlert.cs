@@ -2,6 +2,7 @@
 
 public class DistractionAlert : MonoBehaviour
 {
+    [SerializeField]private TMPro.TextMeshProUGUI text;
     private float scaleTime = .5f;
     private Vector3 targetScale;
     private Vector3 initialScale;
@@ -20,7 +21,7 @@ public class DistractionAlert : MonoBehaviour
         if (timer >= scaleTime)
         {
             timer = 0f;
-            targetScale = initialScale;
+            targetScale = (initialScale == targetScale) ? initialScale * 1.25f: initialScale ;
         }
     }
 }

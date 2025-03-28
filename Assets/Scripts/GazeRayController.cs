@@ -159,7 +159,7 @@ public class GazeRayController : MonoBehaviour
             if (gazeData.status != VarjoEyeTracking.GazeStatus.Invalid)
             {
                 // GazeRay vectors are relative to the HMD pose so they need to be transformed to world space
-                if (gazeData.leftStatus != VarjoEyeTracking.GazeEyeStatus.Invalid)
+               /* if (gazeData.leftStatus != VarjoEyeTracking.GazeEyeStatus.Invalid)
                 {
                     taskSettingsController.eyes.leftEye.position = xrCamera.transform.TransformPoint(gazeData.left.origin);
                     taskSettingsController.eyes.leftEye.rotation = Quaternion.LookRotation(xrCamera.transform.TransformDirection(gazeData.left.forward));
@@ -169,7 +169,7 @@ public class GazeRayController : MonoBehaviour
                 {
                     taskSettingsController.eyes.rightEye.position = xrCamera.transform.TransformPoint(gazeData.right.origin);
                     taskSettingsController.eyes.rightEye.rotation = Quaternion.LookRotation(xrCamera.transform.TransformDirection(gazeData.right.forward));
-                }
+                }*/
 
                 // Set gaze origin as raycast origin
                 rayOrigin = xrCamera.transform.TransformPoint(gazeData.gaze.origin);
