@@ -62,7 +62,7 @@ public class TaskSettingsController : MonoBehaviour
     public void OnServerResponse(ServerResponseMinimized serverResponse)
     {
         serverResponseMinimized = serverResponse;
-        isDistracted = serverResponseMinimized.DistractionDetected;
+        isDistracted = serverResponseMinimized.Distraction_Detected;
 
     }
 

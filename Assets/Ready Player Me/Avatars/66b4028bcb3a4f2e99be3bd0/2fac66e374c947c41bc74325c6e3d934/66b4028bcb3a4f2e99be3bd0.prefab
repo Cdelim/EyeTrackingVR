@@ -981,7 +981,7 @@ MonoBehaviour:
   eyes:
     leftEye: {fileID: 534917250764554952}
     rightEye: {fileID: 276685397380461527}
-  head: {fileID: 7708906925741902291}
+  head: {fileID: 2594928976478321044}
   gazeHitLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -4917,7 +4917,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6977675547558062028, guid: 7ac82dc7c68f6499e981483048255885, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7687261196959290189, guid: 7ac82dc7c68f6499e981483048255885, type: 3}
       propertyPath: m_FillAmount
@@ -5037,7 +5037,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6977675547558062028, guid: 7ac82dc7c68f6499e981483048255885, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7687261196959290189, guid: 7ac82dc7c68f6499e981483048255885, type: 3}
       propertyPath: m_FillAmount
@@ -5267,7 +5267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6977675547558062028, guid: 7ac82dc7c68f6499e981483048255885, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7687261196959290189, guid: 7ac82dc7c68f6499e981483048255885, type: 3}
       propertyPath: m_FillAmount
@@ -5377,7 +5377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6977675547558062028, guid: 7ac82dc7c68f6499e981483048255885, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

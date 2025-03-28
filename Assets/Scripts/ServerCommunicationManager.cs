@@ -9,6 +9,8 @@ using System;
 using UnityEditor.PackageManager;
 using System.IO;
 
+using Newtonsoft.Json;
+
 public class ServerCommunicationManager : MonoBehaviour
 {
 
@@ -85,8 +87,9 @@ public class ServerCommunicationManager : MonoBehaviour
 
     private void ProcessServerResponse(string jsonResponse)
     {
-        lastServerResponse = JsonUtility.FromJson<ServerResponseMinimized>(jsonResponse);
+        lastServerResponse = JsonConvert.DeserializeObject<ServerResponseMinimized>(jsonResponse);
         resultsCanvasController.SetResultsByServer(lastServerResponse);
+        taskSettingsController.OnServerResponse(lastServerResponse);
     }
 
    /* void ProcessServerResponse(string jsonResponse)
@@ -182,9 +185,9 @@ public class EyeMovementStatistics
 [System.Serializable]
 public class ServerResponseMinimized
 {
-    public float FixationRatio;
-    public float SaccadeRatio;
-    public bool DistractionDetected;
-    public float CognitiveOverload;
-    public Dictionary<string, float> Gaze_Object_Percentages;
+    public float Fixation_Ratio;
+    public float Saccade_Ratio;
+    public bool Distraction_Detected;
+    public bool Cognitive_Overload;
+    public Dictionary<string, float> Gaze_Object_Percentages = new Dictionary<string, float>();
 }

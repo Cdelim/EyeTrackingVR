@@ -20,7 +20,7 @@ public class ResultsCanvasController : MonoBehaviour
         foreach (var gazeObj in possibleGazeObj)
         {
             var newPercentageBar = GameObject.Instantiate(percentageBarPrefab, percentageBarParent).GetComponent<PercentageBar>();
-            var gazeObjName = gazeObj.ToString();
+            var gazeObjName = gazeObj.name;
             objPercentageBar.Add(gazeObjName, newPercentageBar);
             newPercentageBar.SetPercentage(0, gazeObjName);
 
@@ -49,7 +49,7 @@ public class ResultsCanvasController : MonoBehaviour
     private void OnResponseRecived()
     {
         resultsText.text = FormatText();
-        DistractionAlert(serverResponseMinimized.DistractionDetected);
+        DistractionAlert(serverResponseMinimized.Distraction_Detected);
         UpdatePercentages();
 
 
@@ -57,10 +57,10 @@ public class ResultsCanvasController : MonoBehaviour
     private string FormatText()
     {
         string formattedText =
-            $"Fixation Ratio: {serverResponseMinimized.FixationRatio}" +
-            $"Saccade Ratio: {serverResponseMinimized.SaccadeRatio}\n" +
+            $"Fixation Ratio: {serverResponseMinimized.Fixation_Ratio.ToString("F3")}\n" +
+            $"Saccade Ratio: {serverResponseMinimized.Saccade_Ratio.ToString("F3")}\n" +
             //$"Distraction Detected: {string.Join(", ", serverResponseMinimized.DistractionDetected)}\n" +
-            $"Is CognitiveOverload: {string.Join(", ", serverResponseMinimized.CognitiveOverload)}\n";
+            $"Is CognitiveOverload: {string.Join(", ", serverResponseMinimized.Cognitive_Overload)}\n";
         return formattedText;
     }
 
@@ -68,7 +68,11 @@ public class ResultsCanvasController : MonoBehaviour
     {
         foreach(var key in objPercentageBar.Keys)
         {
-            objPercentageBar[key].SetPercentage(serverResponseMinimized.Gaze_Object_Percentages[key], key);
+            float percentage;
+            if(serverResponseMinimized.Gaze_Object_Percentages.TryGetValue(key, out percentage))
+            {
+                objPercentageBar[key].SetPercentage(percentage, key);
+            }
         }
         SetActivePercentageBars();
     }

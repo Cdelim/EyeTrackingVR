@@ -1189,13 +1189,9 @@ def detect_fixations_and_saccades(valid_head_gaze_df):
     valid_head_gaze_df['GazeVelocity'] = gaze_angular_velocity
     valid_head_gaze_df['HeadVelocity'] = head_angular_velocity
 
-    print(gaze_angular_velocity)
-    print(head_angular_velocity)
-
     # Classify points using updated conditions
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = classify_points(
         valid_head_gaze_df)
-    print(movement_types)
     # Include movement_velocities in the call to process_outliers_fixation
     movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities = process_outliers_fixation(
         movement_types, eye_movement_ids, movement_durations, movement_amplitudes, movement_velocities)
@@ -1520,6 +1516,8 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
+Previous_Classified_Files = []
+
 @app.route('/start_session', methods=['POST'])
 def start_session():
     user_id = request.form.get('user_id', 'default_user')  # Read from form data
@@ -1694,7 +1692,9 @@ def detect_distraction(df):
                 return True
         else:
             distraction_start = None  # Reset if attention returns
-
+    print(distraction_events)
+    if(len(distraction_events) != 0):
+        return True
     return False  # Return all detected distraction events
 def cognitive_overload_detection(results_dict):
     fixation_mean = results_dict['eye_movement_statistics']["fixation"]["mean"]
@@ -1754,10 +1754,10 @@ def process_eye_tracking_data(file_path):
     gaze_dict = calculate_gaze_distribution(df)
     gaze_durations_dict = result_dict['gazed_object_durations']
     return {
-        'Fixation Ratio': fixation_ratio,
-        'Saccade Ratio': saccade_ratio,
-        'Distraction Detected': distraction_detected,
-        'Cognitive Overload': overload_detected,
+        'Fixation_Ratio': fixation_ratio,
+        'Saccade_Ratio': saccade_ratio,
+        'Distraction_Detected': bool(distraction_detected),
+        'Cognitive_Overload': bool(overload_detected),
         'Gaze_Object_Percentages': gaze_durations_dict
     }
     """df = read_csv_file(file_path)
@@ -1776,9 +1776,9 @@ def process_eye_tracking_data(file_path):
 
 # Example usage
 #file_path = 'ID_002_Scene__Condition_0_2024-11-05-13-01.csv'
-file_path = 'uploads/GazeData.csv'
+"""file_path = 'uploads/GazeData.csv'
 results = process_eye_tracking_data(file_path)
-print(results)
+print(results)"""
 
 
 """def localTest(file_path):
