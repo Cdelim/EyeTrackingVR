@@ -13,7 +13,7 @@ public class PercentageBar : MonoBehaviour
     {
         percentage = val;
         fillImage.fillAmount = percentage * .01f;
-        percentageText.text = percentage.ToString();
+        percentageText.text = percentage.ToString("F2");
         gameObjectName.text = gameObjName;
 
     }

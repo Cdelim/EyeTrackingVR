@@ -1517,12 +1517,12 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 Previous_Classified_Files = []
-file_Postfix = 1
 
 @app.route('/start_session', methods=['POST'])
 def start_session():
     user_id = request.form.get('user_id', 'default_user')  # Read from form data
     session['user_id'] = user_id  # Store in session
+    session['file_Prefix'] = 1  # Initialize file_Postfix in session
     return jsonify({'message': 'Session started', 'user_id': session['user_id']}), 200
 
 
@@ -1544,10 +1544,11 @@ def upload_file():
     
     if not file or not allowed_file(file.filename):
         return jsonify({'error': 'Invalid file or no file provided'}), 400
-
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename + str(file_Postfix))
+    file_Prefix = session.get('file_Prefix', 1)  # Default to 1 if not fou
+    file_path = os.path.join(UPLOAD_FOLDER, str(file_Prefix) + "_240_"+file.filename )
     try:
         file.save(file_path)
+        session['file_Prefix'] = file_Prefix + 1
         print(f"File saved to {file_path}")
 
         # Process the file

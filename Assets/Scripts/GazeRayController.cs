@@ -173,6 +173,7 @@ public class GazeRayController : MonoBehaviour
 
                 // Set gaze origin as raycast origin
                 rayOrigin = xrCamera.transform.TransformPoint(gazeData.gaze.origin);
+                //rayOrigin = xrCamera.transform.position;
 
                 // Set gaze direction as raycast direction
                 direction = xrCamera.transform.TransformDirection(gazeData.gaze.forward);
