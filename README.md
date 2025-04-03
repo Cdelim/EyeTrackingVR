@@ -23,14 +23,14 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 
 ## Installation & Setup
 
-### `## Prerequisites`
+### Prerequisites
 
 - `- Unity (latest version recommended)`
 - `- Varjo HMD and eye-tracking sensors`
 - `- Python 3.x`
 - `- Flask library`
 
-### `## Steps to Setup`
+### Steps to Setup
 
 1. `Clone the repository:`
    ```sh
@@ -52,7 +52,7 @@ This project aims to enhance virtual education by integrating eye-tracking techn
    ```
 5. `Start the Unity scene and test the eye-tracking features.`
 
-## `## Usage`
+## Usage
 
 1. `Launch the virtual classroom in Unity.`
 2. `Wear the Varjo HMD to activate eye tracking.`
@@ -60,19 +60,19 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 4. `The server processes data and provides real-time alerts for distractions.`
 5. `Teachers and students receive reports based on engagement levels.`
 
-## `## Results & Benefits`
+## Results & Benefits
 
 - `- **Better Student Engagement Analysis**: Helps identify where students lose focus.`
 - `- **Improved Teaching Strategies**: Teachers can adjust their methods based on real-time feedback.`
 - `- **More Effective Virtual Learning**: Makes VR-based education more interactive and responsive.`
 
-## `## Future Improvements`
+## Future Improvements
 
 - `- Support for additional VR headsets.`
 - `- Integration with AI to predict student performance trends.`
 - `- More detailed gaze heatmaps for visual analysis.`
 
-## `## Contributors`
+## Contributors
 
 - `- Cem Bektasoglu`
 
