@@ -34,7 +34,7 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 
 1. `Clone the repository:`
    ```sh
-   git clone https://github.com/your-repo-url.git
+   git clone git@github.com:Cdelim/EyeTrackingVR.git
    cd eye-tracking-vr
    ```
 2. `Install required Python dependencies:`
@@ -75,13 +75,4 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 ## `## Contributors`
 
 - `- Cem Bektasoglu`
-- `- [Your Team Members]`
-
-## `## License`
-
-`This project is licensed under the MIT License – see the LICENSE file for details.`
-
-## `## Contact`
-
-`For any questions or contributions, feel free to reach out at [your email/contact info].`
 
