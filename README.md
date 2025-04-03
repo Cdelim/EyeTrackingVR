@@ -35,7 +35,7 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 1. `Clone the repository:`
    ```sh
    git clone git@github.com:Cdelim/EyeTrackingVR.git
-   cd eye-tracking-vr
+   cd EyeTrackingVR
    ```
 2. `Install required Python dependencies:`
    ```sh
@@ -48,7 +48,7 @@ This project aims to enhance virtual education by integrating eye-tracking techn
    - `Assign a **User ID** to track individual students.`
 4. `Run the Flask server:`
    ```sh
-   python server.py
+   python ServerSide/server.py
    ```
 5. `Start the Unity scene and test the eye-tracking features.`
 
