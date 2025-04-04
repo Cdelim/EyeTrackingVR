@@ -6,12 +6,12 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 
 ## Features
 
-- `**Fixation Rate Calculation**`: Measures how long a student focuses on a specific object.
-- `**Saccade Rate Calculation**`: Tracks rapid eye movements between focal points.
-- `**Distraction Detection**`: Identifies when a student looks away from important learning material.
-- `**Cognitive Overload Detection**`: Assesses when the student is overwhelmed by too much information.
-- `**Real-time Alerts**`: Notifies instructors when students lose focus.
-- `**User Tracking**`: Each student's gaze data is processed individually for analysis.
+- **Fixation Rate Calculation**: Measures how long a student focuses on a specific object.
+- **Saccade Rate Calculation**`: Tracks rapid eye movements between focal points.
+- **Distraction Detection**`: Identifies when a student looks away from important learning material.
+- **Cognitive Overload Detection**`: Assesses when the student is overwhelmed by too much information.
+- **Real-time Alerts**`: Notifies instructors when students lose focus.
+- **User Tracking**`: Each student's gaze data is processed individually for analysis.
 
 ## Technologies Used
 
