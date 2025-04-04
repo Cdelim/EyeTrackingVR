@@ -7,28 +7,28 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 ## Features
 
 - **Fixation Rate Calculation**: Measures how long a student focuses on a specific object.
-- **Saccade Rate Calculation**`: Tracks rapid eye movements between focal points.
-- **Distraction Detection**`: Identifies when a student looks away from important learning material.
-- **Cognitive Overload Detection**`: Assesses when the student is overwhelmed by too much information.
-- **Real-time Alerts**`: Notifies instructors when students lose focus.
-- **User Tracking**`: Each student's gaze data is processed individually for analysis.
+- **Saccade Rate Calculation**: Tracks rapid eye movements between focal points.
+- **Distraction Detection**: Identifies when a student looks away from important learning material.
+- **Cognitive Overload Detection**: Assesses when the student is overwhelmed by too much information.
+- **Real-time Alerts**: Notifies instructors when students lose focus.
+- **User Tracking**: Each student's gaze data is processed individually for analysis.
 
 ## Technologies Used
 
-- `**Unity**` – Used to build the virtual classroom environment.
-- `**Varjo Head-Mounted Device (HMD)**` – Provides high-fidelity VR experiences.
-- `**Varjo Eye Tracking Sensors**` – Captures gaze data and eye movement.
-- `**ReadyPlayerMe**` – Generates avatars and animations for users.
-- `**Python Flask**` – Handles server-side data processing.
+- **Unity** – Used to build the virtual classroom environment.
+- **Varjo Head-Mounted Device (HMD)** – Provides high-fidelity VR experiences.
+- **Varjo Eye Tracking Sensors** – Captures gaze data and eye movement.
+- **ReadyPlayerMe** – Generates avatars and animations for users.
+- **Python Flask** – Handles server-side data processing.
 
 ## Installation & Setup
 
 ### Prerequisites
 
-- `- Unity (latest version recommended)`
-- `- Varjo HMD and eye-tracking sensors`
-- `- Python 3.x`
-- `- Flask library`
+- Unity (latest version recommended)
+- Varjo HMD and eye-tracking sensors
+- Python 3.x
+- Flask library`
 
 ### Steps to Setup
 
@@ -68,11 +68,11 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 
 ## Future Improvements
 
-- `- Support for additional VR headsets.`
-- `- Integration with AI to predict student performance trends.`
-- `- More detailed gaze heatmaps for visual analysis.`
+- Support for additional VR headsets.
+- Integration with AI to predict student performance trends.
+- More detailed gaze heatmaps for visual analysis.
 
 ## Contributors
 
-- `- Cem Bektasoglu`
+- Cem Bektasoglu
 
