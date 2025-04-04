@@ -62,9 +62,9 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 
 ## Results & Benefits
 
-- `- **Better Student Engagement Analysis**: Helps identify where students lose focus.`
-- `- **Improved Teaching Strategies**: Teachers can adjust their methods based on real-time feedback.`
-- `- **More Effective Virtual Learning**: Makes VR-based education more interactive and responsive.`
+- - **Better Student Engagement Analysis**: Helps identify where students lose focus.
+- - **Improved Teaching Strategies**: Teachers can adjust their methods based on real-time feedback.
+- - **More Effective Virtual Learning**: Makes VR-based education more interactive and responsive.
 
 ## Future Improvements
 
