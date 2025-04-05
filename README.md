@@ -29,7 +29,7 @@ The Unity application saves gaze data to `.csv` format in real time and sends it
 - **Distraction**: Distraction is defined as the user's gaze shifting away from the relevant task or object for a duration longer than a defined threshold.
 - **Cognitive Overload**: Cognitive overload happens when the mental processing capacity of the user is exceeded, often signaled by high fixation times, reduced saccades, and enlarged pupil size.
 
-![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Distribution.png)
+![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Distribution.png){:height="50%" width="50%"}
 
 ## How Distraction and Overload Are Detected
 
