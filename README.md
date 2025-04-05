@@ -29,6 +29,9 @@ The Unity application saves gaze data to `.csv` format in real time and sends it
 - **Distraction**: Distraction is defined as the user's gaze shifting away from the relevant task or object for a duration longer than a defined threshold.
 - **Cognitive Overload**: Cognitive overload happens when the mental processing capacity of the user is exceeded, often signaled by high fixation times, reduced saccades, and enlarged pupil size.
 
+![alt text](https://github.com/Cdelim/EyeTrackingVR/edit/main/ReadmeImages/Gaze_Distribution?raw=true)
+
+
 ## How Distraction and Overload Are Detected
 
 On the server-side, key Python functions process the incoming CSV data. Below are two of the core algorithms:
@@ -74,6 +77,7 @@ def detect_distraction(df):
     return False
 ```
 
+![alt text](https://github.com/Cdelim/EyeTrackingVR/edit/main/ReadmeImages/Distraction_Panel?raw=true)
 This logic checks whether the user’s gaze has wandered away from the target task for too long, indicating distraction.
 
 ## Technologies Used
@@ -117,6 +121,56 @@ This logic checks whether the user’s gaze has wandered away from the target ta
    python assets/ServerSide/server.py
    ```
 5. **Play the scene in Unity and observe real-time data analysis.**
+
+### Unity Package Setup (Alternative)
+
+If you prefer a streamlined setup, the project also supports importing via a Unity package file:
+
+1. Download the .unitypackage: Get the pre-packaged scene from the Releases section or your shared drive.
+
+2. Open Your Unity Project:
+
+    - Create a new Unity project (preferably 3D URP or HDRP if using Varjo).
+
+    - Ensure the Varjo plugin is installed (via Unity Package Manager or Varjo Plugin site).
+
+    - Import the Package:
+
+    - In Unity, go to Assets > Import Package > Custom Package...
+
+    - Select the downloaded .unitypackage.
+
+    - Make sure all files are checked and click Import.
+
+3. Scene Configuration:
+
+    - Open the imported VRScene.unity scene.
+
+    - Assign your Varjo HMD and ReadyPlayerMe avatar in the scene hierarchy.
+
+    - Ensure GazeRayController.cs and related scripts are attached to the Main Camera. (Check the avatar in the VRScene.)
+
+
+![alt text](https://github.com/Cdelim/EyeTrackingVR/edit/main/ReadmeImages/Gaze_Controller?raw=true)
+
+4. Customize the inspector settings:
+
+    - User ID
+
+    - Data send frequency
+
+    - CSV output path (optional override)
+
+
+![alt text](https://github.com/Cdelim/EyeTrackingVR/edit/main/ReadmeImages/TaskSettings?raw=true)
+
+5. Connect to Python Server:
+
+    - Run the Flask server as described in the Setup Steps.
+
+    - The Unity scene will send gaze data automatically if the server is running.
+
+✅ This setup is ideal for quick deployment or testing in new environments.
 
 ## Usage Workflow
 
