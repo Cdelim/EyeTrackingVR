@@ -31,6 +31,7 @@ The Unity application saves gaze data to `.csv` format in real time and sends it
 
 <p align="center">
 <img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Distribution.png" width="300" height="200"/>
+</p>
 
 ## How Distraction and Overload Are Detected
 
@@ -77,10 +78,11 @@ def detect_distraction(df):
     return False
 ```
 
-
-<img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Distraction_Panel.png" width="300" height="300"/>
-
 This logic checks whether the user’s gaze has wandered away from the target task for too long, indicating distraction.
+
+<p align="center">
+<img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Distraction_Panel.png" width="300" height="300"/>
+</p>
 
 ## Technologies Used
 
@@ -153,7 +155,7 @@ If you prefer a streamlined setup, the project also supports importing via a Uni
     - Ensure GazeRayController.cs and related scripts are attached to the Main Camera. (Check the avatar in the VRScene.)
 
 
-<img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Controller.png" width="300" height="200"/>
+<img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Controller.png" width="528" height="227"/>
 
 4. Customize the inspector settings:
 
@@ -165,9 +167,8 @@ If you prefer a streamlined setup, the project also supports importing via a Uni
 
 
 
-<img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/TaskSettings.png" width="300" height="200"/>
+<img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/TaskSettings.png" width="526" height="413"/>
 
-</p>
 
 5. Connect to Python Server:
 
