@@ -136,15 +136,13 @@ This logic checks whether the user’s gaze has wandered away from the target ta
 
 ## Future Improvements
 
-AI-Powered Analysis: Use machine learning to predict attention loss trends and personalize feedback loops.
+- AI-Powered Analysis: Use machine learning to predict attention loss trends and personalize feedback loops.
+- Visual Heatmaps: Exportable heatmaps of user gaze to analyze focus areas and curriculum impact.
+- Cross-Platform Compatibility: Support for various VR/AR devices (e.g., Meta Quest, HTC Vive).
+- Instructor Dashboard: In-app real-time analytics with charts and attention scores for classroom monitoring.
+- Custom Event Triggers: Teachers can define specific tasks or time ranges to measure attention more granularly.
 
-Visual Heatmaps: Exportable heatmaps of user gaze to analyze focus areas and curriculum impact.
 
-Cross-Platform Compatibility: Support for various VR/AR devices (e.g., Meta Quest, HTC Vive).
-
-Instructor Dashboard: In-app real-time analytics with charts and attention scores for classroom monitoring.
-
-Custom Event Triggers: Teachers can define specific tasks or time ranges to measure attention more granularly.
 ## Contributors
 
 - Cem Bektasoglu
