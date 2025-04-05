@@ -77,6 +77,7 @@ def detect_distraction(df):
 ```
 
 ![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Distraction_Panel.png)
+
 This logic checks whether the user’s gaze has wandered away from the target task for too long, indicating distraction.
 
 ## Technologies Used
