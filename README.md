@@ -127,7 +127,7 @@ This logic checks whether the user’s gaze has wandered away from the target ta
 5. **Play the scene in Unity and observe real-time data analysis.**
 
 ### Unity Package Setup (Alternative)
-Note: To make the size of package, I didn’t add enviroment prefabs. You need to use your own enviroment
+Note: To make the size of package, I didn’t add enviroment prefabs. You need to use your own environment
 
 If you prefer a streamlined setup, the project also supports importing via a Unity package file:
 
