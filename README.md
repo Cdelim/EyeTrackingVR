@@ -2,24 +2,88 @@
 
 ## Project Overview
 
-This project aims to enhance virtual education by integrating eye-tracking technology into a classroom environment. By leveraging eye-tracking sensors within a VR setting, we can measure student engagement, detect distractions, and analyze cognitive load. The system is designed to provide real-time feedback to both students and teachers, improving learning outcomes.
+This interdisciplinary project explores how eye-tracking technology can improve virtual classroom experiences by measuring student attention and mental load. Using Unity for the front-end VR experience and a Python Flask server for the backend, this system captures gaze data from VR users in real-time and processes it to offer cognitive feedback. The ultimate goal is to improve learning outcomes by alerting students and instructors when distraction or cognitive overload occurs.
+
+## System Architecture
+
+The project is built with two primary components:
+
+- **Unity VR Environment**: Provides a virtual classroom with educational materials and avatars.
+- **Python Flask Server**: Receives, analyzes, and visualizes gaze data from Unity.
+
+The Unity application saves gaze data to `.csv` format in real time and sends it to the Python server at specific frame intervals, which can be adjusted in the game settings. This data includes timestamps, gaze positions, pupil diameters, and the object the user is focusing on.
 
 ## Features
 
 - **Fixation Rate Calculation**: Measures how long a student focuses on a specific object.
 - **Saccade Rate Calculation**: Tracks rapid eye movements between focal points.
-- **Distraction Detection**: Identifies when a student looks away from important learning material.
-- **Cognitive Overload Detection**: Assesses when the student is overwhelmed by too much information.
-- **Real-time Alerts**: Notifies instructors when students lose focus.
-- **User Tracking**: Each student's gaze data is processed individually for analysis.
+- **Distraction Detection**: Identifies when a student looks away from the task for a sustained period.
+- **Cognitive Overload Detection**: Analyzes combined metrics like fixation, saccade, and pupil dilation to detect cognitive strain.
+- **Real-time Alerts**: Notifies the instructor or logs data when a student is distracted or overloaded.
+- **User Tracking**: All gaze data is tagged with a `User ID` for individual analysis.
+
+## Definitions of Key Concepts
+
+- **Fixation**: A fixation occurs when the eyes remain focused on a single point or object for a period of time. Longer fixations often indicate cognitive processing and attention.
+- **Saccade**: A saccade is a quick, simultaneous movement of both eyes between two or more phases of fixation in the same direction. Frequent saccades may indicate scanning or lack of focus.
+- **Distraction**: Distraction is defined as the user's gaze shifting away from the relevant task or object for a duration longer than a defined threshold.
+- **Cognitive Overload**: Cognitive overload happens when the mental processing capacity of the user is exceeded, often signaled by high fixation times, reduced saccades, and enlarged pupil size.
+
+## How Distraction and Overload Are Detected
+
+On the server-side, key Python functions process the incoming CSV data. Below are two of the core algorithms:
+
+### `cognitive_overload_detection(results_dict)`
+```python
+def cognitive_overload_detection(results_dict):
+    fixation_mean = results_dict['eye_movement_statistics']["fixation"]["mean"]
+    saccade_mean = results_dict['eye_movement_statistics']["saccade"]["mean"]
+    pupil_diameter_mean = results_dict['pupil_data']['normalized_statistics']["mean_pupil_diameter"]
+
+    if pd.isna(fixation_mean) or pd.isna(saccade_mean) or pd.isna(pupil_diameter_mean):
+        return False
+    cognitive_overload = (
+        fixation_mean > FIXATION_OVERLOAD_THRESHOLD
+        and saccade_mean < SACCADE_UNDERLOAD_THRESHOLD
+        and pupil_diameter_mean > PUPIL_OVERLOAD_THRESHOLD
+    )
+    return cognitive_overload
+```
+
+This function determines whether a student is experiencing cognitive overload by analyzing fixation length, saccade frequency, and average pupil dilation.
+
+### `detect_distraction(df)`
+```python
+def detect_distraction(df):
+    distraction_events = []
+    distraction_start = None
+
+    for index, row in df.iterrows():
+        if row['GazedObject'] != row['Task']:
+            if distraction_start is None:
+                distraction_start = row['TimeStamp']
+            elif row['TimeStamp'] - distraction_start > DISTRACTION_TIME_TRESHOLD:
+                distraction_events.append((distraction_start, row['TimeStamp']))
+                distraction_start = None
+                return True
+        else:
+            distraction_start = None
+    print(distraction_events)
+    if(len(distraction_events) != 0):
+        return True
+    return False
+```
+
+This logic checks whether the user’s gaze has wandered away from the target task for too long, indicating distraction.
 
 ## Technologies Used
 
-- **Unity** – Used to build the virtual classroom environment.
-- **Varjo Head-Mounted Device (HMD)** – Provides high-fidelity VR experiences.
-- **Varjo Eye Tracking Sensors** – Captures gaze data and eye movement.
-- **ReadyPlayerMe** – Generates avatars and animations for users.
-- **Python Flask** – Handles server-side data processing.
+- **Unity** – Used to build the immersive VR classroom.
+- **Varjo HMD** – High-end VR headset with integrated eye-tracking.
+- **Varjo Eye Tracking Sensors** – Captures gaze and pupil data.
+- **ReadyPlayerMe** – Avatar generation system for VR users.
+- **Python Flask** – Hosts backend services and runs detection algorithms.
+- **Pandas, NumPy** – Data analysis and manipulation tools.
 
 ## Installation & Setup
 
@@ -28,50 +92,59 @@ This project aims to enhance virtual education by integrating eye-tracking techn
 - Unity (latest version recommended)
 - Varjo HMD and eye-tracking sensors
 - Python 3.x
-- Flask library`
+- Flask, pandas, numpy libraries
 
-### Steps to Setup
+### Setup Steps
 
-1. `Clone the repository:`
+1. **Clone the repository:**
    ```sh
-   git clone git@github.com:Cdelim/EyeTrackingVR.git
-   cd EyeTrackingVR
+   git clone https://github.com/your-repo-url.git
+   cd eye-tracking-vr
    ```
-2. `Install required Python dependencies:`
+2. **Install Python dependencies:**
    ```sh
    pip install flask numpy pandas
    ```
-3. `Open the Unity project and set up the following:`
-   - `Import the **Varjo SDK** and **ReadyPlayerMe SDK**.`
-   - `Set the **Avatar Camera** to track user gaze.`
-   - `Define **interactive objects** in the scene.`
-   - `Assign a **User ID** to track individual students.`
-4. `Run the Flask server:`
+3. **In Unity:**
+   - Import the Varjo and ReadyPlayerMe SDKs
+   - Add your avatar prefab to the scene
+   - Set the user camera to follow gaze direction
+   - Mark objects to track gaze on
+   - Assign a unique `User ID`
+   - Adjust the data send frequency in the inspector
+4. **Run the Python Flask server:**
    ```sh
-   python ServerSide/server.py
+   python assets/ServerSide/server.py
    ```
-5. `Start the Unity scene and test the eye-tracking features.`
+5. **Play the scene in Unity and observe real-time data analysis.**
 
-## Usage
+## Usage Workflow
 
-1. `Launch the virtual classroom in Unity.`
-2. `Wear the Varjo HMD to activate eye tracking.`
-3. `Engage with the environment while the system records gaze data.`
-4. `The server processes data and provides real-time alerts for distractions.`
-5. `Teachers and students receive reports based on engagement levels.`
+1. Launch Unity and enter play mode with Varjo HMD.
+2. The Unity client logs gaze data and sends it frame-by-frame to the server.
+3. Server functions process and analyze user attention patterns.
+4. Distraction and overload alerts are generated if thresholds are exceeded.
+5. Reports and logs can be accessed for each user.
 
-## Results & Benefits
-
-- **Better Student Engagement Analysis**: Helps identify where students lose focus.
-- **Improved Teaching Strategies**: Teachers can adjust their methods based on real-time feedback.
-- **More Effective Virtual Learning**: Makes VR-based education more interactive and responsive.
+## Results and Benefits
+•	Improved Student Engagement: By identifying attention patterns, the system helps instructors adapt lessons in real time to keep students more engaged.
+•	Instructor Insights: Teachers gain clear, data-driven reports on each student’s focus and cognitive state, allowing more personalized instruction.
+•	Early Intervention: Distraction and cognitive overload alerts enable timely support before students fall behind.
+•	Enhanced Learning Outcomes: Encouraging sustained attention and providing adaptive pacing improves retention and comprehension.
+•	Support for Educational Researchers: Eye-tracking metrics offer valuable data for studying learning behaviors in virtual environments.
+•	Scalability for Remote Education: Provides a framework for tracking engagement in large-scale online or hybrid classrooms.
 
 ## Future Improvements
 
-- Support for additional VR headsets.
-- Integration with AI to predict student performance trends.
-- More detailed gaze heatmaps for visual analysis.
+AI-Powered Analysis: Use machine learning to predict attention loss trends and personalize feedback loops.
 
+Visual Heatmaps: Exportable heatmaps of user gaze to analyze focus areas and curriculum impact.
+
+Cross-Platform Compatibility: Support for various VR/AR devices (e.g., Meta Quest, HTC Vive).
+
+Instructor Dashboard: In-app real-time analytics with charts and attention scores for classroom monitoring.
+
+Custom Event Triggers: Teachers can define specific tasks or time ranges to measure attention more granularly.
 ## Contributors
 
 - Cem Bektasoglu
