@@ -29,8 +29,8 @@ The Unity application saves gaze data to `.csv` format in real time and sends it
 - **Distraction**: Distraction is defined as the user's gaze shifting away from the relevant task or object for a duration longer than a defined threshold.
 - **Cognitive Overload**: Cognitive overload happens when the mental processing capacity of the user is exceeded, often signaled by high fixation times, reduced saccades, and enlarged pupil size.
 
+<p align="center">
 <img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Distribution.png" width="300" height="200"/>
-![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Distribution.png){:height="50%" width="50%"}
 
 ## How Distraction and Overload Are Detected
 
@@ -77,7 +77,8 @@ def detect_distraction(df):
     return False
 ```
 
-![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Distraction_Panel.png)
+
+<img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Distraction_Panel.png" width="300" height="300"/>
 
 This logic checks whether the user’s gaze has wandered away from the target task for too long, indicating distraction.
 
@@ -152,7 +153,7 @@ If you prefer a streamlined setup, the project also supports importing via a Uni
     - Ensure GazeRayController.cs and related scripts are attached to the Main Camera. (Check the avatar in the VRScene.)
 
 
-![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Controller.png)
+<img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Controller.png" width="300" height="200"/>
 
 4. Customize the inspector settings:
 
@@ -163,7 +164,10 @@ If you prefer a streamlined setup, the project also supports importing via a Uni
     - CSV output path (optional override)
 
 
-![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/TaskSettings.png)
+
+<img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/TaskSettings.png" width="300" height="200"/>
+
+</p>
 
 5. Connect to Python Server:
 
