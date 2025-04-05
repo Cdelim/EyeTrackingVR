@@ -137,6 +137,8 @@ If you prefer a streamlined setup, the project also supports importing via a Uni
     - Create a new Unity project (preferably 3D URP or HDRP if using Varjo).
 
     - Ensure the Varjo plugin is installed (via Unity Package Manager or Varjo Plugin site).
+      
+    - Ensure the ReadyPlayerMe plugin is isntalled.
 
     - Import the Package:
 
