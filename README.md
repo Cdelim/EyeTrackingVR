@@ -120,19 +120,19 @@ This logic checks whether the user’s gaze has wandered away from the target ta
 
 ## Usage Workflow
 
-1. Launch Unity and enter play mode with Varjo HMD.
-2. The Unity client logs gaze data and sends it frame-by-frame to the server.
-3. Server functions process and analyze user attention patterns.
-4. Distraction and overload alerts are generated if thresholds are exceeded.
-5. Reports and logs can be accessed for each user.
+- Launch Unity and enter play mode with Varjo HMD.
+- The Unity client logs gaze data and sends it every specific amount of frame to the server.
+- Server functions process and analyze user attention patterns.
+- Distraction and overload alerts are generated if thresholds are exceeded.
+- Reports and logs can be accessed for each user.
 
 ## Results and Benefits
-•	Improved Student Engagement: By identifying attention patterns, the system helps instructors adapt lessons in real time to keep students more engaged.
-•	Instructor Insights: Teachers gain clear, data-driven reports on each student’s focus and cognitive state, allowing more personalized instruction.
-•	Early Intervention: Distraction and cognitive overload alerts enable timely support before students fall behind.
-•	Enhanced Learning Outcomes: Encouraging sustained attention and providing adaptive pacing improves retention and comprehension.
-•	Support for Educational Researchers: Eye-tracking metrics offer valuable data for studying learning behaviors in virtual environments.
-•	Scalability for Remote Education: Provides a framework for tracking engagement in large-scale online or hybrid classrooms.
+- Improved Student Engagement: By identifying attention patterns, the system helps instructors adapt lessons in real time to keep students more engaged.
+- Instructor Insights: Teachers gain clear, data-driven reports on each student’s focus and cognitive state, allowing more personalized instruction.
+- Early Intervention: Distraction and cognitive overload alerts enable timely support before students fall behind.
+- Enhanced Learning Outcomes: Encouraging sustained attention and providing adaptive pacing improves retention and comprehension.
+- Support for Educational Researchers: Eye-tracking metrics offer valuable data for studying learning behaviors in virtual environments.
+- Scalability for Remote Education: Provides a framework for tracking engagement in large-scale online or hybrid classrooms.
 
 ## Future Improvements
 
