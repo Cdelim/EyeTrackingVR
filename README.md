@@ -127,6 +127,7 @@ This logic checks whether the user’s gaze has wandered away from the target ta
 5. **Play the scene in Unity and observe real-time data analysis.**
 
 ### Unity Package Setup (Alternative)
+Note: To make the size of package, I didn’t add enviroment prefabs. You need to use your own enviroment
 
 If you prefer a streamlined setup, the project also supports importing via a Unity package file:
 
@@ -152,9 +153,12 @@ If you prefer a streamlined setup, the project also supports importing via a Uni
 
     - Open the imported VRScene.unity scene.
 
-    - Assign your Varjo HMD and ReadyPlayerMe avatar in the scene hierarchy.
+    - Assign your Main Camera to AvatarOne prefab.
 
     - Ensure GazeRayController.cs and related scripts are attached to the Main Camera. (Check the avatar in the VRScene.)
+
+    - Assign a RaycastLayer.(It will assign this layer objects that will be considered for measurements)
+
 
 
 <img src="https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Controller.png" width="528" height="227"/>
@@ -165,7 +169,10 @@ If you prefer a streamlined setup, the project also supports importing via a Uni
 
     - Data send frequency
 
-    - CSV output path (optional override)
+    - Gaze Objects
+        -- 	To have flexibility, you can assign the objects that you consider for calculations
+    - Target Object
+
 
 
 
