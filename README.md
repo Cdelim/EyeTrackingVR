@@ -29,8 +29,7 @@ The Unity application saves gaze data to `.csv` format in real time and sends it
 - **Distraction**: Distraction is defined as the user's gaze shifting away from the relevant task or object for a duration longer than a defined threshold.
 - **Cognitive Overload**: Cognitive overload happens when the mental processing capacity of the user is exceeded, often signaled by high fixation times, reduced saccades, and enlarged pupil size.
 
-![alt text](https://github.com/Cdelim/EyeTrackingVR/edit/main/ReadmeImages/Gaze_Distribution.png?raw=true)
-
+![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Distribution.png)
 
 ## How Distraction and Overload Are Detected
 
@@ -77,7 +76,7 @@ def detect_distraction(df):
     return False
 ```
 
-![alt text](https://github.com/Cdelim/EyeTrackingVR/edit/main/ReadmeImages/Distraction_Panel.png?raw=true)
+![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Distraction_Panel.png)
 This logic checks whether the user’s gaze has wandered away from the target task for too long, indicating distraction.
 
 ## Technologies Used
@@ -151,7 +150,7 @@ If you prefer a streamlined setup, the project also supports importing via a Uni
     - Ensure GazeRayController.cs and related scripts are attached to the Main Camera. (Check the avatar in the VRScene.)
 
 
-![alt text](https://github.com/Cdelim/EyeTrackingVR/edit/main/ReadmeImages/Gaze_Controller.png?raw=true)
+![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/Gaze_Controller.png)
 
 4. Customize the inspector settings:
 
@@ -162,7 +161,7 @@ If you prefer a streamlined setup, the project also supports importing via a Uni
     - CSV output path (optional override)
 
 
-![alt text](https://github.com/Cdelim/EyeTrackingVR/edit/main/ReadmeImages/TaskSettings.png?raw=true)
+![alt text](https://github.com/Cdelim/EyeTrackingVR/blob/main/ReadmeImages/TaskSettings.png)
 
 5. Connect to Python Server:
 
